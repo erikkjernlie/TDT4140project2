@@ -1,31 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#5A717C"
+    >
 
-    tools:context=".Register"
-    android:background="#4a5960"
-    android:weightSum="1">
+    <TextView
+        android:id="@+id/cbPicView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
 
-    <ImageButton
-        android:layout_width="150dp"
-        android:layout_height="180dp"
-        android:src="@drawable/female"
-        android:scaleType="centerCrop"
-
-        android:id="@+id/imageFemale"
-        android:layout_gravity="center_vertical"
-
+        android:paddingTop="70dp"
+        android:text="Choose gender:"
+        android:textSize="50dp"
+        android:textColor="#FFFFFF"
         />
 
-    <ImageButton
-        android:layout_width="150dp"
-        android:layout_height="180dp"
-        android:src="@drawable/man"
-        android:scaleType="centerCrop"
-        android:id="@+id/imageMale"
-        android:layout_gravity="center_vertical"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        >
 
-        />
+        <ImageButton
+            android:id="@+id/male"
+            android:layout_width="0dp"
+            android:layout_height="314dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/man"
+            android:layout_weight="0.47"
+            />
 
+        <ImageButton
+            android:id="@+id/female"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:layout_height="314dp"
+            android:src="@drawable/female"
+            android:layout_weight="0.47"
+            />
+    </LinearLayout>
 </LinearLayout>
