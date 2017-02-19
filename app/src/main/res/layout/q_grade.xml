@@ -10,15 +10,18 @@
         android:text="Have you calculated your grade?"
         android:textSize="22dp"/>
 
-
-
-    <ToggleButton
-        android:text="ToggleButton"
+    <Button
+        android:text="Yes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toggleButton"
-        android:textOff="No, i have not calculated my grades"
-        android:textOn="Yes, i have calculated my grades"/>
+        android:id="@+id/Registered" />
+
+    <Button
+        android:text="No"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/notRegistered" />
+
 
 
 </LinearLayout>
