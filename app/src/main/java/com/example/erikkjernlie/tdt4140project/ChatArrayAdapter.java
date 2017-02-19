@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
- 
+
+
+//chatarrrayadapter gjør om arraylisten til et interface-greie
 class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
  
     private TextView chatText;

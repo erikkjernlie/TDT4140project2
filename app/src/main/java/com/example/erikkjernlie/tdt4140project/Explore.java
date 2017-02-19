@@ -3,7 +3,7 @@ package com.example.erikkjernlie.tdt4140project;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class explore extends AppCompatActivity {
+public class Explore extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

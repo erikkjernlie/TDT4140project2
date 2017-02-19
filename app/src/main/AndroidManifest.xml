@@ -8,30 +8,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--<activity android:name=".MainActivity">
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>-->
 
-        <activity android:name=".welcomescreen">
+        <activity android:name=".ChatBot"/>
+        <activity android:name=".Explore"/>
+        <activity android:name=".Register"/>
+        <activity android:name=".Menu"/>
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".homescreen" />
-        <activity android:name=".explore" />
-        <activity android:name=".register" />
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".mainchat"/>
-        <!--
-        må huske ha med alle aktiviteter som kjøres her
-        -->
 
 
 

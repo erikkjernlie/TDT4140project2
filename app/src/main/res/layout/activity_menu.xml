@@ -31,7 +31,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="108dp"
-        android:id="@+id/but1" />
+        android:id="@+id/but1"
+        />
 
     <Button
         android:text="Explore"
