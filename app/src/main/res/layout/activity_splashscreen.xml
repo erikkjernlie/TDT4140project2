@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="#4a5960"
-    tools:context="com.example.erikkjernlie.tdt4140project.welcomescreen">
+    tools:context="com.example.erikkjernlie.tdt4140project.SplashScreen">
 
 
 

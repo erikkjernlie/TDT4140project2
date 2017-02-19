@@ -2,8 +2,11 @@ package com.example.erikkjernlie.tdt4140project;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TextView;
 
 public class Register extends AppCompatActivity {
+
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
