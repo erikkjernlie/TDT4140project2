@@ -9,17 +9,26 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+
+
 public class Register extends AppCompatActivity {
 
     private TextView textView;
     private char gender;
     private double grade;
+    private Firebase mRef;
+    private Firebase mRefChild;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         initGenderBtns();
+
+        Firebase.setAndroidContext(Register.this);
+
+        mRef = new Firebase("https://tdt4140project2.firebaseio.com/");
 
     }
     //hvis vi vil ha muligheten til å gå ET HAKK tilbake, så kan vi ikke bare ha setContentView, da må vi vise til en ny Activity
@@ -80,6 +89,8 @@ public class Register extends AppCompatActivity {
                 //her må vi ha med masse tester itilfelle input er string
                 grade = Double.valueOf(e.getText().toString());
                 t.setText(Double.toString(grade));
+                Firebase mRefChild = mRef.child("Grade");
+                mRefChild.setValue(grade);
 
             }
         });
