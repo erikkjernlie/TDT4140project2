@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "876647348509",
+    "firebase_url": "https://tdt4140project2.firebaseio.com",
+    "project_id": "tdt4140project2",
+    "storage_bucket": "tdt4140project2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:876647348509:android:ca82371a1b505023",
+        "android_client_info": {
+          "package_name": "com.example.erikkjernlie.tdt4140project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "876647348509-1jhc534gohdejfo0bcq7qj7hfl50lt30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwCxk3JjqISf7I37mGdr8j3R9lIltD7YA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
