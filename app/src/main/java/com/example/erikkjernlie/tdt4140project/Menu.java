@@ -15,7 +15,9 @@ public class Menu extends AppCompatActivity {
 
     private Button but1; //register button
     private Button but2; //explore button
+    private Button but3; //about button
 
+    //få denne til å kjøre første gangen, nå kjører den hele jævla tiden
     //pop-up skjermen, også alert/overlay
     private void alert(){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this, R.layout.overlay);
@@ -55,6 +57,14 @@ public class Menu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent c = new Intent(Menu.this, ChatBot.class); //skal sende til explore, men foreløpig til mainchat
                 startActivity(c);
+            }
+        });
+        but3 = (Button) findViewById(R.id.but3);
+        but3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent d = new Intent(Menu.this, Slideshow.class);
+                startActivity(d);
             }
         });
         alert();

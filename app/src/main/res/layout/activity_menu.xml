@@ -43,4 +43,12 @@
         android:layout_above="@+id/but1"
         android:layout_alignLeft="@+id/but1"
         android:layout_alignStart="@+id/but1" />
+
+    <Button
+        android:text="About uniBOT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/but3"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
