@@ -156,11 +156,11 @@ public class Register extends AppCompatActivity {
 
     }
 
-    public HashMap<String, Double> findAvailableStudies() {
-        HashMap<String, Double> array = new HashMap<>();
+    public ArrayList<String> findAvailableStudies() {
+        ArrayList<String> array = new ArrayList<>();
         for (Map.Entry<String, Double> hash : studyFirst.entrySet()) {
             if (calculatedGrade >= hash.getValue()) {
-                array.put(hash.getKey(), hash.getValue());
+                array.add(hash.getKey());
             }
         }
         return array;
@@ -183,15 +183,12 @@ public class Register extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.avaiStud);
 
-        ArrayList<HashMap<String,Double>> items = new ArrayList<HashMap<String, Double>>();
-        items.add(findAvailableStudies());
+        arrayAdapter= new ArrayAdapter<String>(this,
+                R.layout.avaiable_study_item, R.id.studyItem);
 
-        ArrayAdapter<HashMap<String, Double>> arrayAdapter =
-                new ArrayAdapter<HashMap<String,Double>>(this,
-                        R.layout.avaiable_study_item,R.id.studyItem);
-
-        /*arrayAdapter= new ArrayAdapter<String>(this,
-                R.layout.avaiable_study_item, R.id.studyItem);*/
+        for (int i = 0; i < findAvailableStudies().size(); i++) {
+            arrayAdapter.add(findAvailableStudies().get(i));
+        }
 
         listView.setAdapter(arrayAdapter);
 
