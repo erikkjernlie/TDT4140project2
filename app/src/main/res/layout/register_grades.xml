@@ -1,11 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="16dp"
+    android:paddingLeft="64dp"
+    android:paddingRight="64dp"
+    android:paddingTop="16dp"
+    tools:context="com.example.erikkjernlie.tdt4140project.Register"
+    android:weightSum="1">
 
-    <TextView
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+
+    <!--<TextView
         android:text="Since you haven't calculated your grades, well, you are fucked"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView4" />
+        android:id="@+id/textView4" />-->
+
+
+
+    <EditText
+        android:layout_margin="15dp"
+        android:hint="Grades"
+        android:id="@+id/gradeSingle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="#000000"
+        android:gravity="center_horizontal"
+        />
+
+        <!--<Button
+            android:text="Submit grades"
+            android:id="@+id/gradeSingleBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>-->
+
+    <EditText
+        android:layout_margin="15dp"
+        android:hint="Birth Year"
+        android:id="@+id/birthYear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="#000000"
+        android:gravity="center_horizontal"
+
+        />
+
+        <!--<Button
+            android:text="Submit birth Year"
+            android:id="@+id/birthYearBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />-->
+
+    <EditText
+        android:layout_margin="15dp"
+        android:hint="Extra points"
+        android:id="@+id/extraPoints"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="#000000"
+        android:gravity="center_horizontal"
+        />
+
+        <!--<Button
+            android:text="Submit extra points"
+            android:id="@+id/extraPointsBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>-->
+
+    </LinearLayout>
+
+    <Button
+        android:text="Calcute your average grade"
+        android:id="@+id/gradeCalcBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.1" />
+
 </LinearLayout>
