@@ -2,6 +2,7 @@ package com.example.erikkjernlie.tdt4140project;
 
 
 import android.database.DataSetObserver;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -16,15 +17,16 @@ import com.google.gson.JsonElement;
 
 import java.util.Map;
 
-import ai.api.AIListener;
+import ai.api.AIServiceException;
 import ai.api.android.AIConfiguration;
+import ai.api.android.AIDataService;
 import ai.api.android.AIService;
-import ai.api.model.AIError;
+import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
 import ai.api.model.Result;
 
 
-public class ChatBot extends AppCompatActivity implements AIListener {
+public class ChatBot extends AppCompatActivity {
     private static final String TAG = "ChatActivity";
 
     private ChatArrayAdapter chatArrayAdapter;
@@ -35,14 +37,14 @@ public class ChatBot extends AppCompatActivity implements AIListener {
     private AIService aiService;
     public Button listenButton;
     private TextView resultTextView;
-
-
+    private AIConfiguration config;
+    private AIDataService aiDataService;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        requestPermissions(new String[]{"android.permission.RECORD_AUDIO"},2);
         super.onCreate(savedInstanceState);
+        requestPermissions(new String[]{"android.permission.RECORD_AUDIO"}, 2);
 
         setContentView(R.layout.chatbot);
 
@@ -81,34 +83,55 @@ public class ChatBot extends AppCompatActivity implements AIListener {
                 listView.setSelection(chatArrayAdapter.getCount() - 1);
             }
         });
-        final AIConfiguration config = new AIConfiguration("3e19cea342f04764b1665e37099f1e23",
+        config = new AIConfiguration("3e19cea342f04764b1665e37099f1e23",
                 AIConfiguration.SupportedLanguages.English,
-                AIConfiguration.RecognitionEngine.System);
+                AIConfiguration.RecognitionEngine.Speaktoit);
 
-        aiService = AIService.getService(this, config);
-        aiService.setListener(this);
+        aiDataService = new AIDataService(this, config);
 
-        listenButton = (Button) findViewById(R.id.listenButton2);
-        resultTextView = (TextView) findViewById(R.id.resultTextView);
-        System.out.println("hello");
+
     }
 
     //her er alt som skrives inn, og her er det vi svarer
     private boolean sendChatMessage() {
-        ListenActivity listenActivity = new ListenActivity();
         String a = chatText.getText().toString();
         System.out.println(a);
         chatArrayAdapter.add(new ChatMessage(side, a));
         chatText.setText(""); //nullstiller chatboksen
         //her kommer responsen
-        if (a.toLowerCase().equals("hi") || a.toLowerCase().equals("hello") || a.toLowerCase().equals("mårn")){
-            chatArrayAdapter.add(new ChatMessage(true, "This is UniBOT. Hello"));
-        } else if (a.toLowerCase().equals("who would jonas like to fuck?")){
-            chatArrayAdapter.add(new ChatMessage(true, "Herman"));
-        } else{
-            chatArrayAdapter.add(new ChatMessage(true, "This is UniBOT. I don't understand"));
-        }
+
+
+        final AIRequest aiRequest = new AIRequest();
+        aiRequest.setQuery(a);
+
+        // Siden aiDataService må kjøres på en backgroundtråd bruker vi AsyncTask til å hente svaret
+        new AsyncTask<AIRequest, Void, AIResponse>() {
+            @Override
+            protected AIResponse doInBackground(AIRequest... requests) {
+                final AIRequest request = requests[0];
+                try {
+                    final AIResponse response = aiDataService.request(aiRequest); // Henter svar
+                    return response;
+                } catch (AIServiceException e) {
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(AIResponse aiResponse) {
+                if (aiResponse != null) {
+                    addMessageToChatArray(aiResponse.getResult().getFulfillment().getSpeech()); // returnere svar når ferdig
+
+                }
+            }
+        }.execute(aiRequest);
+
+
         return true;
+    }
+
+    private void addMessageToChatArray(String message) {
+        chatArrayAdapter.add(new ChatMessage(true, message));
     }
 
     public void listenButtonOnClick(View view) {
@@ -116,7 +139,11 @@ public class ChatBot extends AppCompatActivity implements AIListener {
     }
 
     public void onResult(final AIResponse response) {
+        if (response.isError()) {
+
+        }
         Result result = response.getResult();
+
 
         // Get parameters
         String parameterString = "";
@@ -132,28 +159,4 @@ public class ChatBot extends AppCompatActivity implements AIListener {
                 "\nParameters: " + parameterString);
     }
 
-    @Override
-    public void onError(final AIError error) {
-        resultTextView.setText(error.toString());
-    }
-
-    @Override
-    public void onListeningStarted() {
-        System.out.println("Started");
-    }
-
-    @Override
-    public void onListeningCanceled() {
-        System.out.println("Caceled");
-    }
-
-    @Override
-    public void onListeningFinished() {
-        System.out.println("Finished");
-    }
-
-    @Override
-    public void onAudioLevel(final float level) {
-        System.out.println(level);
-    }
 }
