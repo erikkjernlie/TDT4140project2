@@ -3,8 +3,8 @@ package com.example.erikkjernlie.tdt4140project;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +15,11 @@ public class Menu extends AppCompatActivity {
 
     private Button but1; //register button
     private Button but2; //explore button
+    private Button but3; //about button
 
+    public static final String PREFS_NAME = "MyPrefsFile";
+
+    //få denne til å kjøre første gangen, nå kjører den hele jævla tiden
     //pop-up skjermen, også alert/overlay
     private void alert(){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this, R.layout.overlay);
@@ -53,11 +57,19 @@ public class Menu extends AppCompatActivity {
         but2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent c = new Intent(Menu.this, ChatBot.class); //skal sende til explore, men foreløpig til mainchat
+                Intent c = new Intent(Menu.this, ChatBot.class);
                 startActivity(c);
             }
         });
-        alert();
+        but3 = (Button) findViewById(R.id.but3);
+        but3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent d = new Intent(Menu.this, Slideshow.class);
+                startActivity(d);
+            }
+        });
+
     }
 
     @Override
@@ -65,5 +77,18 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         initButtons();
+        //uncomment this when we want the alert just to appear the first time the app is started
+        //SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+
+        //boolean dialogShown = settings.getBoolean("dialogShown", false);
+
+        //if (!dialogShown) {
+            // AlertDialog code here
+        alert();
+
+         //   SharedPreferences.Editor editor = settings.edit();
+         //   editor.putBoolean("dialogShown", true);
+         //   editor.commit();
+        //}
     }
 }
