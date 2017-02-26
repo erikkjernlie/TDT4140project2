@@ -95,14 +95,17 @@ public class ChatBot extends AppCompatActivity {
     //this is where the messages are received and sent
     private boolean sendChatMessage() {
         String a = chatText.getText().toString();
-        System.out.println(a);
-        chatArrayAdapter.add(new ChatMessage(side, a));
+        if (!a.isEmpty()) { // sjekker at meldingen ikke er tom
+            chatArrayAdapter.add(new ChatMessage(side, a));
+        }
         chatText.setText(""); //nullstiller chatboksen
         //her kommer responsen
 
 
         final AIRequest aiRequest = new AIRequest();
-        aiRequest.setQuery(a);
+        if (!a.isEmpty()) {
+            aiRequest.setQuery(a);
+        }
 
         // Siden aiDataService må kjøres på en backgroundtråd bruker vi AsyncTask til å hente svaret
         new AsyncTask<AIRequest, Void, AIResponse>() {
