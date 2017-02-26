@@ -16,7 +16,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".ChatBot" />
-        <activity android:name=".Explore" />
         <activity android:name=".Register" />
         <activity android:name=".Menu" />
         <activity android:name=".Slideshow"/>

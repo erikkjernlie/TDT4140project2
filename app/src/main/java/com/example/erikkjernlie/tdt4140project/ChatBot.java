@@ -30,15 +30,16 @@ public class ChatBot extends Activity {
 
         setContentView(R.layout.chatbot);
 
-
         buttonSend = (Button) findViewById(R.id.send);
 
         listView = (ListView) findViewById(R.id.msgview);
 
         chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), R.layout.right_chat);
+
         listView.setAdapter(chatArrayAdapter);
 
         chatText = (EditText) findViewById(R.id.msg);
+
         chatText.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
@@ -47,6 +48,7 @@ public class ChatBot extends Activity {
                 return false;
             }
         });
+
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -55,6 +57,7 @@ public class ChatBot extends Activity {
         });
 
         listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+
         listView.setAdapter(chatArrayAdapter);
 
         //to scroll the list view to bottom on data change
@@ -67,19 +70,17 @@ public class ChatBot extends Activity {
         });
     }
 
-    //her er alt som skrives inn, og her er det vi svarer
+    //this is where the messages are received and sent
     private boolean sendChatMessage() {
 
-        String a = chatText.getText().toString();
-        chatArrayAdapter.add(new ChatMessage(side, a));
-        chatText.setText(""); //nullstiller chatboksen
-        //her kommer responsen
-        if (a.toLowerCase().equals("hi") || a.toLowerCase().equals("hello") || a.toLowerCase().equals("mårn")){
-            chatArrayAdapter.add(new ChatMessage(true, "This is UniBOT. Hello"));
-        } else if (a.toLowerCase().equals("who would jonas like to fuck?")){
-            chatArrayAdapter.add(new ChatMessage(true, "Herman"));
+        String message = chatText.getText().toString().toLowerCase();
+        chatArrayAdapter.add(new ChatMessage(side, message));
+        chatText.setText(""); //resets the text
+        //here comes the response
+        if (message.equals("hi") || message.equals("hello")){
+            chatArrayAdapter.add(new ChatMessage(true, "Hello. This is UniBOT. What can I help you with?"));
         } else{
-            chatArrayAdapter.add(new ChatMessage(true, "This is UniBOT. I don't understand"));
+            chatArrayAdapter.add(new ChatMessage(true, "I don't understand"));
         }
         return true;
     }

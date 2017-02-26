@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-//chatarrrayadapter gjør om arraylisten til et interface-greie
+//ChatArrayAdapter converts the arraylist so it's visible on a interface
 class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
  
     private TextView chatText;
@@ -21,7 +21,7 @@ class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
     @Override
     public void add(ChatMessage object) {
         chatMessageList.add(object);
-        super.add(object);
+        super.add(object); //needs to add super as well
     }
  
     public ChatArrayAdapter(Context context, int textViewResourceId) {
@@ -41,6 +41,7 @@ class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
         ChatMessage chatMessageObj = getItem(position);
         View row = convertView;
         LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //decides which side the chatbubble should be on
         if (chatMessageObj.left) {
             row = inflater.inflate(R.layout.left_chat, parent, false);
         }else{

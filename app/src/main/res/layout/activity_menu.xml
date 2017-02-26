@@ -31,7 +31,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="108dp"
-        android:id="@+id/but1"
+        android:id="@+id/register"
         />
 
     <Button
@@ -39,16 +39,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:id="@+id/but2"
-        android:layout_above="@+id/but1"
-        android:layout_alignLeft="@+id/but1"
-        android:layout_alignStart="@+id/but1" />
+        android:id="@+id/explore"
+        android:layout_above="@+id/register"
+        android:layout_alignLeft="@+id/register"
+        android:layout_alignStart="@+id/register" />
 
     <Button
         android:text="About uniBOT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/but3"
+        android:id="@+id/aboutUnibot"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

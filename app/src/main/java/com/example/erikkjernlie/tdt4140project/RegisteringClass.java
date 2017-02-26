@@ -71,46 +71,46 @@ public class RegisteringClass {
     // Initialiserer fagbasen
     protected void init_fagbase() {
         //1. VGS(fellesfag)
-        fagbase.put("Engelsk", (double)0);
-        fagbase.put("Naturfag", (double)0);
-        fagbase.put("Geografi", (double)0);
-        fagbase.put("Matematikk 1T", (double)0);
-        fagbase.put("Matematikk 1P", (double)0);
-        fagbase.put("Samfunnsfag", (double)0);
+        fagbase.put("Engelsk", 0.0);
+        fagbase.put("Naturfag", 0.0);
+        fagbase.put("Geografi", 0.0);
+        fagbase.put("Matematikk 1T", 0.0);
+        fagbase.put("Matematikk 1P", 0.0);
+        fagbase.put("Samfunnsfag", 0.0);
 
         //2. VGS (fellesfag)
-        fagbase.put("Fremmedspråk nivå 1", (double)0);
+        fagbase.put("Fremmedspråk nivå 1", 0.0);
 
         //3.VGS (fellesfag)
-        fagbase.put("Historie", (double)0);
-        fagbase.put("Norsk muntlig", (double)0);
-        fagbase.put("Norsk skriftlig", (double)0);
-        fagbase.put("Nynorsk", (double)0);
-        fagbase.put("Religion og etikk", (double)0);
-        fagbase.put("Kroppsøving", (double)0);
+        fagbase.put("Historie", 0.0);
+        fagbase.put("Norsk muntlig", 0.0);
+        fagbase.put("Norsk skriftlig", 0.0);
+        fagbase.put("Nynorsk", 0.0);
+        fagbase.put("Religion og etikk", 0.0);
+        fagbase.put("Kroppsøving", 0.0);
 
         //Valgfag
-        fagbase.put("Matematikk S1", (double)0.5);
-        fagbase.put("Matematikk S2", (double)0.5);
-        fagbase.put("Matematikk R1", (double)0.5);
-        fagbase.put("Matematikk R2", (double)1);
-        fagbase.put("Fysikk 1", (double)0.5);
-        fagbase.put("Fysikk 2", (double)1);
-        fagbase.put("Kjemi 1", (double)0.5);
-        fagbase.put("Kjemi 2", (double)0.5);
-        fagbase.put("Biologi 1", (double)0.5);
-        fagbase.put("Biologi 2", (double)0.5);
-        fagbase.put("Geofag 1", (double)0.5);
-        fagbase.put("Geofag 2", (double)0.5);
-        fagbase.put("Informasjonsteknologi 1", (double)0.5);
-        fagbase.put("Informasjonsteknologi 2", (double)0.5);
-        fagbase.put("Teknologi og forskningslære 1", (double)0.5);
-        fagbase.put("Teknologi og forskningslære 2", (double)0.5);
-        fagbase.put("Teknologi og forskningslære 2", (double)0.5);
-        fagbase.put("Fremmedspråk morsmål", (double)0.5);
-        fagbase.put("Gresk", (double)0.5);
-        fagbase.put("Latin", (double)0.5);
-        fagbase.put("Fremmedspråk nivå 3", (double)1);
+        fagbase.put("Matematikk S1", 0.5);
+        fagbase.put("Matematikk S2", 0.5);
+        fagbase.put("Matematikk R1", 0.5);
+        fagbase.put("Matematikk R2", 1.0);
+        fagbase.put("Fysikk 1", 0.5);
+        fagbase.put("Fysikk 2", 1.0);
+        fagbase.put("Kjemi 1", 0.5);
+        fagbase.put("Kjemi 2", 0.5);
+        fagbase.put("Biologi 1", 0.5);
+        fagbase.put("Biologi 2", 0.5);
+        fagbase.put("Geofag 1", 0.5);
+        fagbase.put("Geofag 2", 0.5);
+        fagbase.put("Informasjonsteknologi 1", 0.5);
+        fagbase.put("Informasjonsteknologi 2", 0.5);
+        fagbase.put("Teknologi og forskningslære 1", 0.5);
+        fagbase.put("Teknologi og forskningslære 2", 0.5);
+        fagbase.put("Teknologi og forskningslære 2", 0.5);
+        fagbase.put("Fremmedspråk morsmål", 0.5);
+        fagbase.put("Gresk", 0.5);
+        fagbase.put("Latin", 0.5);
+        fagbase.put("Fremmedspråk nivå 3", 1.0);
 
 
 

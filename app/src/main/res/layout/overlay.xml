@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="175dp"
-        android:layout_height="207dp"
+        android:layout_width="122dp"
+        android:layout_height="176dp"
         android:contentDescription="TODO"
         android:src="@drawable/robot"
         android:layout_gravity="center"
@@ -26,5 +26,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="This is fucking awesome This is fucking awesome  This is fucking awesome  This is fucking awesome This is fucking awesome  This is fucking awesome    "/>
+        android:text="Hello. uniBot information is coming here. "/>
+
 </LinearLayout>
