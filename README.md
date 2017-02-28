@@ -12,7 +12,7 @@ The native app for Android with its functions are made using:
 
 The app is made by the following students of the Engineering and ICT study at NTNU Gløshaugen:
 - Herman Wika Horn
-- Jonas Sagild
+- Jonas Åsnes Sagild
 - Erik Kjernlie
 - Jørgen Mortensen
 
