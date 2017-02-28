@@ -47,7 +47,7 @@
         android:id="@+id/register"
         android:background="@drawable/hover_button"
         android:textColor="#FFFFFF"
-        android:text="Register" android:textSize="18dp"
+        android:text="Add information" android:textSize="18dp"
             android:layout_weight="16.75"
             />
 
