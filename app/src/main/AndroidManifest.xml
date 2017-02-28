@@ -3,7 +3,8 @@
     package="com.example.erikkjernlie.tdt4140project">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo_app_icon"
@@ -13,13 +14,15 @@
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".ChatBot" />
         <activity android:name=".Register" />
         <activity android:name=".Menu" />
-        <activity android:name=".Slideshow"/>
+        <activity android:name=".Slideshow" />
+        <activity android:name=".sign_in"></activity>
     </application>
 
 </manifest>

@@ -8,7 +8,7 @@ import android.os.Bundle;
 public class SplashScreen extends AppCompatActivity {
 
     //tid visning, splashscreen
-    private static int SPLASH_TIME_OUT = 3000;
+    private static int SPLASH_TIME_OUT = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +18,7 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void run() {
                 //sender deg videre til homescreen
-                Intent homeIntent = new Intent(SplashScreen.this, Menu.class);
+                Intent homeIntent = new Intent(SplashScreen.this, sign_in.class);
                 startActivity(homeIntent);
                 finish();
             }
