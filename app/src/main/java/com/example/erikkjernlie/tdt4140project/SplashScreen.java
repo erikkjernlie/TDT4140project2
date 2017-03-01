@@ -18,7 +18,7 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void run() {
                 //sender deg videre til homescreen
-                Intent homeIntent = new Intent(SplashScreen.this, Menu.class);
+                Intent homeIntent = new Intent(SplashScreen.this, Sign_in.class);
                 startActivity(homeIntent);
                 finish();
             }
