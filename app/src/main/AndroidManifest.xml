@@ -22,7 +22,8 @@
         <activity android:name=".Register" />
         <activity android:name=".Menu" />
         <activity android:name=".Slideshow" />
-        <activity android:name=".Sign_in"></activity>
+        <activity android:name=".Sign_in" />
+        <activity android:name=".Register_user"></activity>
     </application>
 
 </manifest>

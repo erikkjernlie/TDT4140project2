@@ -1,6 +1,7 @@
 package com.example.erikkjernlie.tdt4140project;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,40 +17,41 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+public class Sign_in extends AppCompatActivity implements View.OnClickListener {
 
-public class Sign_in extends AppCompatActivity {
-
-    private EditText enterEmailAddress;
-    private EditText enterPassword;
+    private EditText logInEmail;
+    private EditText logInPassword;
     private Button logInBtn;
-    private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
+    private TextView registerText;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        progressDialog = new ProgressDialog(Sign_in.this);
-
-        enterEmailAddress = (EditText) findViewById(R.id.enterEmailAddress);
-        enterPassword = (EditText) findViewById(R.id.enterPassword);
+        logInEmail = (EditText) findViewById(R.id.enterEmailAddress);
+        logInPassword = (EditText) findViewById(R.id.enterPassword);
 
         logInBtn = (Button) findViewById(R.id.logInBtn);
+
+        firebaseAuth = firebaseAuth.getInstance();
+
+        ProgressDialog progressDialog = new ProgressDialog(this);
 
         logInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerUser();
+                logInUser();
             }
         });
     }
 
-    public void registerUser() {
-        String email = enterEmailAddress.getText().toString().trim();
-        String password = enterPassword.getText().toString().trim();
+    public void logInUser() {
+        String email = logInEmail.getText().toString().trim();
+        String password = logInPassword.getText().toString().trim();
 
         if (TextUtils.isEmpty(email)) {
             //Write email again
@@ -61,24 +64,28 @@ public class Sign_in extends AppCompatActivity {
             return;
         }
 
-        progressDialog.setMessage("Registering user...");
-        progressDialog.show();
-
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Sign_in.this, new OnCompleteListener<AuthResult>() {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    //Successfull user registration
-                    Toast.makeText(Sign_in.this, "It worked, yaay", Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
+                if (!task.isSuccessful()) {
+                    Toast.makeText(Sign_in.this, "Something went wrong, try again!", Toast.LENGTH_SHORT).show();
                 } else {
-                    //Must try again
-                    Toast.makeText(Sign_in.this, "It didnt work", Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
+                    Toast.makeText(Sign_in.this, "Successfully logged in!", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(Sign_in.this, Menu.class));
+                    finish();
                 }
             }
         });
 
+    }
 
+    @Override
+    public void onClick(View v) {
+        registerText = (TextView) findViewById(R.id.registerText);
+        if (v==registerText){
+            Intent i = new Intent(Sign_in.this, Register_user.class);
+            startActivity(i);
+            finish();
+        }
     }
 }
