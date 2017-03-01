@@ -22,7 +22,7 @@
         <activity android:name=".Register" />
         <activity android:name=".Menu" />
         <activity android:name=".Slideshow" />
-        <activity android:name=".sign_in"></activity>
+        <activity android:name=".Sign_in"></activity>
     </application>
 
 </manifest>
