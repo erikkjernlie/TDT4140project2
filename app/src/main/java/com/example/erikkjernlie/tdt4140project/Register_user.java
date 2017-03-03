@@ -1,6 +1,7 @@
 package com.example.erikkjernlie.tdt4140project;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,13 +18,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 
-public class Register_user extends AppCompatActivity {
+public class Register_user extends AppCompatActivity implements View.OnClickListener {
 
     private EditText enterEmailAddress;
     private EditText enterPassword;
-    private Button logInBtn;
+    private Button registerBtn;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
+    private TextView loginText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +39,9 @@ public class Register_user extends AppCompatActivity {
         enterEmailAddress = (EditText) findViewById(R.id.enterEmailAddress);
         enterPassword = (EditText) findViewById(R.id.enterPassword);
 
-        logInBtn = (Button) findViewById(R.id.logInBtn);
+        registerBtn = (Button) findViewById(R.id.registerBtn);
 
-        logInBtn.setOnClickListener(new View.OnClickListener() {
+        registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 registerUser();
@@ -71,6 +74,8 @@ public class Register_user extends AppCompatActivity {
                     //Successfull user registration
                     Toast.makeText(Register_user.this, "It worked, yaay", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
+                    Intent intent  = new Intent(Register_user.this, Menu.class);
+                    startActivity(intent);
 
                 } else {
                     //Must try again
@@ -81,5 +86,17 @@ public class Register_user extends AppCompatActivity {
         });
 
 
+
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        loginText = (TextView) findViewById(R.id.logInText);
+        if (v==loginText){
+            Intent i = new Intent(Register_user.this, Sign_in.class);
+            startActivity(i);
+            finish();
+        }
     }
 }
