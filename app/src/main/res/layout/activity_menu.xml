@@ -15,12 +15,59 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="28"
+
+        android:orientation="vertical"
         >
 
-        <ImageView
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/menu_information"/>
+            android:layout_height="wrap_content"
+
+            android:text="UNIBOT"
+            android:textSize="70dp"
+            android:gravity="center"
+
+            android:paddingTop="10dp"
+            android:textColor="#FFFFFF"
+
+
+            android:id="@+id/textView" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/hovedbygning"
+            android:id="@+id/imageView3"
+            android:adjustViewBounds="true"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:paddingBottom="20dp"
+            android:paddingTop="10dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="uniBOT can help you with anything regadring technical and natural studies at NTNU in Trondheim. "
+            android:gravity="center"
+            android:textSize="16dp"
+            android:layout_gravity="center"
+            android:textColor="#FFFFFF"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+
+            android:id="@+id/textView2" />
+
+
+
+
+
+
+
+
+
+
+
 
     </LinearLayout>
 
@@ -42,55 +89,55 @@
             android:background="#FFFFFF"
             />
         <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/register"
-        android:background="@drawable/hover_button"
-        android:textColor="#FFFFFF"
-        android:text="Add information" android:textSize="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/register"
+            android:background="@drawable/hover_button"
+            android:textColor="#FFFFFF"
+            android:text="Add information" android:textSize="18dp"
             android:layout_weight="16.75"
             />
 
         <View android:layout_height="2px"
-        android:layout_width="fill_parent"
-        android:background="#FFFFFF"
-        android:layout_below="@+id/register"/>
+            android:layout_width="fill_parent"
+            android:background="#FFFFFF"
+            android:layout_below="@+id/register"/>
 
         <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/explore"
-        android:layout_below="@id/register"
-        android:background="@drawable/hover_button"
-        android:textColor="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/explore"
+            android:layout_below="@id/register"
+            android:background="@drawable/hover_button"
+            android:textColor="#FFFFFF"
             android:layout_weight="16.75"
-        android:text="Explore" android:textSize="18dp"
+            android:text="Explore" android:textSize="18dp"
 
-        />
+            />
 
         <View android:layout_height="2px"
-        android:layout_width="fill_parent"
-        android:background="#FFFFFF"
-        android:layout_below="@+id/explore"/>
+            android:layout_width="fill_parent"
+            android:background="#FFFFFF"
+            android:layout_below="@+id/explore"/>
 
         <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/aboutUnibot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/aboutUnibot"
             android:layout_weight="16.75"
 
-        android:layout_below="@+id/explore"
-        android:background="@drawable/hover_button"
-        android:textColor="#FFFFFF"
-        android:text="About unibot" android:textSize="18dp"
+            android:layout_below="@+id/explore"
+            android:background="@drawable/hover_button"
+            android:textColor="#FFFFFF"
+            android:text="About unibot" android:textSize="18dp"
 
 
-        />
+            />
         <View android:layout_height="2px"
-        android:layout_width="fill_parent"
-        android:background="#FFFFFF"
-        android:layout_below="@+id/aboutUnibot"
-        />
+            android:layout_width="fill_parent"
+            android:background="#FFFFFF"
+            android:layout_below="@+id/aboutUnibot"
+            />
 
         <Button
             android:layout_width="match_parent"
