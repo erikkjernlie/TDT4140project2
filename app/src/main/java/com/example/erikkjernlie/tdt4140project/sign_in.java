@@ -23,7 +23,7 @@ public class Sign_in extends AppCompatActivity implements View.OnClickListener {
     private EditText logInPassword;
     private Button logInBtn;
     private FirebaseAuth firebaseAuth;
-    private TextView registerText;
+    private TextView logInTxt;
 
 
 
@@ -34,6 +34,8 @@ public class Sign_in extends AppCompatActivity implements View.OnClickListener {
 
         logInEmail = (EditText) findViewById(R.id.enterEmailAddress);
         logInPassword = (EditText) findViewById(R.id.enterPassword);
+
+
 
         logInBtn = (Button) findViewById(R.id.logInBtn);
 
@@ -81,8 +83,8 @@ public class Sign_in extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        registerText = (TextView) findViewById(R.id.registerText);
-        if (v==registerText){
+        logInTxt = (TextView) findViewById(R.id.loginText);
+        if (v==logInTxt){
             Intent i = new Intent(Sign_in.this, Register_user.class);
             startActivity(i);
             finish();
