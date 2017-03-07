@@ -26,6 +26,7 @@ import ai.api.model.AIResponse;
 import ai.api.model.Result;
 import translateText.MinTranslator;
 import translateText.MinTranslator2;
+import translateText.RetrieveTranslation;
 
 
 public class ChatBot extends AppCompatActivity {
@@ -47,6 +48,7 @@ public class ChatBot extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestPermissions(new String[]{"android.permission.RECORD_AUDIO"}, 2);
+        requestPermissions(new String[]{"android.permission.INTERNET"}, 1);
 
         setContentView(R.layout.chatbot);
 
@@ -100,11 +102,15 @@ public class ChatBot extends AppCompatActivity {
         // Tester MinTranslator klassen
 
        // MinTranslator translator = new MinTranslator();
-       // translator.translate();
+      //  translator.translate();
 
         // Tester MinTranslator2 klassen
-        MinTranslator2 translator2 = new MinTranslator2();
-        translator2.translateText("Hello");
+        //MinTranslator2 translator2 = new MinTranslator2();
+       // translator2.translateText("Hello");
+
+        // Tester RetrieveTranslation
+        RetrieveTranslation retrieveTranslation = new RetrieveTranslation();
+        System.out.println(retrieveTranslation.doInBackground("hello"));
 
 
         String a = chatText.getText().toString();

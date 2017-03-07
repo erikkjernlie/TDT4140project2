@@ -26,11 +26,13 @@ public class MinTranslator2 {
     }
 
     public static Translate createTranslateService() {
+        System.out.println("alksdaljsd");
         TranslateOptions translateOption = TranslateOptions.newBuilder()
                 .setRetryParams(retryParams())
                 .setConnectTimeout(60000)
                 .setReadTimeout(60000)
                 .build();
+        System.out.println("askdl");
         return translateOption.getService();
     }
 
