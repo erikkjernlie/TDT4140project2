@@ -33,6 +33,21 @@ android {
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/INDEX.LIST'
 
+        // Test fikse "   Caused by: java.lang.NoClassDefFoundError: Failed resolution of: Lcom/google/api/client/googleapis/services/json/AbstractGoogleJsonClient$Builder; "
+        exclude 'com.google.gson.JsonSerializer'
+        exclude 'constant-values.html'
+        exclude 'overview-summary.html'
+        exclude 'package-list'
+        exclude 'overview-tree.html'
+        exclude 'allclasses-frame.html'
+        exclude 'allclasses-noframe.html'
+        exclude 'stylesheet.css'
+        exclude 'index-all.html'
+        exclude 'deprecated-list.html'
+        exclude 'index.html'
+        exclude 'overview-frame.html'
+        exclude 'help-doc.html'
+
     }
 
     // Lagt til pga feil "Excecution failed for task ':app:prepareDebugAndroidTestDependencies'.
@@ -95,7 +110,7 @@ dependencies {
     // Google translate dependencies try v.6
     compile ('com.google.cloud:google-cloud-translate:0.5.0') {
         exclude group: 'io.grpc', module: 'grpc-all'
-        exclude group: 'com.google.protobuf', module: 'protobuf-java'
+       // exclude group: 'com.google.protobuf', module: 'protobuf-java'
         exclude group: 'com.google.api-client', module: 'google-api-client-appengine'
     }
 }

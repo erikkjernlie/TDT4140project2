@@ -46,7 +46,7 @@ public class MinTranslator {
     }
 
 
-    protected void translate() {
+    public void translate() {
 
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -55,28 +55,24 @@ public class MinTranslator {
                         .setApiKey("AIzaSyAE5HArx8-wXs0jM-Z6PZNFQFR0Bo_bJyo")
                         .build();
                 Translate translate = options.getService();
+                System.out.println("aksdj");
                 final Translation translation =
                         translate.translate("Hello World",
-                                Translate.TranslateOption.targetLanguage("de"));
-                /*textViewHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (textView != null) {
-                            textView.setText(translation.getTranslatedText());
-                        }
-                    }
-                }); */
+                                TranslateOption.targetLanguage("de"));
+                System.out.println("skejrdette?");
 
-                @Override
-                protected void onPostExecute() {
-                    if (aiResponse != null) {
-                        addMessageToChatArray(aiResponse.getResult().getFulfillment().getSpeech()); // returnere svar når ferdig
 
-                    }
-                }
                 return null;
             }
+            // @Override
+         //   protected void onPostExecute(Translate translate) {
+         //      text(translate.toString());
+          //  }
+
         }.execute();
+    }
+
+    private void text(String text) {
 
     }
 
