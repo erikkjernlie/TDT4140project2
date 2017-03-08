@@ -22,7 +22,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingBottom="5dp"/>
-    <View android:layout_height="2px"
+    <View android:layout_height="6px"
         android:layout_width="fill_parent"
         android:background="#FFFFFF"
         />
@@ -30,8 +30,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin">
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,6 +57,7 @@
                 android:layout_weight="1"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:paddingBottom="15dp"
                 >
                 <ImageButton
                     android:layout_width="0dp"
@@ -83,9 +83,53 @@
 
             </LinearLayout>
 
+
+            <View android:layout_height="2px"
+                android:layout_width="fill_parent"
+                android:background="#FFFFFF"
+                />
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_margin="15dp"
+                    android:text="I am born in"
+                    android:id="@+id/birthYear"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_vertical"
+
+
+                    />
+
+
+            <NumberPicker
+                android:id="@+id/np"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:textSize="16dp"
+                android:textColor="#FFFFFF"
+                />
+            </LinearLayout>
+            <View android:layout_height="2px"
+                android:layout_width="fill_parent"
+                android:background="#FFFFFF"
+                />
             <EditText
                 android:layout_margin="15dp"
-                android:hint="Grades"
+                android:hint="Add your grades separated with comma"
                 android:id="@+id/gradeSingle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,27 +139,53 @@
                 />
 
 
-            <EditText
-                android:layout_margin="15dp"
-                android:hint="Birth Year"
-                android:id="@+id/birthYear"
+            <View android:layout_height="2px"
+                android:layout_width="fill_parent"
+                android:background="#FFFFFF"
+                />
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:backgroundTint="#000000"
-                android:gravity="center_horizontal"
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp"
+                android:orientation="vertical">
 
+                <Button
+                    android:id="@+id/dropdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/hover_button"
+                    android:textColor="#FFFFFF"
+                    android:text="Add courses"/>
+
+                <View android:layout_height="2px"
+                    android:layout_width="fill_parent"
+                    android:background="#FFFFFF"
+                    />
+
+                <com.example.erikkjernlie.tdt4140project.MultiSelectSpinner
+                    android:layout_width="match_parent"
+                    android:layout_height="100px"
+                    android:background="@drawable/btn_courses"
+                    android:id="@+id/my_spin"
+                    android:text="Grades"
+                    android:textColor="#000000"/>
+
+
+
+            </LinearLayout>
+
+            <View android:layout_height="2px"
+                android:layout_width="fill_parent"
+                android:background="#FFFFFF"
                 />
 
-
-            <DatePicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/datePicker"
-                android:calendarViewShown="false"
-                android:datePickerMode="spinner"
-                />
         </LinearLayout>
+
+
+
+
+
     </ScrollView>
 
 

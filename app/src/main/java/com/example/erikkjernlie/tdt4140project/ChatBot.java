@@ -155,7 +155,6 @@ public class ChatBot extends AppCompatActivity {
                 parameterString += "(" + entry.getKey() + ", " + entry.getValue() + ") ";
             }
         }
-
         // Show results in TextView.
         resultTextView.setText("Query:" + result.getResolvedQuery() +
                 "\nAction: " + result.getAction() +
