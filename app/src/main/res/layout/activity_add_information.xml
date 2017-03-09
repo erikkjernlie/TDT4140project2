@@ -12,20 +12,7 @@
     tools:context="com.example.erikkjernlie.tdt4140project.Add_information"
     >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Please add all the suggested information so we can calculate your score correctly. "
-        android:textSize="20dp"
-        android:gravity="center"
-        android:textColor="#FFFFFFFF"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="5dp"/>
-    <View android:layout_height="6px"
-        android:layout_width="fill_parent"
-        android:background="#FFFFFF"
-        />
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -34,7 +21,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            >
+
+
 
             <TextView
                 android:id="@+id/cbPicView"
@@ -106,7 +99,7 @@
                     android:layout_weight="0.5"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textColor="#000000"
+                    android:textColor="#FFFFFF"
                     android:gravity="center_horizontal"
                     android:layout_gravity="center_vertical"
 
@@ -134,7 +127,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:backgroundTint="#000000"
+                android:backgroundTint="#FFFFFF"
+                android:textColor="#FFFFFF"
                 android:gravity="center_horizontal"
                 />
 
@@ -178,6 +172,38 @@
             <View android:layout_height="2px"
                 android:layout_width="fill_parent"
                 android:background="#FFFFFF"
+                android:paddingBottom="15dp"
+                />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:textColor="#FFFFFF"
+                android:text="Are you ready to submit your information?"/>
+
+            <View android:layout_height="2px"
+                android:layout_width="fill_parent"
+                android:background="#FFFFFF"
+                android:paddingTop="20dp"
+                />
+            <Button
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:id="@+id/submit"
+                android:background="@drawable/hover_button"
+                android:textColor="#FFFFFF"
+
+                />
+
+            <View android:layout_height="2px"
+                android:layout_width="fill_parent"
+                android:background="#FFFFFF"
+
                 />
 
         </LinearLayout>

@@ -1,11 +1,13 @@
 package com.example.erikkjernlie.tdt4140project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class Add_information extends AppCompatActivity{
     private char gender;
     private int year;
     Button dropdown;
+    Button submit;
     List<String> selectedCourses;
 
     @Override
@@ -45,6 +48,15 @@ public class Add_information extends AppCompatActivity{
 
 
     public void initGenderButtons() {
+        submit = (Button) findViewById(R.id.submit);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Add_information.this, Menu.class);
+                startActivity(i);
+                Toast.makeText(Add_information.this, "Added information!", Toast.LENGTH_SHORT).show();
+            }
+        });
         female = (ImageButton) findViewById(R.id.female);
         female.setOnClickListener(new View.OnClickListener() {
             @Override
