@@ -23,6 +23,7 @@ public class RetrieveTranslation extends AsyncTask<String, Void, String> {
             try {
 
                 String text = urls[0];
+                System.out.println("aølsdaøksdl");
                 Translate translate = TranslateOptions.getDefaultInstance().getService();
                 System.out.println("kad");
                 Translation translation =

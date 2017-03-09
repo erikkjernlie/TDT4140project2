@@ -101,12 +101,12 @@ public class ChatBot extends AppCompatActivity {
 
         // Tester MinTranslator klassen
 
-       // MinTranslator translator = new MinTranslator();
-      //  translator.translate();
+        // MinTranslator translator = new MinTranslator();
+        //  translator.translate();
 
         // Tester MinTranslator2 klassen
         //MinTranslator2 translator2 = new MinTranslator2();
-       // translator2.translateText("Hello");
+        // translator2.translateText("Hello");
 
         // Tester RetrieveTranslation
         RetrieveTranslation retrieveTranslation = new RetrieveTranslation();
@@ -143,7 +143,7 @@ public class ChatBot extends AppCompatActivity {
             protected void onPostExecute(AIResponse aiResponse) {
                 if (aiResponse != null) {
                     addMessageToChatArray(aiResponse.getResult().getFulfillment().getSpeech()); // returnere svar når ferdig
-
+                    onResult(aiResponse);
                 }
             }
         }.execute(aiRequest);
@@ -165,7 +165,8 @@ public class ChatBot extends AppCompatActivity {
 
         }
         Result result = response.getResult();
-
+        System.out.println(result.getFulfillment().getSpeech());
+        System.out.println("laksdlakjds");
 
         // Get parameters
         String parameterString = "";
@@ -174,11 +175,8 @@ public class ChatBot extends AppCompatActivity {
                 parameterString += "(" + entry.getKey() + ", " + entry.getValue() + ") ";
             }
         }
+        System.out.println(parameterString);
+        System.out.println("aøsldkøasld");
 
-        // Show results in TextView.
-        resultTextView.setText("Query:" + result.getResolvedQuery() +
-                "\nAction: " + result.getAction() +
-                "\nParameters: " + parameterString);
     }
-
 }
