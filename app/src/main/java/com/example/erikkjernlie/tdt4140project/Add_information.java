@@ -1,5 +1,7 @@
 package com.example.erikkjernlie.tdt4140project;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,25 +32,14 @@ public class Add_information extends AppCompatActivity{
     Button dropdownCourses;
     Button dropdownExtraPoints;
     Button submit;
-    List<String> selectedCourses;
-    List<String> selectedExtraPoints = new ArrayList<String>();
     String grades;
     private int extraPoints = 0;
-    MultiSelectSpinner mySpin_extraPoints;
-    MultiSelectSpinner mySpin_courses;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_information);
-
-        String[] strings = {"Førstegangstjeneste", "Høgskole" };
-        mySpin_extraPoints = (MultiSelectSpinner)findViewById(R.id.my_spin_extrapoints);
-        mySpin_extraPoints.setItems(strings);
-
-        String[] strings2 = { "Matematikk R1", "Matematikk R2", "Fysikk 1", "Fysikk 2", "Informasjonsteknologi","Matematikk R1", "Matematikk R2", "Fysikk 1", "Fysikk 2","Matematikk R1", "Matematikk R2", "Fysikk 1", "Fysikk 2" };
-        mySpin_courses = (MultiSelectSpinner)findViewById(R.id.my_spin_courses);
-        mySpin_courses.setItems(strings2);
 
         initButtons();
         numberPicker();
@@ -120,9 +111,9 @@ public class Add_information extends AppCompatActivity{
         dropdownCourses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                mySpin_courses.performClick();
-                selectedCourses = mySpin_courses.getSelectedStrings();
+                courses_array = new ArrayList<String>();
+                //resets if the user goes in and out
+                alertCourses();
             }
         });
 
@@ -130,9 +121,8 @@ public class Add_information extends AppCompatActivity{
         dropdownExtraPoints.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                mySpin_extraPoints.performClick();
-                selectedExtraPoints = mySpin_extraPoints.getSelectedStrings();
+                extra_education_array = new ArrayList<String>();
+                alertExtraEducation();
             }
         });
     }
@@ -186,11 +176,102 @@ public class Add_information extends AppCompatActivity{
         }
 
 
-        if (selectedExtraPoints.size() != 0) {
-            this.extraPoints = 2 * selectedExtraPoints.size();
+        if (extra_education_array.size() > 0) {
+            this.extraPoints = 2;
         }
         grade_calculated = (grade_calculated*10 / counter) + agePoints(year) + extraPoints;
         return grade_calculated;
+    }
+
+
+    private List<String> courses_array = new ArrayList<String>(); //list for storing the courses
+    private final CharSequence[] courses ={"Matematikk S1","Matematikk S2","Matematikk R1","Matematikk R2","Fysikk 1","Fysikk 2","Kjemi 1","Kjemi 2","Biologi 1","Biologi 2","Geofag 1", "Geofag 2", "Informasjonsteknologi 1", "Informasjonsteknologi 2", "Teknologi og forskningslære 1", "Teknologi og forskningslære 2", "VG3 naturbruk"}; //items in the alertdialog that displays checkboxes
+    private final boolean checked_state_courses[]={false,false,false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+
+
+
+    //not fixed if the user selects some courses, presses ok, and opens it again; then it will be empty.
+    private void alertCourses() {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(Add_information.this)
+                .setTitle("Choose courses")
+                .setMultiChoiceItems(courses, null, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+                        checked_state_courses[which] = isChecked;
+                    }
+                }).setPositiveButton("I have selected all my courses", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        for (int i = 0; i < (courses.length); i++) {
+                            if (checked_state_courses[i] == true) {
+                                courses_array.add(courses[i].toString());
+                            }
+                        }
+
+                        Toast.makeText(getApplicationContext(), "Selected courses: "
+                                + courses_array.toString(), Toast.LENGTH_LONG).show();
+
+
+                        //clears the array used to store checked state
+                        for (int i = 0; i < checked_state_courses.length; i++) {
+                            if (checked_state_courses[i] == true) {
+                                checked_state_courses[i] = false;
+                            }
+                        }
+
+                        //dialog.dismiss(); if we want it to be able to close the window if the user presses outside the alert
+                    }
+                });
+        AlertDialog alertdialog1 = builder1.create();
+        alertdialog1.show();
+    }
+
+    private List<String> extra_education_array = new ArrayList<String>(); //list for storing the courses
+    private final CharSequence[] extra_education ={"Folkehøgskole", "Militærtjeneste", "Siviltjeneste", "Høyere utdanning"}; //items in the alertdialog that displays checkboxes
+    private final boolean checked_state_education[]={false,false,false, false};
+
+
+
+    //not fixed if the user selects some courses, presses ok, and opens it again; then it will be empty.
+    private void alertExtraEducation() {
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(Add_information.this)
+                .setTitle("Choose education")
+                .setMultiChoiceItems(extra_education, null, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+                        checked_state_education[which] = isChecked;
+                    }
+                }).setPositiveButton("I have selected all my education", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        for (int i = 0; i < (extra_education.length); i++) {
+                            if (checked_state_education[i] == true) {
+                                extra_education_array.add(extra_education[i].toString());
+                            }
+                        }
+
+                        Toast.makeText(getApplicationContext(), "Selected education: "
+                                + extra_education_array.toString(), Toast.LENGTH_LONG).show();
+
+
+                        //clears the array used to store checked state
+                        for (int i = 0; i < checked_state_education.length; i++) {
+                            if (checked_state_education[i] == true) {
+                                checked_state_education[i] = false;
+                            }
+                        }
+
+                        //dialog.dismiss(); if we want it to be able to close the window if the user presses outside the alert
+                    }
+                });
+        AlertDialog alertdialog2 = builder2.create();
+        alertdialog2.show();
     }
 
 
