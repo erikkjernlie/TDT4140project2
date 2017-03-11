@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+
+//må finne ut sammenehengen her. Performclick gjør tydeligvis ikke alt som skal skje
 /**
  * A Spinner view that does not dismiss the dialog displayed when the control is "dropped down"
  * and the user presses it. This allows for the selection of more than one option.
@@ -71,6 +73,7 @@ public class MultiSelectSpinner extends AppCompatSpinner implements OnMultiChoic
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMultiChoiceItems(_items, _selection, this);
         builder.show();
+
         return true;
     }
 

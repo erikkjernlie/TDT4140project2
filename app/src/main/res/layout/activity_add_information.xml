@@ -107,14 +107,14 @@
                     />
 
 
-            <NumberPicker
-                android:id="@+id/np"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:textSize="16dp"
-                android:textColor="#FFFFFF"
-                />
+                <NumberPicker
+                    android:id="@+id/np"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:textSize="16dp"
+                    android:textColor="#FFFFFF"
+                    />
             </LinearLayout>
             <View android:layout_height="2px"
                 android:layout_width="fill_parent"
@@ -145,7 +145,7 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/dropdown"
+                    android:id="@+id/dropdownCourses"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/hover_button"
@@ -161,8 +161,42 @@
                     android:layout_width="match_parent"
                     android:layout_height="100px"
                     android:background="@drawable/btn_courses"
-                    android:id="@+id/my_spin"
+                    android:id="@+id/my_spin_courses"
                     android:text="Grades"
+                    android:textColor="#000000"/>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp"
+                android:orientation="vertical">
+
+                <View android:layout_height="2px"
+                    android:layout_width="fill_parent"
+                    android:background="#FFFFFF"
+                    />
+                <Button
+                    android:id="@+id/dropdownExtrapoints"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/hover_button"
+                    android:textColor="#FFFFFF"
+                    android:text="Add extra points"/>
+
+                <View android:layout_height="2px"
+                    android:layout_width="fill_parent"
+                    android:background="#FFFFFF"
+                    />
+
+                <com.example.erikkjernlie.tdt4140project.MultiSelectSpinner
+                    android:layout_width="match_parent"
+                    android:layout_height="100px"
+                    android:background="@drawable/btn_courses"
+                    android:id="@+id/my_spin_extrapoints"
                     android:textColor="#000000"/>
 
 
