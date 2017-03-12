@@ -62,7 +62,7 @@ public class Menu extends AppCompatActivity {
         aboutUnibot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent d = new Intent(Menu.this, Slideshow.class);
+                Intent d = new Intent(Menu.this, Slideshow_about_unibot.class);
                 startActivity(d);
             }
         });

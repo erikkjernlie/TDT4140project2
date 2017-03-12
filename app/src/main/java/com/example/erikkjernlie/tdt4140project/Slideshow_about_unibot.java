@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-public class Slideshow extends AppCompatActivity {
+public class Slideshow_about_unibot extends AppCompatActivity {
 
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
@@ -113,7 +113,7 @@ public class Slideshow extends AppCompatActivity {
 
     private void launchHomeScreen() {
 
-        startActivity(new Intent(Slideshow.this, Menu.class));
+        startActivity(new Intent(Slideshow_about_unibot.this, Menu.class));
         finish();
     }
 
