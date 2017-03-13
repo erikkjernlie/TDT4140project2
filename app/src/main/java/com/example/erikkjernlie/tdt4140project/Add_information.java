@@ -53,12 +53,14 @@ public class Add_information extends AppCompatActivity{
     private FirebaseAuth firebaseAuth;
 
     private List<String> courses_array = new ArrayList<String>(); //list for storing the courses
-    private final CharSequence[] courses ={"Matematikk S1","Matematikk S2","Matematikk R1","Matematikk R2","Fysikk 1","Fysikk 2","Kjemi 1","Kjemi 2","Biologi 1","Biologi 2","Geofag 1", "Geofag 2", "Informasjonsteknologi 1", "Informasjonsteknologi 2", "Teknologi og forskningslære 1", "Teknologi og forskningslære 2", "VG3 naturbruk"}; //items in the alertdialog that displays checkboxes
-    private final boolean checked_state_courses[]={false,false,false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+    private final CharSequence[] courses ={"Matematikk S1","Matematikk S2","Matematikk R1","Matematikk R2","Fysikk 1","Fysikk 2","Kjemi 1","Kjemi 2","Biologi 1","Biologi 2","Geofag 1", "Geofag 2", "Informasjonsteknologi 1", "Informasjonsteknologi 2", "Teknologi og forskningslære 1", "Teknologi og forskningslære 2", "VG3 naturbruk", "Fremmedspråk 3"}; //items in the alertdialog that displays checkboxes
+    private final boolean checked_state_courses[]={false,false,false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 
     private List<String> extra_education_array = new ArrayList<String>(); //list for storing the courses
     private final CharSequence[] extra_education ={"Folkehøgskole", "Militærtjeneste", "Siviltjeneste", "Høyere utdanning"}; //items in the alertdialog that displays checkboxes
     private final boolean checked_state_education[]={false,false,false, false};
+    private HashMap<String, Double> fagbase = new HashMap<>();
+
 
 
 
@@ -80,9 +82,30 @@ public class Add_information extends AppCompatActivity{
                 firebaseAuth.getCurrentUser().getUid());
 
 
-
+        initFagbase();
         initButtons();
         numberPicker();
+    }
+
+    private void initFagbase() {
+        fagbase.put("Matematikk S1", 0.5);
+        fagbase.put("Matematikk S2", 0.5);
+        fagbase.put("Matematikk R1", 0.5);
+        fagbase.put("Matematikk R2", 1.0);
+        fagbase.put("Fysikk 1", 0.5);
+        fagbase.put("Fysikk 2", 1.0);
+        fagbase.put("Kjemi 1", 0.5);
+        fagbase.put("Kjemi 2", 0.5);
+        fagbase.put("Biologi 1", 0.5);
+        fagbase.put("Biologi 2", 0.5);
+        fagbase.put("Geofag 1", 0.5);
+        fagbase.put("Geofag 2", 0.5);
+        fagbase.put("Informasjonsteknologi 1", 0.5);
+        fagbase.put("Informasjonsteknologi 2", 0.5);
+        fagbase.put("Teknologi og forskningslære 1", 0.5);
+        fagbase.put("Teknologi og forskningslære 2", 0.5);
+        fagbase.put("Vg3 Naturbruk", 0.5);
+        fagbase.put("Fremmedspråk 3", 1.0);
     }
 
     private void storeVariables() {
@@ -113,6 +136,11 @@ public class Add_information extends AppCompatActivity{
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isPressedMan) {
+                    gender = 'M';
+                } else if (isPressedFemale) {
+                    gender = 'F';
+                } //the user can select none of them, but then it will be an error at the end
                 final EditText gradeSingle = (EditText) findViewById(R.id.gradeSingle);
                 grades = gradeSingle.getText().toString();
                 calculatedGrade = grade_calculation(grades);
@@ -120,7 +148,6 @@ public class Add_information extends AppCompatActivity{
                 Toast.makeText(Add_information.this, "Your average grade is: " + calculatedGrade, Toast.LENGTH_LONG).show();
                 Intent i = new Intent(Add_information.this, Menu.class);
                 startActivity(i);
-
             }
         });
         female = (ImageButton) findViewById(R.id.female);
@@ -237,24 +264,51 @@ public class Add_information extends AppCompatActivity{
 
     public double grade_calculation(String s) {
         double grade_calculated = 0;
+        double realFagPoints = 0;
         int counter = 0;
         String newS = s.replace(",", "").trim();
         if (newS.contains(".")) {
             grade_calculated = new Double(newS).doubleValue()*10;
             grade_calculated = round(grade_calculated, 2);
+
+            if (extra_education_array.size() > 0) {
+                this.extraPoints = 2;
+            }
+
+            for (String course : courses_array) {
+                realFagPoints += fagbase.get(course);
+            }
+
+            if (realFagPoints > 4) {
+                realFagPoints = 4;
+            }
+            grade_calculated += agePoints(year) + extraPoints + realFagPoints;
             return grade_calculated;
-        }
-        for (int i = 0; i < newS.length(); i++) {
-            grade_calculated += Character.getNumericValue(newS.charAt(i));
-            counter++;
+        } else {
+
+            for (int i = 0; i < newS.length(); i++) {
+                grade_calculated += Character.getNumericValue(newS.charAt(i));
+                counter++;
+            }
+
+            if (extra_education_array.size() > 0) {
+                this.extraPoints = 2;
+            }
+
+            for (String course : courses_array) {
+                realFagPoints += fagbase.get(course);
+            }
+
+            if (realFagPoints > 4) {
+                realFagPoints = 4;
+            }
+
+            grade_calculated = (grade_calculated*10 / counter) + agePoints(year) + extraPoints + realFagPoints;
+
+            return grade_calculated;
+
         }
 
-        if (extra_education_array.size() > 0) {
-            this.extraPoints = 2;
-        }
-
-        grade_calculated = (grade_calculated*10 / counter) + agePoints(year) + extraPoints;
-        return grade_calculated;
     }
 
 
