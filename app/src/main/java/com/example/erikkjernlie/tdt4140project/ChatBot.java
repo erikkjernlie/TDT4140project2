@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+
 
 import com.google.gson.JsonElement;
 
@@ -39,6 +42,12 @@ public class ChatBot extends AppCompatActivity {
     private TextView resultTextView;
     private AIConfiguration config;
     private AIDataService aiDataService;
+    private Firebase mRef;
+    private char gender;
+    private double calculatedGrade;
+    private int birthYear;
+    private FirebaseAuth firebaseAuth;
+
 
 
     @Override
@@ -159,6 +168,16 @@ public class ChatBot extends AppCompatActivity {
         resultTextView.setText("Query:" + result.getResolvedQuery() +
                 "\nAction: " + result.getAction() +
                 "\nParameters: " + parameterString);
+    }
+
+    private void initVariables() {
+        Firebase.setAndroidContext(ChatBot.this);
+
+        firebaseAuth = firebaseAuth.getInstance();
+
+        mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
+                firebaseAuth.getCurrentUser().getUid());
+
     }
 
 }

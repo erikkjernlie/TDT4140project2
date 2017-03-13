@@ -11,6 +11,19 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.Toast;
+import android.support.annotation.NonNull;
+import android.widget.EditText;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import java.util.HashMap;
+import java.util.Map;
+
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +47,19 @@ public class Add_information extends AppCompatActivity{
     Button submit;
     String grades;
     private int extraPoints = 0;
+    private EditText gradeSingle;
+    private Firebase mRootRef;
+    private Firebase mRef;
+    private FirebaseAuth firebaseAuth;
+
+    private List<String> courses_array = new ArrayList<String>(); //list for storing the courses
+    private final CharSequence[] courses ={"Matematikk S1","Matematikk S2","Matematikk R1","Matematikk R2","Fysikk 1","Fysikk 2","Kjemi 1","Kjemi 2","Biologi 1","Biologi 2","Geofag 1", "Geofag 2", "Informasjonsteknologi 1", "Informasjonsteknologi 2", "Teknologi og forskningslære 1", "Teknologi og forskningslære 2", "VG3 naturbruk"}; //items in the alertdialog that displays checkboxes
+    private final boolean checked_state_courses[]={false,false,false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+
+    private List<String> extra_education_array = new ArrayList<String>(); //list for storing the courses
+    private final CharSequence[] extra_education ={"Folkehøgskole", "Militærtjeneste", "Siviltjeneste", "Høyere utdanning"}; //items in the alertdialog that displays checkboxes
+    private final boolean checked_state_education[]={false,false,false, false};
+
 
 
     @Override
@@ -41,11 +67,44 @@ public class Add_information extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_information);
 
+        gradeSingle = (EditText) findViewById(R.id.gradeSingle);
+
+        Firebase.setAndroidContext(Add_information.this);
+
+        firebaseAuth = firebaseAuth.getInstance();
+
+        mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
+                firebaseAuth.getCurrentUser().getUid());
+
+        mRootRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
+                firebaseAuth.getCurrentUser().getUid());
+
+
+
         initButtons();
         numberPicker();
+    }
 
+    private void storeVariables() {
+        //Store averageGrade
+        Firebase mRefChildGrade = mRootRef.child("CalculatedGrade");
+        mRefChildGrade.setValue(this.calculatedGrade);
 
+        //Store gender
+        Firebase mRefChildGender = mRootRef.child("Gender");
+        mRefChildGender.setValue(this.gender);
 
+        //Store courses
+        Firebase mRefChildCourses = mRootRef.child("Courses");
+        mRefChildCourses.setValue(this.courses_array);
+
+        //Store extra education
+        Firebase mRefChildExEd = mRootRef.child("Extra education");
+        mRefChildExEd.setValue(extra_education_array);
+
+        //Store birthyear
+        Firebase mRefChildYear = mRootRef.child("BirthYear");
+        mRefChildYear.setValue(year);
     }
 
 
@@ -57,6 +116,7 @@ public class Add_information extends AppCompatActivity{
                 final EditText gradeSingle = (EditText) findViewById(R.id.gradeSingle);
                 grades = gradeSingle.getText().toString();
                 calculatedGrade = grade_calculation(grades);
+                storeVariables();
                 Toast.makeText(Add_information.this, "Your average grade is: " + calculatedGrade, Toast.LENGTH_LONG).show();
                 Intent i = new Intent(Add_information.this, Menu.class);
                 startActivity(i);
@@ -102,9 +162,9 @@ public class Add_information extends AppCompatActivity{
             }
         });
         if (isPressedMan) {
-            gender = 'M';
+            this.gender = 'M';
         } else if (isPressedFemale) {
-            gender = 'F';
+            this.gender = 'F';
         } //the user can select none of them, but then it will be an error at the end
 
         dropdownCourses = (Button) findViewById(R.id.dropdownCourses);
@@ -166,28 +226,36 @@ public class Add_information extends AppCompatActivity{
         return points;
     }
 
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
+
     public double grade_calculation(String s) {
         double grade_calculated = 0;
         int counter = 0;
         String newS = s.replace(",", "").trim();
+        if (newS.contains(".")) {
+            grade_calculated = new Double(newS).doubleValue()*10;
+            grade_calculated = round(grade_calculated, 2);
+            return grade_calculated;
+        }
         for (int i = 0; i < newS.length(); i++) {
             grade_calculated += Character.getNumericValue(newS.charAt(i));
             counter++;
         }
 
-
         if (extra_education_array.size() > 0) {
             this.extraPoints = 2;
         }
+
         grade_calculated = (grade_calculated*10 / counter) + agePoints(year) + extraPoints;
         return grade_calculated;
     }
-
-
-    private List<String> courses_array = new ArrayList<String>(); //list for storing the courses
-    private final CharSequence[] courses ={"Matematikk S1","Matematikk S2","Matematikk R1","Matematikk R2","Fysikk 1","Fysikk 2","Kjemi 1","Kjemi 2","Biologi 1","Biologi 2","Geofag 1", "Geofag 2", "Informasjonsteknologi 1", "Informasjonsteknologi 2", "Teknologi og forskningslære 1", "Teknologi og forskningslære 2", "VG3 naturbruk"}; //items in the alertdialog that displays checkboxes
-    private final boolean checked_state_courses[]={false,false,false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
-
 
 
     //not fixed if the user selects some courses, presses ok, and opens it again; then it will be empty.
@@ -229,12 +297,6 @@ public class Add_information extends AppCompatActivity{
         alertdialog1.show();
     }
 
-    private List<String> extra_education_array = new ArrayList<String>(); //list for storing the courses
-    private final CharSequence[] extra_education ={"Folkehøgskole", "Militærtjeneste", "Siviltjeneste", "Høyere utdanning"}; //items in the alertdialog that displays checkboxes
-    private final boolean checked_state_education[]={false,false,false, false};
-
-
-
     //not fixed if the user selects some courses, presses ok, and opens it again; then it will be empty.
     private void alertExtraEducation() {
         AlertDialog.Builder builder2 = new AlertDialog.Builder(Add_information.this)
@@ -273,6 +335,5 @@ public class Add_information extends AppCompatActivity{
         AlertDialog alertdialog2 = builder2.create();
         alertdialog2.show();
     }
-
 
 }
