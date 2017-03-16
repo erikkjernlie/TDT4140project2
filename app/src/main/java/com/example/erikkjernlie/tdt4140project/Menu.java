@@ -15,6 +15,7 @@ public class Menu extends AppCompatActivity {
     private Button register; //register button
     private Button explore; //explore button
     private Button aboutUnibot; //about button
+    private Button aboutUs;
 
     public static final String PREFS_NAME = "MyPrefsFile";
 
@@ -64,6 +65,14 @@ public class Menu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent d = new Intent(Menu.this, Slideshow_about_unibot.class);
                 startActivity(d);
+            }
+        });
+        aboutUs = (Button) findViewById(R.id.aboutUs);
+        aboutUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent e = new Intent(Menu.this, Slideshow_about_us.class);
+                startActivity(e);
             }
         });
 
