@@ -1,10 +1,12 @@
 package com.example.erikkjernlie.tdt4140project;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,6 +48,7 @@ public class Add_information extends AppCompatActivity{
     Button dropdownExtraPoints;
     Button submit;
     String grades;
+    private int R2Grade;
     private int extraPoints = 0;
     private EditText gradeSingle;
     private Firebase mRootRef;
@@ -128,6 +131,10 @@ public class Add_information extends AppCompatActivity{
         //Store birthyear
         Firebase mRefChildYear = mRootRef.child("BirthYear");
         mRefChildYear.setValue(year);
+
+        //Store R2Grade
+        Firebase mRefChildR2Grade = mRootRef.child("R2Grade");
+        mRefChildR2Grade.setValue(R2Grade);
     }
 
 
@@ -343,6 +350,9 @@ public class Add_information extends AppCompatActivity{
                                 checked_state_courses[i] = false;
                             }
                         }
+                        if (courses_array.contains("Matematikk R2")) {
+                            alertR2Grade();
+                        }
 
                         //dialog.dismiss(); if we want it to be able to close the window if the user presses outside the alert
                     }
@@ -388,6 +398,33 @@ public class Add_information extends AppCompatActivity{
                 });
         AlertDialog alertdialog2 = builder2.create();
         alertdialog2.show();
+    }
+
+    public void alertR2Grade() {
+        final Dialog d = new Dialog(Add_information.this);
+        d.setTitle("NumberPicker");
+        d.setContentView(R.layout.dialog);
+        Button b1 = (Button) d.findViewById(R.id.button1);
+        Button b2 = (Button) d.findViewById(R.id.button2);
+        final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
+        np.setMaxValue(6); // max value 6
+        np.setMinValue(1);   // min value 1
+        np.setWrapSelectorWheel(false);
+        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                R2Grade = newVal;
+            }
+        });
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss(); // dismiss the dialog
+            }
+        });
+        d.show();
+
+
     }
 
 }
