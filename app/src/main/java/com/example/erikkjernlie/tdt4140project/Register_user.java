@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,7 +17,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 
-public class Register_user extends AppCompatActivity implements View.OnClickListener {
+public class Register_user extends AppCompatActivity {
 
     private EditText enterEmailAddress;
     private EditText enterPassword1;
@@ -26,7 +25,7 @@ public class Register_user extends AppCompatActivity implements View.OnClickList
     private Button registerBtn;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
-    private TextView registerText;
+    private Button switchRegisterToLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +41,16 @@ public class Register_user extends AppCompatActivity implements View.OnClickList
         enterPassword2 = (EditText) findViewById(R.id.enterPassword2);
 
         registerBtn = (Button) findViewById(R.id.registerBtn);
+
+        switchRegisterToLogin = (Button) findViewById(R.id.switchRegisterToLogin);
+        switchRegisterToLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Register_user.this, Sign_in.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,14 +96,14 @@ public class Register_user extends AppCompatActivity implements View.OnClickList
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     //Successfull user registration
-                    Toast.makeText(Register_user.this, "It worked, yaay", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register_user.this, "Register successful", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                     Intent intent  = new Intent(Register_user.this, Menu.class);
                     startActivity(intent);
 
                 } else {
                     //Must try again
-                    Toast.makeText(Register_user.this, "It didnt work", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register_user.this, "It didn't work, please try again.", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                 }
             }
@@ -105,13 +114,5 @@ public class Register_user extends AppCompatActivity implements View.OnClickList
 
     }
 
-    @Override
-    public void onClick(View v) {
-        registerText = (TextView) findViewById(R.id.registerText);
-        if (v==registerText){
-            Intent i = new Intent(Register_user.this, Sign_in.class);
-            startActivity(i);
-            finish();
-        }
-    }
+
 }
