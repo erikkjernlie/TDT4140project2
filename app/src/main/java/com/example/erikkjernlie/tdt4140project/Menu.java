@@ -5,12 +5,17 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Menu extends AppCompatActivity {
 
     private Button register; //register button
     private Button explore; //explore button
     private Button aboutUnibot; //about button
+    private FirebaseAuth firebaseAuth;
+    private Button signOut;
 
 
 
@@ -39,6 +44,17 @@ public class Menu extends AppCompatActivity {
                 startActivity(d);
             }
         });
+        signOut = (Button) findViewById(R.id.signOut);
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth user = firebaseAuth.getInstance();
+                user.signOut();
+                Toast.makeText(Menu.this, "Signed out.", Toast.LENGTH_SHORT).show();
+                Intent d = new Intent(Menu.this, Sign_in.class);
+                startActivity(d);
+            }
+        });
 
     }
 
@@ -49,4 +65,6 @@ public class Menu extends AppCompatActivity {
         initButtons();
 
     }
+
+
 }
