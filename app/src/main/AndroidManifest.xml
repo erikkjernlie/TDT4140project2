@@ -13,7 +13,7 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Menu">
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,9 +25,9 @@
         <activity android:name=".Slideshow_about_unibot" />
         <activity android:name=".Sign_in" />
         <activity android:name=".Register_user" />
-        <activity android:name=".SplashScreen" />
+        <activity android:name=".Slideshow_about_us" />
         <activity android:name=".Add_information" />
-        <activity android:name=".Slideshow_about_us"></activity>
+        <activity android:name=".Menu"></activity>
     </application>
 
 </manifest>
