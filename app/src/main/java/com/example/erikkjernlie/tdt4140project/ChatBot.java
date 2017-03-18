@@ -1,6 +1,10 @@
 package com.example.erikkjernlie.tdt4140project;
 
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,7 +19,10 @@ import android.widget.TextView;
 
 import com.google.gson.JsonElement;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Random;
 
 import ai.api.AIServiceException;
 import ai.api.android.AIConfiguration;
@@ -39,6 +46,13 @@ public class ChatBot extends AppCompatActivity {
     private TextView resultTextView;
     private AIConfiguration config;
     private AIDataService aiDataService;
+    private TextView uniBot;
+    private TextView back;
+    private TextView help;
+    final Context context = this;
+    private int randomNumber = -1;
+    ArrayList<String> sentencesToUnibot;
+    ArrayList<String> sentencesOutput;
 
 
     @Override
@@ -90,17 +104,108 @@ public class ChatBot extends AppCompatActivity {
         aiDataService = new AIDataService(this, config);
 
 
+        initTextButtons();
+
+    }
+
+    private void initTextButtons(){
+        uniBot = (TextView) findViewById(R.id.unibot);
+        back = (TextView) findViewById(R.id.back);
+        help = (TextView) findViewById(R.id.help);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ChatBot.this, Menu.class);
+                startActivity(i);
+            }
+        });
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        context);
+
+                // set title
+                alertDialogBuilder.setTitle("Help with uniBOT");
+
+                // set dialog message
+                alertDialogBuilder
+                        .setMessage("uniBOT can help you with\n- Information about a specific study"+
+                        "\n- Compare different studies\n- Give you information about a study's union\n- Print available studies\nand lots of other random things.\n"
+                        + "\nDo you need more help or information about how to ask questions? Type help in the chat."
+                        + "\n\nYou can also press the uniBOT button at the top for random questions.")
+                        .setCancelable(false)
+                        .setPositiveButton("I don't need any more help",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                // if this button is clicked, close
+                                // current activity
+                                dialog.cancel();
+                            }
+                        });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+            }
+        });
+        uniBot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                sentencesOutput = new ArrayList<String>(Arrays.asList("Do you want to know about physics?", "Do you want to compare some studies?", "Do you want to see a list of studies that you can compare?"));
+
+                Random rn = new Random();
+                int range = sentencesOutput.size();
+
+
+                randomNumber = rn.nextInt(range);
+                addMessageToChatArray(sentencesOutput.get(randomNumber));
+
+            }
+        });
+    }
+
+
+
+
+    //translates the printed question to a format API.AI understands, so the user can answer directly
+    private void translationFromUserToAI () {
+        sentencesToUnibot = new ArrayList<String>(Arrays.asList("Tell me about physics", "I want to compare some studies", "print"));
+        getAiResponse(sentencesToUnibot.get(randomNumber));
     }
 
     //this is where the messages are received and sent
     private boolean sendChatMessage() {
-        String a = chatText.getText().toString();
-        if (!a.isEmpty()) { // sjekker at meldingen ikke er tom
-            chatArrayAdapter.add(new ChatMessage(side, a));
-        }
-        chatText.setText(""); //nullstiller chatboksen
-        //her kommer responsen
+        String messageFromUser = chatText.getText().toString();
 
+
+        if (!messageFromUser.isEmpty()) { // sjekker at meldingen ikke er tom
+            chatArrayAdapter.add(new ChatMessage(side, messageFromUser));
+        }
+        chatText.setText(""); //resets the chatbox
+        //here comes the response
+
+        //checks if the user wants to answer the random question.
+        // Also checks if the last question uniBOT printed equals the question that was printed because the user pressed the uniBOT-button
+        //This needs to be checked, or else the user can type "yes" whenever (s)he wants, and the answer to the last question will be printed
+        if(messageFromUser.toLowerCase().equals("yes") && randomNumber > -1 && chatArrayAdapter.getItem(chatArrayAdapter.getCount()-2).toString().equals(sentencesOutput.get(randomNumber))) {
+            System.out.println(chatArrayAdapter.getItem(chatArrayAdapter.getCount()-2).toString());
+            translationFromUserToAI();
+            return true;
+        } else if (messageFromUser.toLowerCase().equals("no")) {
+            addMessageToChatArray("You can always press the uniBOT-button to get more random questions. ");
+            return true;
+        }
+
+
+       getAiResponse(messageFromUser);
+
+        return true;
+    }
+
+    private void getAiResponse(String a) {
 
         final AIRequest aiRequest = new AIRequest();
         if (!a.isEmpty()) {
@@ -128,10 +233,8 @@ public class ChatBot extends AppCompatActivity {
                 }
             }
         }.execute(aiRequest);
-
-
-        return true;
     }
+
 
     private void addMessageToChatArray(String message) {
         chatArrayAdapter.add(new ChatMessage(true, message));
