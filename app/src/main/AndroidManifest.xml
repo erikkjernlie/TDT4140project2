@@ -13,7 +13,12 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashScreen">
+
+        <!--
+        Starter på .Menu så man slipper å logge inn
+         -->
+
+        <activity android:name=".SendToDatabase">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,9 +30,9 @@
         <activity android:name=".Slideshow_about_unibot" />
         <activity android:name=".Sign_in" />
         <activity android:name=".Register_user" />
-        <activity android:name=".Menu" />
+        <!--<activity android:name=".Menu" />-->
         <activity android:name=".Add_information" />
-        <activity android:name=".SendToDatabase"></activity>
+        <!--<activity android:name=".SendToDatabase"></activity>-->
     </application>
 
 </manifest>
