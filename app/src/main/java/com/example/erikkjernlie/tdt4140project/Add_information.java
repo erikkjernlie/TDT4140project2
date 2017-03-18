@@ -1,6 +1,7 @@
 package com.example.erikkjernlie.tdt4140project;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -274,5 +275,9 @@ public class Add_information extends AppCompatActivity{
         alertdialog2.show();
     }
 
+
+    public Context getContext() {
+        return Add_information.this;
+    }
 
 }

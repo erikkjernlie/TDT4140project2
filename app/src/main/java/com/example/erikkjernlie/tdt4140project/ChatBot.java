@@ -24,6 +24,7 @@ import ai.api.android.AIService;
 import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
 import ai.api.model.Result;
+import test.SendToDatabase;
 
 
 public class ChatBot extends AppCompatActivity {
@@ -94,6 +95,15 @@ public class ChatBot extends AppCompatActivity {
 
     //this is where the messages are received and sent
     private boolean sendChatMessage() {
+
+        // Tester sendToDatabase
+
+        SendToDatabase sendToDatabase = new SendToDatabase();
+
+        // Metodene til firebase må kalles fra app
+
+
+
         String a = chatText.getText().toString();
         if (!a.isEmpty()) { // sjekker at meldingen ikke er tom
             chatArrayAdapter.add(new ChatMessage(side, a));

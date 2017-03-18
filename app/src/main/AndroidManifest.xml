@@ -25,8 +25,9 @@
         <activity android:name=".Slideshow_about_unibot" />
         <activity android:name=".Sign_in" />
         <activity android:name=".Register_user" />
-        <activity android:name=".Menu"></activity>
-        <activity android:name=".Add_information"></activity>
+        <activity android:name=".Menu" />
+        <activity android:name=".Add_information" />
+        <activity android:name=".SendToDatabase"></activity>
     </application>
 
 </manifest>
