@@ -1,8 +1,11 @@
 package com.example.erikkjernlie.tdt4140project;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -16,6 +19,7 @@ public class Menu extends AppCompatActivity {
     private Button aboutUnibot; //about button
     private FirebaseAuth firebaseAuth;
     private Button signOut;
+    private Button aboutUs;
 
 
 
@@ -55,6 +59,14 @@ public class Menu extends AppCompatActivity {
                 startActivity(d);
             }
         });
+        aboutUs = (Button) findViewById(R.id.aboutUs);
+        aboutUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent e = new Intent(Menu.this, Slideshow_about_us.class);
+                startActivity(e);
+            }
+        });
 
     }
 
@@ -63,6 +75,7 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         initButtons();
+        //uncomment this when we want the alert just to appear the first time the app is started
 
     }
 

@@ -18,6 +18,26 @@
     <string name="slide_4_title">Enjoy uniBOT</string>
     <string name="slide_4_desc">Let it help you with your questions regarding study, grades or something else </string>
 
+
+    <string name="about_1_title">the uniBOT team</string>
+    <string name="about_1_desc">uniBOT is developed in the course <i>Software engineering</i> at NTNU Trondheim.\n\n We are all 2. year students at <i>Engineering and ICT</i>. </string>
+
+    <string name="about_2_title">Herman Horn</string>
+    <string name="about_2_desc"><i>Project Manager</i></string>
+    <string name="about_2"><b>Contact information:</b>\n hermanwh@stud.ntnu.no</string>
+
+    <string name="about_3_title">Jonas Sagild</string>
+    <string name="about_3_desc"><i>Application Developer</i></string>
+    <string name="about_3"><b>Contact information:</b>\n jonassagild@gmail.com</string>
+
+    <string name="about_4_title">Jørgen Mortensen</string>
+    <string name="about_4_desc"><i>Application Developer</i></string>
+    <string name="about_4"><b>Contact information:</b>\njorgen_bm96@hotmail.com</string>
+
+    <string name="about_5_title">Erik Kjernlie</string>
+    <string name="about_5_desc"><i>GUI Developer</i></string>
+    <string name="about_5"><b>Contact information:</b>\nerikkjer@stud.ntnu.no</string>
+
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
 </resources>
