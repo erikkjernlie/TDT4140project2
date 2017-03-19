@@ -52,4 +52,6 @@ class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
 
         return row;
     }
+
+
 }
