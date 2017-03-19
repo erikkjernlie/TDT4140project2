@@ -128,7 +128,7 @@ public class Slideshow_about_us extends AppCompatActivity {
             // changing the next button text 'NEXT' / 'GOT IT'
             if (position == layouts.length - 1) {
                 // last page. make button text to GOT IT
-                btnNext.setText(getString(R.string.start));
+                btnNext.setText("RETURN");
                 //må prøve å fikse at det står back istedenfor prev
                 //problemet er at det ikke er noen verdi som lagrer position foreløpig
 
