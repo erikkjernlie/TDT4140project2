@@ -18,23 +18,25 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withHint;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class RegisterTest {
+public class RegisterTextTest {
 
     @Rule
     public ActivityTestRule<SplashScreen> mActivityTestRule = new ActivityTestRule<>(SplashScreen.class);
 
     @Test
-    public void registerTest() {
+    public void registerTextTest() {
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
@@ -52,40 +54,35 @@ public class RegisterTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
+            Thread.sleep(3915);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction appCompatEditText = onView(
+                allOf(withId(R.id.enterEmailAddress), isDisplayed()));
+        appCompatEditText.perform(click());
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
             Thread.sleep(60000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        ViewInteraction button = onView(
-                allOf(withId(R.id.switchRegisterToLogin),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        0),
-                                0),
-                        isDisplayed()));
-        button.check(matches(isDisplayed()));
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.enterEmailAddress), isDisplayed()));
+        appCompatEditText2.perform(replaceText("exampletext"), closeSoftKeyboard());
 
-        ViewInteraction button2 = onView(
-                allOf(withId(R.id.switchRegister),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        0),
-                                1),
-                        isDisplayed()));
-        button2.check(matches(isDisplayed()));
+        ViewInteraction appCompatEditText3 = onView(
+                allOf(withId(R.id.enterPassword1), isDisplayed()));
+        appCompatEditText3.perform(replaceText("examplepassword"), closeSoftKeyboard());
 
-        ViewInteraction imageView = onView(
-                allOf(withId(R.id.imageView),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        imageView.check(matches(isDisplayed()));
+        ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.enterPassword2), isDisplayed()));
+        appCompatEditText4.perform(replaceText("examplepassword2"), closeSoftKeyboard());
 
         ViewInteraction editText = onView(
                 allOf(withId(R.id.enterEmailAddress),
@@ -95,7 +92,7 @@ public class RegisterTest {
                                         2),
                                 0),
                         isDisplayed()));
-        editText.check(matches(withHint("Enter your email")));
+        editText.check(matches(withText("exampletext")));
 
         ViewInteraction editText2 = onView(
                 allOf(withId(R.id.enterPassword1),
@@ -105,7 +102,7 @@ public class RegisterTest {
                                         2),
                                 1),
                         isDisplayed()));
-        editText2.check(matches(withHint("Enter your password")));
+        editText2.check(matches(withText("examplepassword")));
 
         ViewInteraction editText3 = onView(
                 allOf(withId(R.id.enterPassword2),
@@ -115,27 +112,7 @@ public class RegisterTest {
                                         2),
                                 2),
                         isDisplayed()));
-        editText3.check(matches(withHint("Confirm your password")));
-
-        ViewInteraction button3 = onView(
-                allOf(withId(R.id.registerBtn),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        3),
-                                1),
-                        isDisplayed()));
-        button3.check(matches(isDisplayed()));
-
-        ViewInteraction button4 = onView(
-                allOf(withId(R.id.registerBtn),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        3),
-                                1),
-                        isDisplayed()));
-        button4.check(matches(isDisplayed()));
+        editText3.check(matches(withText("examplepassword2")));
 
     }
 

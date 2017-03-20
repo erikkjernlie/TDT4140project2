@@ -74,7 +74,7 @@ public class LogInTest {
         imageView.check(matches(isDisplayed()));
 
         ViewInteraction editText = onView(
-                allOf(withId(R.id.enterEmailAddress), withHint("Enter your email"),
+                allOf(withId(R.id.enterEmailAddress),
                         childAtPosition(
                                 childAtPosition(
                                         IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
@@ -84,7 +84,7 @@ public class LogInTest {
         editText.check(matches(withHint("Enter your email")));
 
         ViewInteraction editText2 = onView(
-                allOf(withId(R.id.enterPassword), withHint("Enter your password"),
+                allOf(withId(R.id.enterPassword),
                         childAtPosition(
                                 childAtPosition(
                                         IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
