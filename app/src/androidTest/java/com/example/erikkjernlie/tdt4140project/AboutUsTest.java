@@ -94,20 +94,44 @@ public class AboutUsTest {
                 allOf(withId(R.id.btn_next), withText("NEXT"), isDisplayed()));
         appCompatButton3.perform(click());
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.btn_next), withText("NEXT"), isDisplayed()));
         appCompatButton4.perform(click());
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.btn_next), withText("NEXT"), isDisplayed()));
         appCompatButton5.perform(click());
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction appCompatButton6 = onView(
                 allOf(withId(R.id.btn_next), withText("NEXT"), isDisplayed()));
         appCompatButton6.perform(click());
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction appCompatButton7 = onView(
-                allOf(withId(R.id.btn_next), withText("GOT IT"), isDisplayed()));
+                allOf(withId(R.id.btn_next), withText("RETURN"), isDisplayed()));
         appCompatButton7.perform(click());
 
         // Added a sleep statement to match the app's execution delay.

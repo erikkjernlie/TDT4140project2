@@ -27,6 +27,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+
+import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -43,7 +45,7 @@ public class RegisterUserTest {
     public void registerUserTest() {
 
         try {
-            FirebaseAuth.getInstance().signInWithEmailAndPassword("exampe@email.test", "Password1");
+            FirebaseAuth.getInstance().signInWithEmailAndPassword("test@user.com", "testuser");
             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
             user.delete();
@@ -78,15 +80,15 @@ public class RegisterUserTest {
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.enterEmailAddress), isDisplayed()));
-        appCompatEditText2.perform(replaceText("exampe@email.test"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("test@user.com"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.enterPassword1), isDisplayed()));
-        appCompatEditText3.perform(replaceText("Password1"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("testuser"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.enterPassword2), isDisplayed()));
-        appCompatEditText4.perform(replaceText("Password1"), closeSoftKeyboard());
+        appCompatEditText4.perform(replaceText("testuser"), closeSoftKeyboard());
 
 
         ViewInteraction appCompatButton2 = onView(
