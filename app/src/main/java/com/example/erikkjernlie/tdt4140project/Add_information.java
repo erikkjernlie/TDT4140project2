@@ -44,8 +44,6 @@ public class Add_information extends AppCompatActivity{
         initButtons();
         numberPicker();
 
-
-
     }
 
 

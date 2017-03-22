@@ -26,6 +26,7 @@ import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -66,8 +67,6 @@ public class ChatBot extends AppCompatActivity {
     private ArrayList<String> sentencesToUnibot;
     private ArrayList<String> sentencesOutput;
 
-    ArrayList<String> sentencesToUnibot;
-    ArrayList<String> sentencesOutput;
     FirebaseAuth firebaseAuth;
     Firebase mRef;
 
@@ -82,7 +81,7 @@ public class ChatBot extends AppCompatActivity {
 
         firebaseAuth = firebaseAuth.getInstance();
 
-        firebaseAuth.signInWithEmailAndPassword("yoyo@heyhey.com", "123456");
+        firebaseAuth.signInWithEmailAndPassword("jaja@neinei.com", "123456");
 
         //mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
         //      firebaseAuth.getCurrentUser().getUid());
@@ -303,12 +302,6 @@ public class ChatBot extends AppCompatActivity {
             chatArrayAdapter.add(new ChatMessage(side, messageFromUser));
         }
 
-        if (messageFromUser.equals("Tell me about me")) {
-            String userInfo = displayUserInformation();
-            addMessageToChatArray(userInfo);
-            chatText.setText("");
-            return true;
-        }
         chatText.setText(""); //resets the chatbox
         //here comes the response
 
@@ -353,11 +346,42 @@ public class ChatBot extends AppCompatActivity {
             @Override
             protected void onPostExecute(AIResponse aiResponse) {
                 if (aiResponse != null) {
-                    addMessageToChatArray(aiResponse.getResult().getFulfillment().getSpeech()); // returnere svar når ferdig
+                    String response = processAiResponse(aiResponse);
+                    addMessageToChatArray(response);
+                    //addMessageToChatArray(aiResponse.getResult().getFulfillment().getSpeech()); // returnere svar når ferdig
+                    System.out.println(aiResponse.getResult());
+                    System.out.println(aiResponse.getResult().getParameters());
+
+                    System.out.println("asdølaøsdl");
 
                 }
             }
         }.execute(aiRequest);
+    }
+
+    private String processAiResponse(AIResponse response) {
+
+        if(response.getResult().getAction().toString().contains("displayUserInformation")) {
+            return displayUserInformation();
+        }
+        if(response.getResult().getAction().contains("getInformation")) {
+            getInformation(response.getResult().getParameters().get("Studies").toString());
+
+        }
+        return response.getResult().getFulfillment().getSpeech();
+
+    }
+
+
+    //This method retrieves information about the study the user wants to know more about
+    private void getInformation(String study) {
+        //Sends a StudyProgramInfo-object to the database (TEST)
+        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies");
+        StudyProgramInfo info = new StudyProgramInfo("IKT er bra", 54.4,
+                new ArrayList<String>(Arrays.asList("Data", "IKT")), true, 27.4,
+                new ArrayList<String>(Arrays.asList("Datajobb", "Ikt-jobb")), "Hybrida", null,
+                "Sykt bra miljo");
+        infoRef.child(study).setValue(info);
     }
 
 
