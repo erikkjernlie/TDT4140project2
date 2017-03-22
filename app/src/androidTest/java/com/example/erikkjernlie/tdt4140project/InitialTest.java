@@ -23,12 +23,13 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import org.junit.runners.JUnit4;
 
 /**
- * Created by herma on 17.03.2017.
+ * Created by herman on 17.03.2017.
  */
 
 @RunWith(AndroidJUnit4.class)
 public class InitialTest extends ActivityInstrumentationTestCase2<Sign_in> {
     Activity activity;
+
     public InitialTest() {
         super(Sign_in.class);
     }
