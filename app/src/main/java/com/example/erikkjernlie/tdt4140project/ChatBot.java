@@ -203,12 +203,10 @@ public class ChatBot extends AppCompatActivity {
         return true;
     }
 
-    public AIResponse getAiResponse(String a, AIResponse... responses) {
-         // method should only return an real half of the time
-        // and a null object the other time
+    public AIResponse getAiResponse(String a) {
 
 
-        if(odd) {
+
             final AIRequest aiRequest = new AIRequest();
             if (!a.isEmpty()) {
                 aiRequest.setQuery(a);
@@ -233,18 +231,10 @@ public class ChatBot extends AppCompatActivity {
                 protected void onPostExecute(AIResponse aiResponse) {
                     if (aiResponse != null) {
                         addMessageToChatArray(aiResponse.getResult().getFulfillment().getSpeech()); // returnere svar når ferdig
-                        odd = false; // endrer slik at neste metodekall returnere en faktisk AIResponse
-                        getAiResponse("a", aiResponse); // kaller på metoden en gang til, slik at den første metoden kan returnere responsen
                     }
                 }
             }.execute(aiRequest);
-        } else {
-            odd = true;
-        }
 
-        if (responses[0] != null) {
-            return responses[0];
-        }
         return null;
     }
 
