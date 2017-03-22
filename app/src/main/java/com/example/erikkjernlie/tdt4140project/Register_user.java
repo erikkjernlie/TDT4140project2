@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -27,6 +28,11 @@ public class Register_user extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private Button switchRegisterToLogin;
 
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Register_user.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +45,31 @@ public class Register_user extends AppCompatActivity {
         enterEmailAddress = (EditText) findViewById(R.id.enterEmailAddress);
         enterPassword1 = (EditText) findViewById(R.id.enterPassword1);
         enterPassword2 = (EditText) findViewById(R.id.enterPassword2);
+
+        enterEmailAddress.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && !enterPassword1.hasFocus() && !enterPassword2.hasFocus()) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+        enterPassword1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && !enterEmailAddress.hasFocus() && !enterPassword2.hasFocus()) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+        enterPassword2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && !enterEmailAddress.hasFocus() && !enterPassword1.hasFocus()) {
+                    hideKeyboard(v);
+                }
+            }
+        });
 
         registerBtn = (Button) findViewById(R.id.registerBtn);
 

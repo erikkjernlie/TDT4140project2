@@ -1,53 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:weightSum="100" android:background="@drawable/background_1">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_1"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:weightSum="100">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="5">
+        android:layout_weight="5"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:id="@+id/switchRegisterToLogin"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="50"
 
                 android:background="@drawable/hover_button"
+                android:text="Log in"
                 android:textColor="#bad0ef"
-                android:text="Log in" android:textSize="18dp"
-                />
+                android:textSize="18dp" />
+
             <Button
+                android:id="@+id/switchRegister"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/switchRegister"
                 android:layout_weight="50"
                 android:background="@drawable/hover_button"
+                android:text="Register"
                 android:textColor="#FFFFFF"
-                android:text="Register" android:textSize="18dp"
-                />
+                android:textSize="18dp" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3">
-            <View android:layout_height="2px"
+
+            <View
                 android:layout_width="0dp"
+                android:layout_height="2px"
                 android:layout_weight="50"
                 android:background="#bad0ef"
 
                 />
-            <View android:layout_height="2px"
+
+            <View
                 android:layout_width="0dp"
+                android:layout_height="2px"
                 android:layout_weight="50"
                 android:background="#FFFFFF"
 
@@ -56,101 +68,105 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="50"
-        android:src="@drawable/only_logo"
-        android:id="@+id/imageView"
-
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+
         android:layout_alignParentStart="true"
+        android:layout_weight="50"
         android:paddingBottom="30dp"
-        />
+        android:src="@drawable/only_logo" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="35"
-        android:weightSum="100"
-        android:orientation="vertical" android:paddingBottom="20dp">
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:weightSum="100">
 
         <EditText
             android:id="@+id/enterEmailAddress"
-            android:inputType="textEmailAddress"
-            android:hint="Enter your email"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="34"
+            android:backgroundTint="#FFFFFF"
+            android:fontFamily="sans-serif"
+            android:hint="Enter your email"
+            android:inputType="textEmailAddress"
+            android:paddingBottom="0dp"
             android:paddingLeft="15dp"
             android:textColor="#FFFFFF"
-            android:backgroundTint="#FFFFFF"
-            android:textColorHint="#FFFFFF"
-            android:layout_weight="34"
-            android:fontFamily="sans-serif"
-            android:paddingBottom="0dp"
-            />
+            android:textColorHint="#FFFFFF" />
 
         <EditText
             android:id="@+id/enterPassword1"
-            android:paddingLeft="15dp"
-            android:inputType="textPassword"
-            android:hint="Enter your password"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#FFFFFF"
-            android:textColorHint="#FFFFFF"
             android:layout_weight="33"
+            android:backgroundTint="#FFFFFF"
             android:fontFamily="sans-serif"
+            android:hint="Enter your password"
+            android:inputType="textPassword"
             android:paddingBottom="0dp"
-            />
+            android:paddingLeft="15dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
+
         <EditText
             android:id="@+id/enterPassword2"
-            android:paddingLeft="15dp"
-            android:inputType="textPassword"
-            android:hint="Confirm your password"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#FFFFFF"
-            android:textColorHint="#FFFFFF"
             android:layout_weight="33"
+            android:backgroundTint="#FFFFFF"
             android:fontFamily="sans-serif"
-            android:paddingBottom="00dp"/>
+            android:hint="Confirm your password"
+            android:inputType="textPassword"
+            android:paddingBottom="00dp"
+            android:paddingLeft="15dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
 
     </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp" android:layout_weight="10"
-        android:layout_gravity="bottom" android:weightSum="10"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="10"
+        android:orientation="vertical"
+        android:weightSum="10">
 
-        <View android:layout_height="0dp"
+        <View
             android:layout_width="fill_parent"
-            android:background="#FFFFFF"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            />
+            android:background="#FFFFFF" />
+
         <Button
 
+            android:id="@+id/registerBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/registerBtn"
             android:layout_weight="8"
 
             android:background="@drawable/hover_button"
+            android:text="Register"
             android:textColor="#FFFFFF"
-            android:text="Register" android:textSize="18dp"
+            android:textSize="18dp"
 
 
             />
-        <View android:layout_height="0dp"
+
+        <View
             android:layout_width="fill_parent"
-            android:background="#FFFFFF"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            />
+            android:background="#FFFFFF" />
 
     </LinearLayout>
 </LinearLayout>

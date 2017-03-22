@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,6 +26,12 @@ public class Sign_in extends AppCompatActivity  {
     private Button switchLoginToRegister;
 
 
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Sign_in.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+
 
 
     @Override
@@ -35,7 +42,22 @@ public class Sign_in extends AppCompatActivity  {
         logInEmail = (EditText) findViewById(R.id.enterEmailAddress);
         logInPassword = (EditText) findViewById(R.id.enterPassword);
 
-
+        logInEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && !logInPassword.hasFocus()) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+        logInPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && !logInEmail.hasFocus()) {
+                    hideKeyboard(v);
+                }
+            }
+        });
 
         logInBtn = (Button) findViewById(R.id.logInBtn);
 
