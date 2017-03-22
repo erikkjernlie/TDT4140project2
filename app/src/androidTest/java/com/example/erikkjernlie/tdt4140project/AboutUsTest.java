@@ -19,22 +19,24 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withHint;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class RegisterTest {
+public class AboutUsTest {
 
     @Rule
     public ActivityTestRule<SplashScreen> mActivityTestRule = new ActivityTestRule<>(SplashScreen.class);
 
     @Test
-    public void registerTest() {
+    public void aboutUsTest() {
+
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
@@ -44,98 +46,88 @@ public class RegisterTest {
             e.printStackTrace();
         }
 
+        ViewInteraction appCompatEditText5 = onView(
+                allOf(withId(R.id.enterEmailAddress), isDisplayed()));
+        appCompatEditText5.perform(replaceText("test@user.com"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText6 = onView(
+                allOf(withId(R.id.enterPassword), isDisplayed()));
+        appCompatEditText6.perform(replaceText("testuser"), closeSoftKeyboard());
+
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.switchLoginToRegister), withText("Register"), isDisplayed()));
+                allOf(withId(R.id.logInBtn), withText("Log in"), isDisplayed()));
         appCompatButton.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(6000);
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction appCompatButton2 = onView(
+                allOf(withId(R.id.aboutUs), isDisplayed()));
+        appCompatButton2.perform(click());
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         ViewInteraction button = onView(
-                allOf(withId(R.id.switchRegisterToLogin),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        0),
-                                0),
+                allOf(withId(R.id.btn_back),
                         isDisplayed()));
         button.check(matches(isDisplayed()));
 
         ViewInteraction button2 = onView(
-                allOf(withId(R.id.switchRegister),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        0),
-                                1),
+                allOf(withId(R.id.btn_next),
                         isDisplayed()));
         button2.check(matches(isDisplayed()));
 
-        ViewInteraction imageView = onView(
-                allOf(withId(R.id.imageView),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        imageView.check(matches(isDisplayed()));
+        ViewInteraction appCompatButton3 = onView(
+                allOf(withId(R.id.btn_next), withText("NEXT"), isDisplayed()));
+        appCompatButton3.perform(click());
 
-        ViewInteraction editText = onView(
-                allOf(withId(R.id.enterEmailAddress),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        2),
-                                0),
-                        isDisplayed()));
-        editText.check(matches(withHint("Enter your email")));
+        ViewInteraction appCompatButton4 = onView(
+                allOf(withId(R.id.btn_next), withText("NEXT"), isDisplayed()));
+        appCompatButton4.perform(click());
 
-        ViewInteraction editText2 = onView(
-                allOf(withId(R.id.enterPassword1),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        2),
-                                1),
-                        isDisplayed()));
-        editText2.check(matches(withHint("Enter your password")));
+        ViewInteraction appCompatButton5 = onView(
+                allOf(withId(R.id.btn_next), withText("NEXT"), isDisplayed()));
+        appCompatButton5.perform(click());
 
-        ViewInteraction editText3 = onView(
-                allOf(withId(R.id.enterPassword2),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        2),
-                                2),
-                        isDisplayed()));
-        editText3.check(matches(withHint("Confirm your password")));
+        ViewInteraction appCompatButton6 = onView(
+                allOf(withId(R.id.btn_next), withText("NEXT"), isDisplayed()));
+        appCompatButton6.perform(click());
+
+        ViewInteraction appCompatButton7 = onView(
+                allOf(withId(R.id.btn_next), withText("GOT IT"), isDisplayed()));
+        appCompatButton7.perform(click());
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         ViewInteraction button3 = onView(
-                allOf(withId(R.id.registerBtn),
+                allOf(withId(R.id.signOut),
                         childAtPosition(
                                 childAtPosition(
                                         IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        3),
-                                1),
+                                        1),
+                                9),
                         isDisplayed()));
         button3.check(matches(isDisplayed()));
-
-        ViewInteraction button4 = onView(
-                allOf(withId(R.id.registerBtn),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        3),
-                                1),
-                        isDisplayed()));
-        button4.check(matches(isDisplayed()));
 
     }
 
