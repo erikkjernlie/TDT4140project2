@@ -51,8 +51,9 @@ public class ChatBot extends AppCompatActivity {
     private TextView help;
     final Context context = this;
     private int randomNumber = -1;
-    ArrayList<String> sentencesToUnibot;
-    ArrayList<String> sentencesOutput;
+    private ArrayList<String> sentencesToUnibot;
+    private ArrayList<String> sentencesOutput;
+    private boolean odd = true; // boolean to make sure getAiResponse only return actual ai object half of the time.
 
 
     @Override
@@ -167,9 +168,6 @@ public class ChatBot extends AppCompatActivity {
         });
     }
 
-
-
-
     //translates the printed question to a format API.AI understands, so the user can answer directly
     private void translationFromUserToAI () {
         sentencesToUnibot = new ArrayList<String>(Arrays.asList("Tell me about physics", "I want to compare some studies", "print"));
@@ -205,34 +203,49 @@ public class ChatBot extends AppCompatActivity {
         return true;
     }
 
-    private void getAiResponse(String a) {
+    public AIResponse getAiResponse(String a, AIResponse... responses) {
+         // method should only return an real half of the time
+        // and a null object the other time
 
-        final AIRequest aiRequest = new AIRequest();
-        if (!a.isEmpty()) {
-            aiRequest.setQuery(a);
+
+        if(odd) {
+            final AIRequest aiRequest = new AIRequest();
+            if (!a.isEmpty()) {
+                aiRequest.setQuery(a);
+            }
+
+            // Siden aiDataService må kjøres på en backgroundtråd bruker vi AsyncTask til å hente svaret
+            new AsyncTask<AIRequest, Void, AIResponse>() {
+                @Override
+
+                protected AIResponse doInBackground(AIRequest... requests) {
+                    final AIRequest request = requests[0];
+                    try {
+                        final AIResponse response = aiDataService.request(aiRequest); // Henter svar
+                        return response;
+                    } catch (AIServiceException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(AIResponse aiResponse) {
+                    if (aiResponse != null) {
+                        addMessageToChatArray(aiResponse.getResult().getFulfillment().getSpeech()); // returnere svar når ferdig
+                        odd = false; // endrer slik at neste metodekall returnere en faktisk AIResponse
+                        getAiResponse("a", aiResponse); // kaller på metoden en gang til, slik at den første metoden kan returnere responsen
+                    }
+                }
+            }.execute(aiRequest);
+        } else {
+            odd = true;
         }
 
-        // Siden aiDataService må kjøres på en backgroundtråd bruker vi AsyncTask til å hente svaret
-        new AsyncTask<AIRequest, Void, AIResponse>() {
-            @Override
-            protected AIResponse doInBackground(AIRequest... requests) {
-                final AIRequest request = requests[0];
-                try {
-                    final AIResponse response = aiDataService.request(aiRequest); // Henter svar
-                    return response;
-                } catch (AIServiceException e) {
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(AIResponse aiResponse) {
-                if (aiResponse != null) {
-                    addMessageToChatArray(aiResponse.getResult().getFulfillment().getSpeech()); // returnere svar når ferdig
-
-                }
-            }
-        }.execute(aiRequest);
+        if (responses[0] != null) {
+            return responses[0];
+        }
+        return null;
     }
 
 
