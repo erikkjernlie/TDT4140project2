@@ -27,6 +27,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.*;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -37,6 +41,15 @@ public class RegisterUserTest {
 
     @Test
     public void registerUserTest() {
+
+        try {
+            FirebaseAuth.getInstance().signInWithEmailAndPassword("exampe@email.test", "Password1");
+            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+            user.delete();
+        } catch (Exception e) {
+
+        }
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
