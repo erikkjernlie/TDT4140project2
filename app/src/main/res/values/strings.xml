@@ -20,4 +20,12 @@
 
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
+
+    <string name="ratings">Submit your grades</string>
+    <string name="cancel">DELETE</string>
+    <string name="confirm">CONFIRM</string>
+    <string name="or"><b>OR</b></string>
+
+
+    <string name="matematikkR2">You selected <i>Matematikk R2</i>.\nWhat is your grade?</string>
 </resources>
