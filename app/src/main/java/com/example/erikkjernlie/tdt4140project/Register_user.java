@@ -67,12 +67,12 @@ public class Register_user extends AppCompatActivity {
 
         if (TextUtils.isEmpty(email)) {
             //Write email again
-            Toast.makeText(Register_user.this, "Write email!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Register_user.this, "Please enter email", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(password1)) {
             //Write password again
-            Toast.makeText(Register_user.this, "Write password!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Register_user.this, "Please enter password", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -84,7 +84,7 @@ public class Register_user extends AppCompatActivity {
 
         if (!(password1.equals(password2))) {
             //Write password again
-            Toast.makeText(Register_user.this, "Your passwords are not equal", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Register_user.this, "The password fields do not match", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -96,14 +96,14 @@ public class Register_user extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     //Successfull user registration
-                    Toast.makeText(Register_user.this, "Register successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register_user.this, "User was successfully registered", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                     Intent intent  = new Intent(Register_user.this, Menu.class);
                     startActivity(intent);
 
                 } else {
                     //Must try again
-                    Toast.makeText(Register_user.this, "It didn't work, please try again.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register_user.this, "Registering user failed. Please try again", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                 }
             }

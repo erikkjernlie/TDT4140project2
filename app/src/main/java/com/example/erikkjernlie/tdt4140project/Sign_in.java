@@ -67,12 +67,12 @@ public class Sign_in extends AppCompatActivity  {
 
         if (TextUtils.isEmpty(email)) {
             //Write email again
-            Toast.makeText(Sign_in.this, "Write email!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Sign_in.this, "Please enter email", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(password)) {
             //Write password again
-            Toast.makeText(Sign_in.this, "Write password!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Sign_in.this, "Please enter password", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -80,9 +80,8 @@ public class Sign_in extends AppCompatActivity  {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()) {
-                    Toast.makeText(Sign_in.this, "Something went wrong, try again!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Sign_in.this, "Login unsuccessful, please try again", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(Sign_in.this, "Successfully logged in!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Sign_in.this, Menu.class));
                     finish();
                 }
