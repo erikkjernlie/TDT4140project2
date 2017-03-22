@@ -17,6 +17,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
@@ -36,6 +41,13 @@ import ai.api.model.Result;
 public class ChatBot extends AppCompatActivity {
     private static final String TAG = "ChatActivity";
 
+    private int birthYear;
+    private double calculatedGrade;
+    private ArrayList<String> courses;
+    private ArrayList<String> extraEducation;
+    private char gender;
+    private int R2Grade;
+
     private ChatArrayAdapter chatArrayAdapter;
     private ListView listView;
     private EditText chatText;
@@ -53,8 +65,11 @@ public class ChatBot extends AppCompatActivity {
     private int randomNumber = -1;
     private ArrayList<String> sentencesToUnibot;
     private ArrayList<String> sentencesOutput;
-    private boolean odd = true; // boolean to make sure getAiResponse only return actual ai object half of the time.
 
+    ArrayList<String> sentencesToUnibot;
+    ArrayList<String> sentencesOutput;
+    FirebaseAuth firebaseAuth;
+    Firebase mRef;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +77,18 @@ public class ChatBot extends AppCompatActivity {
         requestPermissions(new String[]{"android.permission.RECORD_AUDIO"}, 2);
 
         setContentView(R.layout.chatbot);
+
+        Firebase.setAndroidContext(ChatBot.this);
+
+        firebaseAuth = firebaseAuth.getInstance();
+
+        firebaseAuth.signInWithEmailAndPassword("yoyo@heyhey.com", "123456");
+
+        //mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
+        //      firebaseAuth.getCurrentUser().getUid());
+
+        mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
+                firebaseAuth.getCurrentUser().getUid());
 
 
         buttonSend = (Button) findViewById(R.id.send);
@@ -106,10 +133,101 @@ public class ChatBot extends AppCompatActivity {
 
 
         initTextButtons();
+        getInfoDatabase();
 
     }
 
-    private void initTextButtons(){
+    public void getInfoDatabase() {
+        mRef.child("BirthYear").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setBirthYear(dataSnapshot.getValue(Integer.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                firebaseError.getMessage();
+            }
+        });
+
+        mRef.child("CalculatedGrade").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setCalculatedGrade(dataSnapshot.getValue(Double.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+
+        mRef.child("Courses").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setCourses(dataSnapshot.getValue(ArrayList.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+
+        mRef.child("Extra education").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setExtraEducation(dataSnapshot.getValue(ArrayList.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+
+        mRef.child("Gender").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setGender(dataSnapshot.getValue(Character.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+
+        mRef.child("R2Grade").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setR2Grade(dataSnapshot.getValue(Integer.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+    }
+
+    public String displayUserInformation() {
+        String userInfo = "";
+        userInfo += "Your birth year: " + this.birthYear + "\n";
+        userInfo += "Your calculated grade: " + this.calculatedGrade + "\n";
+        userInfo += "Your courses: ";
+        for (int i = 0; i < this.courses.size(); i++) {
+            userInfo += this.courses.get(i) + ", ";
+        }
+        //Deletes the last comma
+        userInfo = userInfo.substring(0, userInfo.length() - 2) + "\n";
+        userInfo += "Your extra education: ";
+        for (int i = 0; i < this.extraEducation.size(); i++) {
+            userInfo += this.extraEducation.get(i) + ", ";
+        }
+        //Deletes the last comma
+        userInfo = userInfo.substring(0, userInfo.length() - 2) + "\n";
+        userInfo += "Your gender: " + this.gender + "\n";
+        userInfo += "Your R2-grade: " + this.R2Grade;
+        return userInfo;
+    }
+
+    private void initTextButtons() {
         uniBot = (TextView) findViewById(R.id.unibot);
         back = (TextView) findViewById(R.id.back);
         help = (TextView) findViewById(R.id.help);
@@ -131,13 +249,13 @@ public class ChatBot extends AppCompatActivity {
 
                 // set dialog message
                 alertDialogBuilder
-                        .setMessage("uniBOT can help you with\n- Information about a specific study"+
-                        "\n- Compare different studies\n- Give you information about a study's union\n- Print available studies\nand lots of other random things.\n"
-                        + "\nDo you need more help or information about how to ask questions? Type help in the chat."
-                        + "\n\nYou can also press the uniBOT button at the top for random questions.")
+                        .setMessage("uniBOT can help you with\n- Information about a specific study" +
+                                "\n- Compare different studies\n- Give you information about a study's union\n- Print available studies\nand lots of other random things.\n"
+                                + "\nDo you need more help or information about how to ask questions? Type help in the chat."
+                                + "\n\nYou can also press the uniBOT button at the top for random questions.")
                         .setCancelable(false)
-                        .setPositiveButton("I don't need any more help",new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
+                        .setPositiveButton("I don't need any more help", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
                                 // if this button is clicked, close
                                 // current activity
                                 dialog.cancel();
@@ -168,8 +286,9 @@ public class ChatBot extends AppCompatActivity {
         });
     }
 
+
     //translates the printed question to a format API.AI understands, so the user can answer directly
-    private void translationFromUserToAI () {
+    private void translationFromUserToAI() {
         sentencesToUnibot = new ArrayList<String>(Arrays.asList("Tell me about physics", "I want to compare some studies", "print"));
         getAiResponse(sentencesToUnibot.get(randomNumber));
     }
@@ -178,9 +297,17 @@ public class ChatBot extends AppCompatActivity {
     private boolean sendChatMessage() {
         String messageFromUser = chatText.getText().toString();
 
+        //For displayUserInformation:
 
         if (!messageFromUser.isEmpty()) { // sjekker at meldingen ikke er tom
             chatArrayAdapter.add(new ChatMessage(side, messageFromUser));
+        }
+
+        if (messageFromUser.equals("Tell me about me")) {
+            String userInfo = displayUserInformation();
+            addMessageToChatArray(userInfo);
+            chatText.setText("");
+            return true;
         }
         chatText.setText(""); //resets the chatbox
         //here comes the response
@@ -188,8 +315,8 @@ public class ChatBot extends AppCompatActivity {
         //checks if the user wants to answer the random question.
         // Also checks if the last question uniBOT printed equals the question that was printed because the user pressed the uniBOT-button
         //This needs to be checked, or else the user can type "yes" whenever (s)he wants, and the answer to the last question will be printed
-        if(messageFromUser.toLowerCase().equals("yes") && randomNumber > -1 && chatArrayAdapter.getItem(chatArrayAdapter.getCount()-2).toString().equals(sentencesOutput.get(randomNumber))) {
-            System.out.println(chatArrayAdapter.getItem(chatArrayAdapter.getCount()-2).toString());
+        if (messageFromUser.toLowerCase().equals("yes") && randomNumber > -1 && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber))) {
+            System.out.println(chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString());
             translationFromUserToAI();
             return true;
         } else if (messageFromUser.toLowerCase().equals("no")) {
@@ -198,54 +325,39 @@ public class ChatBot extends AppCompatActivity {
         }
 
 
-       getAiResponse(messageFromUser);
+        getAiResponse(messageFromUser);
 
         return true;
     }
 
-    public AIResponse getAiResponse(String a, AIResponse... responses) {
-         // method should only return an real half of the time
-        // and a null object the other time
+    private void getAiResponse(String a) {
 
+        final AIRequest aiRequest = new AIRequest();
+        if (!a.isEmpty()) {
+            aiRequest.setQuery(a);
+        }
 
-        if(odd) {
-            final AIRequest aiRequest = new AIRequest();
-            if (!a.isEmpty()) {
-                aiRequest.setQuery(a);
+        // Siden aiDataService må kjøres på en backgroundtråd bruker vi AsyncTask til å hente svaret
+        new AsyncTask<AIRequest, Void, AIResponse>() {
+            @Override
+            protected AIResponse doInBackground(AIRequest... requests) {
+                final AIRequest request = requests[0];
+                try {
+                    final AIResponse response = aiDataService.request(aiRequest); // Henter svar
+                    return response;
+                } catch (AIServiceException e) {
+                }
+                return null;
             }
 
-            // Siden aiDataService må kjøres på en backgroundtråd bruker vi AsyncTask til å hente svaret
-            new AsyncTask<AIRequest, Void, AIResponse>() {
-                @Override
+            @Override
+            protected void onPostExecute(AIResponse aiResponse) {
+                if (aiResponse != null) {
+                    addMessageToChatArray(aiResponse.getResult().getFulfillment().getSpeech()); // returnere svar når ferdig
 
-                protected AIResponse doInBackground(AIRequest... requests) {
-                    final AIRequest request = requests[0];
-                    try {
-                        final AIResponse response = aiDataService.request(aiRequest); // Henter svar
-                        return response;
-                    } catch (AIServiceException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
                 }
-
-                @Override
-                protected void onPostExecute(AIResponse aiResponse) {
-                    if (aiResponse != null) {
-                        addMessageToChatArray(aiResponse.getResult().getFulfillment().getSpeech()); // returnere svar når ferdig
-                        odd = false; // endrer slik at neste metodekall returnere en faktisk AIResponse
-                        getAiResponse("a", aiResponse); // kaller på metoden en gang til, slik at den første metoden kan returnere responsen
-                    }
-                }
-            }.execute(aiRequest);
-        } else {
-            odd = true;
-        }
-
-        if (responses[0] != null) {
-            return responses[0];
-        }
-        return null;
+            }
+        }.execute(aiRequest);
     }
 
 
@@ -275,6 +387,54 @@ public class ChatBot extends AppCompatActivity {
         resultTextView.setText("Query:" + result.getResolvedQuery() +
                 "\nAction: " + result.getAction() +
                 "\nParameters: " + parameterString);
+    }
+
+    public int getBirthYear() {
+        return birthYear;
+    }
+
+    public void setBirthYear(int birthYear) {
+        this.birthYear = birthYear;
+    }
+
+    public double getCalculatedGrade() {
+        return calculatedGrade;
+    }
+
+    public void setCalculatedGrade(double calculatedGrade) {
+        this.calculatedGrade = calculatedGrade;
+    }
+
+    public ArrayList<String> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(ArrayList<String> courses) {
+        this.courses = courses;
+    }
+
+    public ArrayList<String> getExtraEducation() {
+        return extraEducation;
+    }
+
+    public void setExtraEducation(ArrayList<String> extraEducation) {
+        this.extraEducation = extraEducation;
+    }
+
+    public char getGender() {
+        return gender;
+    }
+
+    public void setGender(char gender) {
+        this.gender = gender;
+    }
+
+    public int getR2Grade() {
+        return R2Grade;
+    }
+
+    public void setR2Grade(int r2Grade) {
+        R2Grade = r2Grade;
     }
 
 }
