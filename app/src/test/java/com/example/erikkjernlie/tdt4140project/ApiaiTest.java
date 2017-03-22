@@ -1,6 +1,7 @@
 package com.example.erikkjernlie.tdt4140project;
 
 
+import org.junit.Before;
 import org.junit.Test;
 
 import ai.api.model.AIResponse;
@@ -16,7 +17,7 @@ import static org.junit.Assert.*;
 public class ApiaiTest {
 
     private ChatBot chatBot;
-
+    @Before
     public void setUp() {
         chatBot = new ChatBot();
     }
