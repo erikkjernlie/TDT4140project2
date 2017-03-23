@@ -13,7 +13,7 @@ import java.io.IOException;
 public class GetInfo {
 
     public static void main(String[] args) throws IOException {
-        String url="http://www.ntnu.edu/studies/mting";
+        String url="http://www.ntnu.no/studier/mting/miljo";
         Document document = Jsoup.connect(url).get();
 
         Elements el = document.getElementsByClass("innholdstekst");

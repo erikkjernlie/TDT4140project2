@@ -1,5 +1,6 @@
 package com.example.erikkjernlie.tdt4140project;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -11,25 +12,20 @@ public class StudyProgramInfo {
 
     private String info;
     private Double grade;
-    private ArrayList<String> keywords;
     private boolean isGirlPoints;
     private double girPercentage;
-    private ArrayList<String> commonWorkFields;
     private String studentUnion;
-    private Map<String, StudySpecialization> specializations;
+    private ArrayList<String> specializations;
     private String studyEnvironment;
 
-    public StudyProgramInfo(String info, Double grade, ArrayList<String> keywords,
-                            boolean isGirlPoints, double girPercentage,
-                            ArrayList<String> commonWorkFields, String studentUnion,
-                            Map<String, StudySpecialization> specializations,
+    public StudyProgramInfo(String info, Double grade,
+                            boolean isGirlPoints, double girPercentage, String studentUnion,
+                            ArrayList<String> specializations,
                             String studyEnvironment) {
         this.info = info;
         this.grade = grade;
-        this.keywords = keywords;
         this.isGirlPoints = isGirlPoints;
         this.girPercentage = girPercentage;
-        this.commonWorkFields = commonWorkFields;
         this.studentUnion = studentUnion;
         this.specializations = specializations;
         this.studyEnvironment = studyEnvironment;
@@ -51,13 +47,6 @@ public class StudyProgramInfo {
         this.grade = grade;
     }
 
-    public ArrayList<String> getKeywords() {
-        return keywords;
-    }
-
-    public void setKeywords(ArrayList<String> keywords) {
-        this.keywords = keywords;
-    }
 
     public boolean isGirlPoints() {
         return isGirlPoints;
@@ -75,14 +64,6 @@ public class StudyProgramInfo {
         this.girPercentage = girPercentage;
     }
 
-    public ArrayList<String> getCommonWorkFields() {
-        return commonWorkFields;
-    }
-
-    public void setCommonWorkFields(ArrayList<String> commonWorkFields) {
-        this.commonWorkFields = commonWorkFields;
-    }
-
     public String getStudentUnion() {
         return studentUnion;
     }
@@ -91,11 +72,11 @@ public class StudyProgramInfo {
         this.studentUnion = studentUnion;
     }
 
-    public Map<String, StudySpecialization> getSpecializations() {
+    public ArrayList<String> getSpecializations() {
         return specializations;
     }
 
-    public void setSpecializations(Map<String, StudySpecialization> specializations) {
+    public void setSpecializations(ArrayList<String> specializations) {
         this.specializations = specializations;
     }
 

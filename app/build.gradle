@@ -84,6 +84,7 @@ dependencies {
         }
     }
 
+    compile 'org.jsoup:jsoup:1.10.2'
 }
 
 apply plugin: 'com.google.gms.google-services'
