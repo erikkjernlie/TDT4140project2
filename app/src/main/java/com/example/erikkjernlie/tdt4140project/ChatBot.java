@@ -312,7 +312,7 @@ public class ChatBot extends AppCompatActivity {
             System.out.println(chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString());
             translationFromUserToAI();
             return true;
-        } else if (messageFromUser.toLowerCase().equals("no")) {
+        } else if (messageFromUser.toLowerCase().equals("no")  && (chatArrayAdapter.getCount() > 2) && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber) )) {
             addMessageToChatArray("You can always press the uniBOT-button to get more random questions. ");
             return true;
         }
@@ -339,8 +339,9 @@ public class ChatBot extends AppCompatActivity {
                     final AIResponse response = aiDataService.request(aiRequest); // Henter svar
                     return response;
                 } catch (AIServiceException e) {
+                    e.printStackTrace();
+                    return null;
                 }
-                return null;
             }
 
             @Override
@@ -366,12 +367,10 @@ public class ChatBot extends AppCompatActivity {
         }
         if(response.getResult().getAction().contains("getInformation")) {
             getInformation(response.getResult().getParameters().get("Studies").toString());
-
         }
         return response.getResult().getFulfillment().getSpeech();
 
     }
-
 
     //This method retrieves information about the study the user wants to know more about
     private void getInformation(String study) {
@@ -383,7 +382,6 @@ public class ChatBot extends AppCompatActivity {
                 "Sykt bra miljo");
         infoRef.child(study).setValue(info);
     }
-
 
     private void addMessageToChatArray(String message) {
         chatArrayAdapter.add(new ChatMessage(true, message));
