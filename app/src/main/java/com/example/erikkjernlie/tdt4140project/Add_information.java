@@ -36,7 +36,7 @@ public class Add_information extends AppCompatActivity{
     private ImageButton man;
     private char gender;
     private int minimum_born_year = 1950; //makes sure that the user has a birthdate, if the user does not spin the numberspinner
-    private int year = minimum_born_year;
+    private int year = 1995;
     private Button dropdownCourses;
     private Button dropdownExtraPoints;
     private Button submit;
@@ -459,13 +459,15 @@ public class Add_information extends AppCompatActivity{
         add_grades.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int totalGrades = number1grade+number2grade+number3grade+number4grade+number4grade+number5grade+number6grade;
+                double totalGrades = number1grade+number2grade+number3grade+number4grade+number5grade+number6grade;
+
                 if ((totalGrades) == 0) {
                     temporaryGrade = 0;
                 } else {
+                    double totalScore = (1*number1grade + 2*number2grade + 3*number3grade + 4*number4grade + 5*number5grade + 6*number6grade);
                 Toast.makeText(getApplicationContext(), "Grades saved.", Toast.LENGTH_SHORT).show();
-                temporaryGrade = (1*number1grade + 2*number2grade + 3*number3grade + 4*number4grade + 5*number5grade + 6*number6grade)/
-                        (totalGrades);
+                temporaryGrade = (totalScore/ (totalGrades));
+
                 }
                 d.dismiss();
             }

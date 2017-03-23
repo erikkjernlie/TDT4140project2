@@ -21,12 +21,12 @@
         </activity>
         <activity android:name=".ChatBot" />
         <activity android:name=".Register" />
-        <activity android:name=".Slideshow_about_unibot" />
-        <activity android:name=".Slideshow_about_us" />
+        <activity android:name=".Slideshow_about_unibot" android:screenOrientation="portrait" />
+        <activity android:name=".Slideshow_about_us" android:screenOrientation="portrait"  />
         <activity android:name=".Sign_in" android:screenOrientation="portrait" />
         <activity android:name=".Register_user" android:screenOrientation="portrait"/>
         <activity android:name=".Menu" android:screenOrientation="portrait"></activity>
-        <activity android:name=".Add_information"></activity>
+        <activity android:name=".Add_information" android:screenOrientation="portrait" ></activity>
 
     </application>
 
