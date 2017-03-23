@@ -305,7 +305,7 @@ public class Add_information extends AppCompatActivity{
         return points;
     }
 
-    public static double round(double value, int places) {
+    private static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
         long factor = (long) Math.pow(10, places);
@@ -315,7 +315,7 @@ public class Add_information extends AppCompatActivity{
     }
 
     public double grade_calculation() {
-            double grade_calculated = 0;
+         double grade_calculated = 0;
          double realFagPoints = 0;
 
             grade_calculated = (temporaryGrade)*10;
@@ -687,6 +687,27 @@ public class Add_information extends AppCompatActivity{
         d.show();
     }
 
+    public double getCalculatedGrade() {
+        return calculatedGrade;
+    }
 
+    public char getGender() {
+        return gender;
+    }
 
+    public int getR2Grade() {
+        return R2Grade;
+    }
+
+    public int getExtraPoints() {
+        return extraPoints;
+    }
+
+    public List<String> getExtra_education_array() {
+        return extra_education_array;
+    }
+
+    public List<String> getCourses_array() {
+        return courses_array;
+    }
 }
