@@ -315,8 +315,8 @@ public class Add_information extends AppCompatActivity{
     }
 
     public double grade_calculation() {
-        double grade_calculated = 0;
-        double realFagPoints = 0;
+            double grade_calculated = 0;
+         double realFagPoints = 0;
 
             grade_calculated = (temporaryGrade)*10;
             grade_calculated = round(grade_calculated, 2);
@@ -332,7 +332,7 @@ public class Add_information extends AppCompatActivity{
             if (realFagPoints > 4) {
                 realFagPoints = 4;
             }
-            grade_calculated += agePoints(year) + extraPoints + realFagPoints;
+            grade_calculated += (agePoints(year) + extraPoints + realFagPoints);
             return grade_calculated;
 
 
@@ -455,15 +455,17 @@ public class Add_information extends AppCompatActivity{
 
         add_grades = (TextView) d.findViewById(R.id.add_grades);
         cancel = (TextView) d.findViewById(R.id.cancel);
+
         add_grades.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ((number1grade+number2grade+number3grade+number4grade+number4grade+number5grade+number6grade) == 0) {
+                final int totalGrades = number1grade+number2grade+number3grade+number4grade+number4grade+number5grade+number6grade;
+                if ((totalGrades) == 0) {
                     temporaryGrade = 0;
                 } else {
                 Toast.makeText(getApplicationContext(), "Grades saved.", Toast.LENGTH_SHORT).show();
                 temporaryGrade = (1*number1grade + 2*number2grade + 3*number3grade + 4*number4grade + 5*number5grade + 6*number6grade)/
-                        (number1grade+number2grade+number3grade+number4grade+number4grade+number5grade+number6grade);
+                        (totalGrades);
                 }
                 d.dismiss();
             }
@@ -637,9 +639,6 @@ public class Add_information extends AppCompatActivity{
                 number5grade_textview.setText(Integer.toString(number5grade));
                 number6grade_textview.setText(Integer.toString(number6grade));
 
-
-
-                //kanskje endre fra cancel til delete? Hvis man først adder, så går innpå og trykker cancel slettes alle
             }
         });
 
