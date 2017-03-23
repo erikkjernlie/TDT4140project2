@@ -82,7 +82,7 @@ public class ChatBot extends AppCompatActivity {
 
         firebaseAuth = firebaseAuth.getInstance();
 
-        firebaseAuth.signInWithEmailAndPassword("jaja@neinei.com", "123456");
+        //firebaseAuth.signInWithEmailAndPassword("jaja@neinei.com", "123456");
 
         //mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
         //      firebaseAuth.getCurrentUser().getUid());
@@ -297,6 +297,9 @@ public class ChatBot extends AppCompatActivity {
         String messageFromUser = chatText.getText().toString();
 
         //For displayUserInformation:
+        if (messageFromUser.isEmpty()) {
+            return false;
+        }
 
         if (!messageFromUser.isEmpty()) { // sjekker at meldingen ikke er tom
             chatArrayAdapter.add(new ChatMessage(side, messageFromUser));
@@ -308,6 +311,7 @@ public class ChatBot extends AppCompatActivity {
         //checks if the user wants to answer the random question.
         // Also checks if the last question uniBOT printed equals the question that was printed because the user pressed the uniBOT-button
         //This needs to be checked, or else the user can type "yes" whenever (s)he wants, and the answer to the last question will be printed
+        System.out.println(messageFromUser.toString());
         if (messageFromUser.toLowerCase().equals("yes") && randomNumber > -1 && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber))) {
             System.out.println(chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString());
             translationFromUserToAI();
@@ -376,7 +380,6 @@ public class ChatBot extends AppCompatActivity {
     private void getInformation(String study) {
         //Sends a StudyProgramInfo-object to the database (TEST)
         Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies");
-
     }
 
     public void setStudyInformations (String study) {

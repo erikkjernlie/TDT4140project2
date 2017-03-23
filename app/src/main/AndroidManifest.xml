@@ -13,13 +13,13 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChatBot">
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity android:name=".ChatBot" />-->
+        <activity android:name=".ChatBot" />
         <activity android:name=".Register" />
         <activity android:name=".Slideshow_about_unibot" />
         <activity android:name=".Slideshow_about_us" />
