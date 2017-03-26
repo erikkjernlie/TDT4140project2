@@ -62,7 +62,7 @@ public class AboutUsTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(3000);
+            Thread.sleep(6000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -75,7 +75,7 @@ public class AboutUsTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(3000);
+            Thread.sleep(6000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -95,7 +95,7 @@ public class AboutUsTest {
         appCompatButton3.perform(click());
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(6000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -105,7 +105,7 @@ public class AboutUsTest {
         appCompatButton4.perform(click());
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(6000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -115,7 +115,7 @@ public class AboutUsTest {
         appCompatButton5.perform(click());
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(6000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -125,7 +125,7 @@ public class AboutUsTest {
         appCompatButton6.perform(click());
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(6000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -138,7 +138,7 @@ public class AboutUsTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(3000);
+            Thread.sleep(6000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
