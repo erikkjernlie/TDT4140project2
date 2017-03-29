@@ -339,11 +339,11 @@ public class Add_information extends AppCompatActivity{
     }
 
 
-    //not fixed if the user selects some courses, presses ok, and opens it again; then it will be empty.
+
     private void alertCourses() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(Add_information.this)
                 .setTitle("Choose courses")
-                .setMultiChoiceItems(courses, null, new DialogInterface.OnMultiChoiceClickListener() {
+                .setMultiChoiceItems(courses, checked_state_courses, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 
@@ -364,12 +364,7 @@ public class Add_information extends AppCompatActivity{
                                 + courses_array.toString(), Toast.LENGTH_SHORT).show();
 
 
-                        //clears the array used to store checked state
-                        for (int i = 0; i < checked_state_courses.length; i++) {
-                            if (checked_state_courses[i] == true) {
-                                checked_state_courses[i] = false;
-                            }
-                        }
+
                         if (courses_array.contains("Matematikk R2")) {
                             alertR2Grade();
                         }
@@ -385,7 +380,7 @@ public class Add_information extends AppCompatActivity{
     private void alertExtraEducation() {
         AlertDialog.Builder builder2 = new AlertDialog.Builder(Add_information.this)
                 .setTitle("Choose education")
-                .setMultiChoiceItems(extra_education, null, new DialogInterface.OnMultiChoiceClickListener() {
+                .setMultiChoiceItems(extra_education, checked_state_education, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 
@@ -406,12 +401,7 @@ public class Add_information extends AppCompatActivity{
                                 + extra_education_array.toString(), Toast.LENGTH_SHORT).show();
 
 
-                        //clears the array used to store checked state
-                        for (int i = 0; i < checked_state_education.length; i++) {
-                            if (checked_state_education[i] == true) {
-                                checked_state_education[i] = false;
-                            }
-                        }
+
 
                         //alertdialog_r2grade.dismiss(); if we want it to be able to close the window if the user presses outside the alert
                     }
