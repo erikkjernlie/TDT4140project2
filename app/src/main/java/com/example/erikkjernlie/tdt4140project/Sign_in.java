@@ -1,5 +1,6 @@
 package com.example.erikkjernlie.tdt4140project;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,10 +8,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,6 +26,9 @@ public class Sign_in extends AppCompatActivity  {
     private Button logInBtn;
     private FirebaseAuth firebaseAuth;
     private Button switchLoginToRegister;
+    private TextView forgotPassword;
+    private EditText email_retrieve_password;
+    private TextView confirm_email;
 
 
     public void hideKeyboard(View view) {
@@ -81,6 +86,14 @@ public class Sign_in extends AppCompatActivity  {
                 logInUser();
             }
         });
+
+        forgotPassword = (TextView) findViewById(R.id.forgotPassword);
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertRetrievePassword();
+            }
+        });
     }
 
     public void logInUser() {
@@ -110,6 +123,29 @@ public class Sign_in extends AppCompatActivity  {
             }
         });
 
+    }
+
+    public void alertRetrievePassword(){
+        final Dialog d = new Dialog(Sign_in.this);
+        d.setContentView(R.layout.alertdialog_password);
+        d.setTitle("Insert e-mail");
+        email_retrieve_password = (EditText) d.findViewById(R.id.email_retrieve_password);
+        confirm_email = (TextView) d.findViewById(R.id.confirm_email);
+        confirm_email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                    String email = email_retrieve_password.getText().toString();
+                //her er emailen, retrieve passordet for faen
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(email);
+                    Toast.makeText(Sign_in.this, "Instructions are sent to the requested e-mail", Toast.LENGTH_SHORT).show();
+                    d.dismiss();
+
+
+            }
+        });
+        d.show();
     }
 
 
