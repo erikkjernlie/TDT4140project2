@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -26,6 +27,7 @@ public class Register_user extends AppCompatActivity {
     private Button registerBtn;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
+    private Firebase mRef;
     private Button switchRegisterToLogin;
 
     public void hideKeyboard(View view) {
@@ -130,6 +132,13 @@ public class Register_user extends AppCompatActivity {
                     Toast.makeText(Register_user.this, "User was successfully registered", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                     Intent intent  = new Intent(Register_user.this, Menu.class);
+                    Firebase.setAndroidContext(Register_user.this);
+
+                    firebaseAuth = firebaseAuth.getInstance();
+
+                    mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
+                            firebaseAuth.getCurrentUser().getUid());
+                    storeVariables();
                     startActivity(intent);
 
                 } else {
@@ -144,6 +153,33 @@ public class Register_user extends AppCompatActivity {
 
 
     }
+
+    private void storeVariables() {
+        //Store averageGrade
+        Firebase mRefChildGrade = mRef.child("CalculatedGrade");
+        mRefChildGrade.setValue(0.0);
+
+        //Store gender
+        Firebase mRefChildGender = mRef.child("Gender");
+        mRefChildGender.setValue('\u0000');
+
+        //Store courses
+        Firebase mRefChildCourses = mRef.child("Courses");
+        mRefChildCourses.setValue(null);
+
+        //Store extra education
+        Firebase mRefChildExEd = mRef.child("Extra education");
+        mRefChildExEd.setValue(null);
+
+        //Store birthyear
+        Firebase mRefChildYear = mRef.child("BirthYear");
+        mRefChildYear.setValue(0);
+
+        //Store R2Grade
+        Firebase mRefChildR2Grade = mRef.child("R2Grade");
+        mRefChildR2Grade.setValue(0);
+    }
+
 
 
 }

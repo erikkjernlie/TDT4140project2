@@ -136,11 +136,15 @@ public class Sign_in extends AppCompatActivity  {
             public void onClick(View v) {
 
 
-                    String email = email_retrieve_password.getText().toString();
-                //her er emailen, retrieve passordet for faen
-                    FirebaseAuth.getInstance().sendPasswordResetEmail(email);
+                String email = email_retrieve_password.getText().toString();
+                if (!email.equals("")){
+                    String email2 = (String) email_retrieve_password.toString();
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(email2);
                     Toast.makeText(Sign_in.this, "Instructions are sent to the requested e-mail", Toast.LENGTH_SHORT).show();
                     d.dismiss();
+                } else {
+                    Toast.makeText(Sign_in.this, "Type in your e-mail!", Toast.LENGTH_SHORT).show();
+                }
 
 
             }

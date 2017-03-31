@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ChatBot" />
-        <activity android:name=".Register" />
+        <activity android:name=".Register" android:screenOrientation="portrait"/>
         <activity android:name=".Slideshow_about_unibot" android:screenOrientation="portrait" />
         <activity android:name=".Slideshow_about_us" android:screenOrientation="portrait"  />
         <activity android:name=".Sign_in" android:screenOrientation="portrait" />

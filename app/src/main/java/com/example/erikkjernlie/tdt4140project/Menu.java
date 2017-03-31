@@ -1,16 +1,23 @@
 package com.example.erikkjernlie.tdt4140project;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
 
 public class Menu extends AppCompatActivity {
 
@@ -20,6 +27,18 @@ public class Menu extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private Button signOut;
     private Button aboutUs;
+    private ImageView cogwheel;
+    private TextView test_textview_settings;
+
+    private Firebase mRef;
+
+    private char gender;
+    private double calculatedGrade;
+    private int birthYear;
+
+    private ArrayList<String> courses;
+    private ArrayList<String> extraEducation;
+    private int R2Grade;
 
 
 
@@ -68,16 +87,261 @@ public class Menu extends AppCompatActivity {
             }
         });
 
+        cogwheel = (ImageView) findViewById(R.id.cogwheel);
+        cogwheel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertSettings();
+            }
+        });
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        //initButtons();
+        Firebase.setAndroidContext(Menu.this);
+
+        //hvordan henter man info
+        firebaseAuth = firebaseAuth.getInstance();
+
+        mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
+                firebaseAuth.getCurrentUser().getUid());
+
+
+        getInfoDatabase();
         initButtons();
+
         //uncomment this when we want the alert just to appear the first time the app is started
 
     }
+
+
+    public void alertSettings(){
+        final Dialog d = new Dialog(Menu.this);
+        d.setContentView(R.layout.alertdialog_settings);
+        d.setTitle("Settings");
+        ImageView img = (ImageView) d.findViewById(R.id.gender_picture);
+
+        TextView t2 = (TextView) d.findViewById(R.id.birthyear_settings);
+        TextView t3 = (TextView) d.findViewById(R.id.cources_settings);
+        TextView t4 = (TextView) d.findViewById(R.id.r2grade_settings);
+        TextView t5 = (TextView) d.findViewById(R.id.extra_information_settings);
+        TextView t6 = (TextView) d.findViewById(R.id.calculated_grade_settings);
+        TextView t7 = (TextView) d.findViewById(R.id.courses_havehad);
+        TextView t8 = (TextView) d.findViewById(R.id.extra_havehad);
+
+        if (this.gender == 'M'){
+            img.setImageResource(R.drawable.man_selected);
+
+        } else if (this.gender == 'F'){
+            img.setImageResource(R.drawable.female_selected);
+
+        } else {
+            img.setVisibility(View.GONE);
+        }
+
+        if (this.birthYear != 0){
+            t2.setText("You are born in " + birthYear+ ".");
+        } else {
+            t2.setVisibility(View.GONE);
+        }
+
+        if (this.courses != null){
+            t7.setText("You have had the following courses:");
+            t3.setText(this.courses.toString());
+        } else {
+            t3.setVisibility(View.GONE);
+            t7.setVisibility(View.GONE);
+        }
+        if (this.R2Grade != 0){
+            t4.setText("You got an " + this.R2Grade + " in R2");
+        } else {
+            t4.setVisibility(View.GONE);
+        }
+        if (this.extraEducation != null){
+            t8.setText("You have also had:");
+            t5.setText(this.extraEducation.toString());
+        } else {
+            t8.setVisibility(View.GONE);
+            t5.setVisibility(View.GONE);
+        }
+
+        if (calculatedGrade != 0.0){
+            t6.setText("You score is  " + calculatedGrade + ".");
+
+        } else {
+            t6.setVisibility(View.GONE);
+        }
+
+        d.show();
+        TextView change_password = (TextView) d.findViewById(R.id.change_password);
+        change_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertRetrievePassword();
+            }
+        });
+        TextView return_to_settings = (TextView) d.findViewById(R.id.return_to_settings);
+        return_to_settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+
+
+    }
+
+    public void alertRetrievePassword(){
+        final Dialog e = new Dialog(Menu.this);
+        e.setContentView(R.layout.alertdialog_password);
+        e.setTitle("Insert e-mail");
+        final EditText email_retrieve_password = (EditText) e.findViewById(R.id.email_retrieve_password);
+        TextView confirm_email = (TextView) e.findViewById(R.id.confirm_email);
+        confirm_email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                String email = email_retrieve_password.getText().toString();
+                if (!email.equals("")){
+                    String email2 = (String) email_retrieve_password.toString();
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(email2);
+                    Toast.makeText(Menu.this, "Instructions are sent to the requested e-mail", Toast.LENGTH_SHORT).show();
+                    e.dismiss();
+                } else {
+                    Toast.makeText(Menu.this, "Type in your e-mail!", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+
+            }
+        });
+        e.show();
+    }
+
+    public void getInfoDatabase() {
+        mRef.child("BirthYear").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setBirthYear(dataSnapshot.getValue(Integer.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                firebaseError.getMessage();
+            }
+        });
+
+        mRef.child("CalculatedGrade").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setCalculatedGrade(dataSnapshot.getValue(Double.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+
+        mRef.child("Courses").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setCourses(dataSnapshot.getValue(ArrayList.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+
+        mRef.child("Extra education").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setExtraEducation(dataSnapshot.getValue(ArrayList.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+
+        mRef.child("Gender").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setGender(dataSnapshot.getValue(Character.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+
+        mRef.child("R2Grade").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setR2Grade(dataSnapshot.getValue(Integer.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+    }
+
+
+    public int getBirthYear() {
+        return birthYear;
+    }
+
+    public void setBirthYear(int birthYear) {
+        this.birthYear = birthYear;
+    }
+
+    public double getCalculatedGrade() {
+        return calculatedGrade;
+    }
+
+    public void setCalculatedGrade(double calculatedGrade) {
+        this.calculatedGrade = calculatedGrade;
+    }
+
+    public ArrayList<String> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(ArrayList<String> courses) {
+        this.courses = courses;
+    }
+
+    public ArrayList<String> getExtraEducation() {
+        return extraEducation;
+    }
+
+    public void setExtraEducation(ArrayList<String> extraEducation) {
+        this.extraEducation = extraEducation;
+    }
+
+    public char getGender() {
+        return gender;
+    }
+
+    public void setGender(char gender) {
+        this.gender = gender;
+    }
+
+    public int getR2Grade() {
+        return R2Grade;
+    }
+
+    public void setR2Grade(int r2Grade) {
+        R2Grade = r2Grade;
+    }
+
 
 
 }
