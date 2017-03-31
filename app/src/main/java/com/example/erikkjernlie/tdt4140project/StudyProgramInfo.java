@@ -35,6 +35,19 @@ public class StudyProgramInfo {
         return info;
     }
 
+    @Override
+    public String toString() {
+        return "StudyProgramInfo{" +
+                "info='" + info + '\'' +
+                ", grade=" + grade +
+                ", isGirlPoints=" + isGirlPoints +
+                ", girPercentage=" + girlPercentage +
+                ", studentUnion='" + studentUnion + '\'' +
+                ", specializations=" + specializations +
+                ", studyEnvironment='" + studyEnvironment + '\'' +
+                '}';
+    }
+
     public void setInfo(String info) {
         this.info = info;
     }
