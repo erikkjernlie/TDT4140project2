@@ -7,6 +7,7 @@ In the initial release of the app, we have restricted the number of supported st
 - Computer Science
 - Informatics
 - Industrial Economics and Technology with Computer- and Communication Technology
+
 Implementing the software for a limited number of studies whom have many simularities allow us to develop the app functionality further without having to spend a large amount of time gathering information.
 
 In order to run the program on a computer during the development phase, one would need to install a program called Android Studio and open the project from there. The project is stored here on GITHUB. The "Master"-branch consists of up-to-date functional code, while development is done in separate branches with appropriate branch names. At some point before the 27th of April, the app will be made available for download on Google Play.
@@ -14,6 +15,7 @@ In order to run the program on a computer during the development phase, one woul
 Unit- and GUI tests are found in the following folders:
 - TDT4140project2\app\src\test
 - TDT4140project2\app\src\androidTest
+
 GUI-tests and API.AI require an Android emulator to run. This is best done in Android Studio by simply right-clicking the folder and selecting "Run tests in folder". Other software programs that allow the use of such emulators can also be used, but is not recommended. JUnit-tests can be ran with any software that supports Java files, as long as they are able to import the appropriate methods to be tested.
 
 The native app for Android with its functions are made using:
