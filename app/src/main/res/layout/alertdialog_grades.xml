@@ -10,9 +10,6 @@
     android:paddingLeft="20dp"
     android:paddingRight="20dp">
 
-    <!--Endre fargen til hvit slik at den matcher de
-     andre? I tillegg: bytt den karakter i R2
-     til samme fargekombinasjon-->
 
 
     <TextView

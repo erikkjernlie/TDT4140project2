@@ -1,3 +1,17 @@
+/*  Menu
+ *
+ *  Menu for the app. Contains buttons to the different functions of uniBOT;
+ *  ChatBot - explore, Slideshow_about_us - information about the team, SlideShow_about_unibot
+ *  - information about the app and a sign out button - which signs the user out of the app and
+ *  returns the user to the Sign_in acitivity.
+ *  The menu contains an photoshopped image of the main building on Gløshaugen,
+ *  with uniBOT's logo in the background.
+ *
+ *  Created by Erik Kjernlie
+ *  Copyright © uniBOT
+ */
+
+
 package com.example.erikkjernlie.tdt4140project;
 
 import android.app.Dialog;
@@ -28,21 +42,16 @@ public class Menu extends AppCompatActivity {
     private Button signOut;
     private Button aboutUs;
     private ImageView cogwheel;
-    private TextView test_textview_settings;
-
     private Firebase mRef;
-
     private char gender;
     private double calculatedGrade;
     private int birthYear;
-
     private ArrayList<String> courses;
     private ArrayList<String> extraEducation;
     private int R2Grade;
 
 
-
-    public void initButtons(){
+    public void initButtons() {
         register = (Button) findViewById(R.id.register);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +128,7 @@ public class Menu extends AppCompatActivity {
     }
 
 
-    public void alertSettings(){
+    public void alertSettings() {
         final Dialog d = new Dialog(Menu.this);
         d.setContentView(R.layout.alertdialog_settings);
         d.setTitle("Settings");
@@ -133,35 +142,35 @@ public class Menu extends AppCompatActivity {
         TextView t7 = (TextView) d.findViewById(R.id.courses_havehad);
         TextView t8 = (TextView) d.findViewById(R.id.extra_havehad);
 
-        if (this.gender == 'M'){
+        if (this.gender == 'M') {
             img.setImageResource(R.drawable.man_selected);
 
-        } else if (this.gender == 'F'){
+        } else if (this.gender == 'F') {
             img.setImageResource(R.drawable.female_selected);
 
         } else {
             img.setVisibility(View.GONE);
         }
 
-        if (this.birthYear != 0){
-            t2.setText("You are born in " + birthYear+ ".");
+        if (this.birthYear != 0) {
+            t2.setText("You are born in " + birthYear + ".");
         } else {
             t2.setVisibility(View.GONE);
         }
 
-        if (this.courses != null){
+        if (this.courses != null) {
             t7.setText("You have had the following courses:");
             t3.setText(this.courses.toString());
         } else {
             t3.setVisibility(View.GONE);
             t7.setVisibility(View.GONE);
         }
-        if (this.R2Grade != 0){
+        if (this.R2Grade != 0) {
             t4.setText("You got an " + this.R2Grade + " in R2");
         } else {
             t4.setVisibility(View.GONE);
         }
-        if (this.extraEducation != null){
+        if (this.extraEducation != null) {
             t8.setText("You have also had:");
             t5.setText(this.extraEducation.toString());
         } else {
@@ -169,7 +178,7 @@ public class Menu extends AppCompatActivity {
             t5.setVisibility(View.GONE);
         }
 
-        if (calculatedGrade != 0.0){
+        if (calculatedGrade != 0.0) {
             t6.setText("You score is  " + calculatedGrade + ".");
 
         } else {
@@ -195,7 +204,7 @@ public class Menu extends AppCompatActivity {
 
     }
 
-    public void alertRetrievePassword(){
+    public void alertRetrievePassword() {
         final Dialog e = new Dialog(Menu.this);
         e.setContentView(R.layout.alertdialog_password);
         e.setTitle("Insert e-mail");
@@ -207,7 +216,7 @@ public class Menu extends AppCompatActivity {
 
 
                 String email = email_retrieve_password.getText().toString();
-                if (!email.equals("")){
+                if (!email.equals("")) {
                     String email2 = (String) email_retrieve_password.toString();
                     FirebaseAuth.getInstance().sendPasswordResetEmail(email2);
                     Toast.makeText(Menu.this, "Instructions are sent to the requested e-mail", Toast.LENGTH_SHORT).show();
@@ -215,8 +224,6 @@ public class Menu extends AppCompatActivity {
                 } else {
                     Toast.makeText(Menu.this, "Type in your e-mail!", Toast.LENGTH_SHORT).show();
                 }
-
-
 
 
             }
@@ -341,7 +348,6 @@ public class Menu extends AppCompatActivity {
     public void setR2Grade(int r2Grade) {
         R2Grade = r2Grade;
     }
-
 
 
 }

@@ -1,14 +1,19 @@
+/** AboutUnibotTest
+ *
+ * JUNIT-test for add_information.
+ *
+ * Created by Jørgen on 23.03.2017.
+ * Copyright © uniBOT
+ */
+
 package com.example.erikkjernlie.tdt4140project;
 
-/**
- * Created by Jørgen on 23.03.2017.
- */
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.regex.Pattern;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class Add_informationTest {

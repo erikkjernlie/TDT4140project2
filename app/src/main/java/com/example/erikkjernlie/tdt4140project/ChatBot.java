@@ -1,3 +1,12 @@
+/*  ChatBot
+ *
+ *  This is the class where the chatting happends. Connecting with API.AI and firebase.
+ *  Sends the user's input to a format API.AI understands, and responds the user right away
+ *
+ *  Created by Erik Kjernlie
+ *  Copyright © uniBOT
+ */
+
 package com.example.erikkjernlie.tdt4140project;
 
 
@@ -9,7 +18,6 @@ import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -17,12 +25,8 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.firebase.client.Firebase;
-import com.google.firebase.auth.FirebaseAuth;
-
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -31,10 +35,8 @@ import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonElement;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -53,7 +55,6 @@ public class ChatBot extends AppCompatActivity {
     private ArrayList<String> courses;
     private ArrayList<String> extraEducation;
     private int R2Grade;
-
     private ChatArrayAdapter chatArrayAdapter;
     private ListView listView;
     private EditText chatText;
@@ -78,7 +79,7 @@ public class ChatBot extends AppCompatActivity {
     private int birthYear;
     private FirebaseAuth firebaseAuth;
 
-
+    //gets the required access from API.AI and firebase
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,14 +91,8 @@ public class ChatBot extends AppCompatActivity {
 
         firebaseAuth = firebaseAuth.getInstance();
 
-        //firebaseAuth.signInWithEmailAndPassword("jaja@neinei.com", "123456");
-
-        //mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
-        //      firebaseAuth.getCurrentUser().getUid());
-
         mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
                 firebaseAuth.getCurrentUser().getUid());
-
 
         buttonSend = (Button) findViewById(R.id.send);
 
@@ -106,7 +101,7 @@ public class ChatBot extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                    hideKeyboard(v);
+                hideKeyboard(v);
             }
         });
 
@@ -140,7 +135,7 @@ public class ChatBot extends AppCompatActivity {
                 listView.setSelection(chatArrayAdapter.getCount() - 1);
             }
         });
-        config = new AIConfiguration("3e19cea342f04764b1665e37099f1e23", // denne burde egentlig være skjult
+        config = new AIConfiguration("3e19cea342f04764b1665e37099f1e23",
                 AIConfiguration.SupportedLanguages.English,
                 AIConfiguration.RecognitionEngine.Speaktoit);
 
@@ -152,6 +147,7 @@ public class ChatBot extends AppCompatActivity {
 
     }
 
+    //Retrieving information from the spezified fields from the firebase-database
     public void getInfoDatabase() {
         mRef.child("BirthYear").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -243,11 +239,11 @@ public class ChatBot extends AppCompatActivity {
     }
 
     public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(ChatBot.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(ChatBot.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    private void initTextButtons(){
+    private void initTextButtons() {
         uniBot = (TextView) findViewById(R.id.unibot);
         back = (TextView) findViewById(R.id.back);
         help = (TextView) findViewById(R.id.help);
@@ -258,12 +254,12 @@ public class ChatBot extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        // alertDialog if the user presses the help button
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         context);
-
                 // set title
                 alertDialogBuilder.setTitle("Help with uniBOT");
 
@@ -336,7 +332,7 @@ public class ChatBot extends AppCompatActivity {
             System.out.println(chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString());
             translationFromUserToAI();
             return true;
-        } else if (messageFromUser.toLowerCase().equals("no")  && (chatArrayAdapter.getCount() > 2) && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber) )) {
+        } else if (messageFromUser.toLowerCase().equals("no") && (chatArrayAdapter.getCount() > 2) && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber))) {
             addMessageToChatArray("You can always press the uniBOT-button to get more random questions. ");
             return true;
         }
@@ -385,13 +381,12 @@ public class ChatBot extends AppCompatActivity {
     }
 
 
-
     private String processAiResponse(AIResponse response) {
 
-        if(response.getResult().getAction().toString().contains("displayUserInformation")) {
+        if (response.getResult().getAction().toString().contains("displayUserInformation")) {
             return displayUserInformation();
         }
-        if(response.getResult().getAction().contains("getInformation")) {
+        if (response.getResult().getAction().contains("getInformation")) {
             getInformation(response.getResult().getParameters().get("Studies").toString());
         }
         return response.getResult().getFulfillment().getSpeech();
@@ -404,12 +399,13 @@ public class ChatBot extends AppCompatActivity {
         Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies");
     }
 
-    public void setStudyInformations (String study) {
+    public void setStudyInformations(String study) {
         //Sends a StudyProgramInfo-object to the database (TEST)
         GetInfo getInfo = new GetInfo();
         ArrayList<String> studySpecialization = new ArrayList<>(Arrays.asList("ICT and production development", "ICT and construction"));
         String miljo = "Line Association: hybrida line Society for Engineering and ICT called Hybrida. Perhaps the most important task is to contribute to the social environment in the program. Line Society has therefore responsible for events like the buddy program, entrance examination, matriculation party, sports, graduation parties and Christmas shutdown. Early in the New Year organizes Hybrida trip to Åre in Sweden. These are not alone, as almost all NTNU packages skiing and snowboarding and pulls eastward to create revel in one of Scandinavia's premier resorts. Hybrida is also an important link between students and faculty, industry and the other degree programs at the university. Hybridajentene ICT girls conducts activities of both the academic and social nature with a focus on girls, for, inter alia, strengthen solidarity on the line. Mentor Period One of the first you meet as a new student at the Engineering and ICT is a well-organized buddy organized by student association hybrida. The new students are divided into small groups and each group is assigned a mentor. The mentor is a student of higher classes, who want to help new students get to know the student town of Trondheim and NTNU. This is also a golden opportunity to meet their first new friends in Trondheim. During the buddy program includes a number of social activities like barbecues, football, guided tours through the city and all sorts of festivities. Ends with trials for admission to the bar association, and the infamous badekarpadlingen on Nidelva. After trials follows a solemn matriculation party, where you are warmly welcomed to the student community by Engineering and ICT. Integrated use of data in education for students of Engineering and ICT will use the data to be more integrated in the teaching than many of the other degree programs at the university. The study therefore put in place for the use of their own laptop. NTNU and study program prepares each year a student offer notebook and the software you need at the start of the study. This is a favorable alternative to computer labs. The first weeks after start getting some students from higher classes assigned to help the new students to get started using your own PC. Students will receive training and supervision in the use of PC and software. NTNU also has its own support to all students. Engineering and ICT is a demanding course of study there including programming and technical engineering skills are used together to create the future of technology. Be aware that the program uses software that makes heavy demands on the computer. Read more about this in technocrats start their sides. StudiebyEN Trondheim Trondheim has several times been voted the best student city. One of the reasons for this are the dozens of student organizations that exist. These are helping to contribute to a diverse and exciting study existence. Union, UKA, biannual, Tekna and NTNUI are all examples of gathering places for engagement, learning and well-being. Here the students who want it is also useful organizational and work experience.";
-        // denne ble henta med jSoup og translata med google
+        // this was from jSoup and translatet with google
+
 
         Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies");
         StudyProgramInfo info = new StudyProgramInfo(
@@ -417,7 +413,7 @@ public class ChatBot extends AppCompatActivity {
                 54.4, true, 2, "Hybrida", studySpecialization, miljo);
 
 
-      //  infoRef.child(study).setValue(info);
+        //  infoRef.child(study).setValue(info);
     }
 
     private void addMessageToChatArray(String message) {
@@ -434,7 +430,6 @@ public class ChatBot extends AppCompatActivity {
         }
         Result result = response.getResult();
 
-
         // Get parameters
         String parameterString = "";
         if (result.getParameters() != null && !result.getParameters().isEmpty()) {
@@ -448,6 +443,8 @@ public class ChatBot extends AppCompatActivity {
                 "\nParameters: " + parameterString);
     }
 
+
+    //getters and setters
     public int getBirthYear() {
         return birthYear;
     }

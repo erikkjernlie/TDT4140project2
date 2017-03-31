@@ -1,3 +1,11 @@
+/** AboutUnibotTest
+ *
+ * GUI test for the AboutUnibot-activity
+ *
+ * Created by Herman Horn
+ * Copyright © uniBOT
+ */
+
 package com.example.erikkjernlie.tdt4140project;
 
 

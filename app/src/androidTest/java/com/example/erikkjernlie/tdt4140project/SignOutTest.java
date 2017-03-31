@@ -1,3 +1,11 @@
+/** SignOutTest
+ *
+ * GUI test for the sign-out-function
+ *
+ * Created by Herman Horn
+ * Copyright © uniBOT
+ */
+
 package com.example.erikkjernlie.tdt4140project;
 
 

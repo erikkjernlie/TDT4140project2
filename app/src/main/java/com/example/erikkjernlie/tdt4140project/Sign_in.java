@@ -1,3 +1,12 @@
+/*  Sign_in
+ *
+ *  Signing in the user. The user has the possibility to save other
+ *  information about themselves in the add_information-activity.
+ *
+ *  Created by Erik Kjernlie and Jørgen Mortensen
+ *  Copyright © uniBOT
+ */
+
 package com.example.erikkjernlie.tdt4140project;
 
 import android.app.Dialog;
@@ -19,7 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Sign_in extends AppCompatActivity  {
+public class Sign_in extends AppCompatActivity {
 
     private EditText logInEmail;
     private EditText logInPassword;
@@ -30,9 +39,9 @@ public class Sign_in extends AppCompatActivity  {
     private EditText email_retrieve_password;
     private TextView confirm_email;
 
-
+    //the user can press outside the keyboard, and the keyboard will hide automatically
     public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Sign_in.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Sign_in.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
@@ -64,11 +73,18 @@ public class Sign_in extends AppCompatActivity  {
             }
         });
 
-        logInBtn = (Button) findViewById(R.id.logInBtn);
+
 
         firebaseAuth = firebaseAuth.getInstance();
 
         ProgressDialog progressDialog = new ProgressDialog(this);
+
+        initButtons();
+
+    }
+
+    private void initButtons(){
+        logInBtn = (Button) findViewById(R.id.logInBtn);
 
         switchLoginToRegister = (Button) findViewById(R.id.switchLoginToRegister);
         switchLoginToRegister.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +112,8 @@ public class Sign_in extends AppCompatActivity  {
         });
     }
 
+
+    //logging in the user
     public void logInUser() {
         String email = logInEmail.getText().toString().trim();
         String password = logInPassword.getText().toString().trim();
@@ -125,7 +143,10 @@ public class Sign_in extends AppCompatActivity  {
 
     }
 
-    public void alertRetrievePassword(){
+
+    //if the user has forgotten the password, this is the alertDialog that appears
+    //the user can write in the e-mail adress and change the password via his/her e-mail
+    public void alertRetrievePassword() {
         final Dialog d = new Dialog(Sign_in.this);
         d.setContentView(R.layout.alertdialog_password);
         d.setTitle("Insert e-mail");
@@ -137,7 +158,7 @@ public class Sign_in extends AppCompatActivity  {
 
 
                 String email = email_retrieve_password.getText().toString();
-                if (!email.equals("")){
+                if (!email.equals("")) {
                     String email2 = (String) email_retrieve_password.toString();
                     FirebaseAuth.getInstance().sendPasswordResetEmail(email2);
                     Toast.makeText(Sign_in.this, "Instructions are sent to the requested e-mail", Toast.LENGTH_SHORT).show();

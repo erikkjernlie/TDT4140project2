@@ -1,3 +1,12 @@
+/*  Slideshow_about_us
+ *
+ *  Animation / slideshow to tell the user more about us, and why we
+ *  developed uniBOT.
+ *
+ *  Created by Erik Kjernlie
+ *  Copyright © uniBOT
+ */
+
 package com.example.erikkjernlie.tdt4140project;
 
 import android.content.Context;
@@ -33,10 +42,12 @@ public class Slideshow_about_us extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //setter layouten
+        initVariables();
+    }
+
+    private void initVariables(){
         setContentView(R.layout.activity_slideshow_about_us);
 
-        //Displays an arbitrary image, such as an icon.
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
         btnBack = (Button) findViewById(R.id.btn_back);
@@ -44,7 +55,6 @@ public class Slideshow_about_us extends AppCompatActivity {
 
 
         // layouts of all welcome sliders
-        // add few more layouts if you want
         layouts = new int[]{
                 R.layout.about_us_slide1,
                 R.layout.about_us_slide2,
@@ -63,7 +73,7 @@ public class Slideshow_about_us extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int current = getItem(-1);
-                if (current >= 0 ){
+                if (current >= 0) {
                     viewPager.setCurrentItem(current);
                 } else {
                     launchHomeScreen();
@@ -72,12 +82,11 @@ public class Slideshow_about_us extends AppCompatActivity {
         });
 
 
-
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // checking for last page
-                // if last page home screen will be launched
+                // if last page, home screen will be launched
                 int current = getItem(+1);
                 if (current < layouts.length) {
                     // move to next screen
@@ -125,12 +134,10 @@ public class Slideshow_about_us extends AppCompatActivity {
         public void onPageSelected(int position) {
             addBottomDots(position);
 
-            // changing the next button text 'NEXT' / 'GOT IT'
+            // changing the next button text 'NEXT' to 'RETURN'
             if (position == layouts.length - 1) {
-                // last page. make button text to GOT IT
                 btnNext.setText("RETURN");
-                //må prøve å fikse at det står back istedenfor prev
-                //problemet er at det ikke er noen verdi som lagrer position foreløpig
+
 
             } else if (position > 0) {
                 btnNext.setText(getString(R.string.next));

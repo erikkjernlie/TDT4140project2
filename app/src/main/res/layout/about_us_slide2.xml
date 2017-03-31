@@ -19,11 +19,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="50dp"
             android:text="@string/about_2_title"
             android:textColor="@android:color/white"
             android:textSize="@dimen/slide_title"
-            android:textStyle="bold"
-            android:paddingTop="50dp"/>
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,8 +34,7 @@
             android:text="@string/about_2_desc"
             android:textAlignment="center"
             android:textColor="@android:color/white"
-            android:textSize="20dp"
-            />
+            android:textSize="20dp" />
 
         <TextView
 
