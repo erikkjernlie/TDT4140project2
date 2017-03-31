@@ -10,13 +10,13 @@ import java.util.Map;
 
 public class StudyProgramInfo {
 
-    private String info;
-    private Double grade;
-    private boolean isGirlPoints;
-    private double girPercentage;
-    private String studentUnion;
-    private ArrayList<String> specializations;
-    private String studyEnvironment;
+    String info;
+    Double grade;
+    boolean isGirlPoints;
+    double girPercentage;
+    String studentUnion;
+    ArrayList<String> specializations;
+    String studyEnvironment;
 
     public StudyProgramInfo(String info, Double grade,
                             boolean isGirlPoints, double girPercentage, String studentUnion,
@@ -33,6 +33,19 @@ public class StudyProgramInfo {
 
     public String getInfo() {
         return info;
+    }
+
+    @Override
+    public String toString() {
+        return "StudyProgramInfo{" +
+                "info='" + info + '\'' +
+                ", grade=" + grade +
+                ", isGirlPoints=" + isGirlPoints +
+                ", girPercentage=" + girPercentage +
+                ", studentUnion='" + studentUnion + '\'' +
+                ", specializations=" + specializations +
+                ", studyEnvironment='" + studyEnvironment + '\'' +
+                '}';
     }
 
     public void setInfo(String info) {

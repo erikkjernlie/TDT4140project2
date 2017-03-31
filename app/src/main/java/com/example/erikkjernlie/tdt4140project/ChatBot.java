@@ -82,10 +82,7 @@ public class ChatBot extends AppCompatActivity {
 
         firebaseAuth = firebaseAuth.getInstance();
 
-        //firebaseAuth.signInWithEmailAndPassword("jaja@neinei.com", "123456");
-
-        //mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
-        //      firebaseAuth.getCurrentUser().getUid());
+        firebaseAuth.signInWithEmailAndPassword("jaja@neinei.com", "123456");
 
         mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
                 firebaseAuth.getCurrentUser().getUid());
@@ -134,6 +131,7 @@ public class ChatBot extends AppCompatActivity {
 
         initTextButtons();
         getInfoDatabase();
+        //setStudyInformations("MTING");
 
     }
 
@@ -273,7 +271,7 @@ public class ChatBot extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                sentencesOutput = new ArrayList<String>(Arrays.asList("Do you want to know about physics?", "Do you want to compare some studies?", "Do you want to see a list of studies that you can compare?"));
+                sentencesOutput = new ArrayList<String>(Arrays.asList("Do you want to know about Engineering and ICT?", "Do you want to compare some studies?", "Do you want to see a list of studies that you can compare?"));
 
                 Random rn = new Random();
                 int range = sentencesOutput.size();
@@ -288,7 +286,7 @@ public class ChatBot extends AppCompatActivity {
 
     //translates the printed question to a format API.AI understands, so the user can answer directly
     private void translationFromUserToAI() {
-        sentencesToUnibot = new ArrayList<String>(Arrays.asList("Tell me about physics", "I want to compare some studies", "print"));
+        sentencesToUnibot = new ArrayList<String>(Arrays.asList("Tell me about engineering and ict", "I want to compare some studies", "print"));
         getAiResponse(sentencesToUnibot.get(randomNumber));
     }
 
@@ -328,6 +326,7 @@ public class ChatBot extends AppCompatActivity {
     }
 
     private void getAiResponse(String a) {
+        setStudyInformations("MTING");
 
         final AIRequest aiRequest = new AIRequest();
         if (!a.isEmpty()) {
@@ -357,7 +356,6 @@ public class ChatBot extends AppCompatActivity {
                     System.out.println(aiResponse.getResult());
                     System.out.println(aiResponse.getResult().getParameters());
 
-                    System.out.println("asdølaøsdl");
 
                 }
             }
@@ -370,7 +368,10 @@ public class ChatBot extends AppCompatActivity {
             return displayUserInformation();
         }
         if(response.getResult().getAction().contains("getInformation")) {
-            getInformation(response.getResult().getParameters().get("Studies").toString());
+            if ((response.getResult().getParameters().get("Studies") != null)) {
+                getInformation(response.getResult().getParameters().get("Studies").toString());
+
+            }
         }
         return response.getResult().getFulfillment().getSpeech();
 
@@ -380,6 +381,18 @@ public class ChatBot extends AppCompatActivity {
     private void getInformation(String study) {
         //Sends a StudyProgramInfo-object to the database (TEST)
         Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies");
+        infoRef.child(study).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                StudyProgramInfo people = dataSnapshot.getValue(StudyProgramInfo.class);
+                System.out.println(people);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     public void setStudyInformations (String study) {
@@ -389,13 +402,15 @@ public class ChatBot extends AppCompatActivity {
         String miljo = "Line Association: hybrida line Society for Engineering and ICT called Hybrida. Perhaps the most important task is to contribute to the social environment in the program. Line Society has therefore responsible for events like the buddy program, entrance examination, matriculation party, sports, graduation parties and Christmas shutdown. Early in the New Year organizes Hybrida trip to Åre in Sweden. These are not alone, as almost all NTNU packages skiing and snowboarding and pulls eastward to create revel in one of Scandinavia's premier resorts. Hybrida is also an important link between students and faculty, industry and the other degree programs at the university. Hybridajentene ICT girls conducts activities of both the academic and social nature with a focus on girls, for, inter alia, strengthen solidarity on the line. Mentor Period One of the first you meet as a new student at the Engineering and ICT is a well-organized buddy organized by student association hybrida. The new students are divided into small groups and each group is assigned a mentor. The mentor is a student of higher classes, who want to help new students get to know the student town of Trondheim and NTNU. This is also a golden opportunity to meet their first new friends in Trondheim. During the buddy program includes a number of social activities like barbecues, football, guided tours through the city and all sorts of festivities. Ends with trials for admission to the bar association, and the infamous badekarpadlingen on Nidelva. After trials follows a solemn matriculation party, where you are warmly welcomed to the student community by Engineering and ICT. Integrated use of data in education for students of Engineering and ICT will use the data to be more integrated in the teaching than many of the other degree programs at the university. The study therefore put in place for the use of their own laptop. NTNU and study program prepares each year a student offer notebook and the software you need at the start of the study. This is a favorable alternative to computer labs. The first weeks after start getting some students from higher classes assigned to help the new students to get started using your own PC. Students will receive training and supervision in the use of PC and software. NTNU also has its own support to all students. Engineering and ICT is a demanding course of study there including programming and technical engineering skills are used together to create the future of technology. Be aware that the program uses software that makes heavy demands on the computer. Read more about this in technocrats start their sides. StudiebyEN Trondheim Trondheim has several times been voted the best student city. One of the reasons for this are the dozens of student organizations that exist. These are helping to contribute to a diverse and exciting study existence. Union, UKA, biannual, Tekna and NTNUI are all examples of gathering places for engagement, learning and well-being. Here the students who want it is also useful organizational and work experience.";
         // denne ble henta med jSoup og translata med google
 
-        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies");
+        study = "Engineering and ICT";
+        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies/");
         StudyProgramInfo info = new StudyProgramInfo(
-                getInfo.getBasicInformation("mting"),
-                54.4, true, 2, "Hybrida", studySpecialization, miljo);
+                //getInfo.getBasicInformation("mting"),
+                "ikt er så gøy",
+                54.4, false, 2, "Hybrida", studySpecialization, miljo);
 
 
-      //  infoRef.child(study).setValue(info);
+         infoRef.child(study).setValue(info);
     }
 
     private void addMessageToChatArray(String message) {
