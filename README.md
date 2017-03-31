@@ -6,7 +6,7 @@ In the initial release of the app, we have restricted the number of supported st
 - Engineering and ICT
 - Computer Science
 - Informatics
-- Industrial Economics and Technology with Computer- and Communication Technology
+- Industrial Economics and Technology Management with specialization in Computer- and Communication Technology
 
 Implementing the software for a limited number of studies whom have many simularities allow us to develop the app functionality further without having to spend a large amount of time gathering information.
 
