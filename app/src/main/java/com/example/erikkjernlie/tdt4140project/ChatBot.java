@@ -380,11 +380,14 @@ public class ChatBot extends AppCompatActivity {
     //This method retrieves information about the study the user wants to know more about
     private void getInformation(String study) {
         //Sends a StudyProgramInfo-object to the database (TEST)
-        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies");
+        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies/");
+        System.out.println("AAAAAA");
+        System.out.println(infoRef + study);
         infoRef.child(study).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                StudyProgramInfo people = dataSnapshot.getValue(StudyProgramInfo.class);
+                System.out.println("BBBBBB");
+                StudyProgramInfo people =  dataSnapshot.getValue(StudyProgramInfo.class);
                 System.out.println(people);
             }
 
