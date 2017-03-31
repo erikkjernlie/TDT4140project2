@@ -10,26 +10,26 @@ import java.util.Map;
 
 public class StudyProgramInfo {
 
-    String info;
-    Double grade;
-    boolean isGirlPoints;
-    double girPercentage;
-    String studentUnion;
-    ArrayList<String> specializations;
-    String studyEnvironment;
+    private String info;
+    private Double grade;
+    private boolean isGirlPoints;
+    private double girlPercentage;
+    private String studentUnion;
+    private ArrayList<String> specializations;
+    private String studyEnvironment;
 
     public StudyProgramInfo() {
 
     }
 
     public StudyProgramInfo(String info, Double grade,
-                            boolean isGirlPoints, double girPercentage, String studentUnion,
+                            boolean isGirlPoints, double girlPercentage, String studentUnion,
                             ArrayList<String> specializations,
                             String studyEnvironment) {
         this.info = info;
         this.grade = grade;
         this.isGirlPoints = isGirlPoints;
-        this.girPercentage = girPercentage;
+        this.girlPercentage = girlPercentage;
         this.studentUnion = studentUnion;
         this.specializations = specializations;
         this.studyEnvironment = studyEnvironment;
@@ -45,7 +45,7 @@ public class StudyProgramInfo {
                 "info='" + info + '\'' +
                 ", grade=" + grade +
                 ", isGirlPoints=" + isGirlPoints +
-                ", girPercentage=" + girPercentage +
+                ", girPercentage=" + girlPercentage +
                 ", studentUnion='" + studentUnion + '\'' +
                 ", specializations=" + specializations +
                 ", studyEnvironment='" + studyEnvironment + '\'' +
@@ -73,12 +73,12 @@ public class StudyProgramInfo {
         isGirlPoints = girlPoints;
     }
 
-    public double getGirPercentage() {
-        return girPercentage;
+    public double getGirlPercentage() {
+        return girlPercentage;
     }
 
-    public void setGirPercentage(double girPercentage) {
-        this.girPercentage = girPercentage;
+    public void setGirlPercentage(double girPercentage) {
+        this.girlPercentage = girPercentage;
     }
 
     public String getStudentUnion() {
