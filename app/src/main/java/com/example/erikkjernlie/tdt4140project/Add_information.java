@@ -147,7 +147,6 @@ public class Add_information extends AppCompatActivity {
         UserInfo user = new UserInfo(this.year, this.calculatedGrade, this.coursesArray,
                 this.extraEducationArray, this.gender, this.R2Grade,
                 new ArrayList<>(Arrays.asList("Studies")));
-
         mRef.setValue(user);
 
         /*//Store averageGrade

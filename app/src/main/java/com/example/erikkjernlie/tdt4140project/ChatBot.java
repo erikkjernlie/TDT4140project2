@@ -151,7 +151,6 @@ public class ChatBot extends AppCompatActivity {
 
         aiDataService = new AIDataService(this, config);
 
-
         getInformation();
         initTextButtons();
         getInfoDatabase();
@@ -480,7 +479,9 @@ public class ChatBot extends AppCompatActivity {
     }
 
     public void setStudyInformation(StudyProgramInfo info, String study) {
+        //Reference to Firebase and the node Studies
         Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies/");
+        //Sets the StudyProgramInfo-object, info, as a value in the node study
         infoRef.child(study).setValue(info);
     }
 
