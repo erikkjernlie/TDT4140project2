@@ -91,10 +91,10 @@ public class ChatBot extends AppCompatActivity {
 
         firebaseAuth = firebaseAuth.getInstance();
 
-        firebaseAuth.signInWithEmailAndPassword("jaja@neinei.com", "123456");
+        firebaseAuth.signInWithEmailAndPassword("jonassagild@hotmail.com", "jonas12");
 
-        mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
-                firebaseAuth.getCurrentUser().getUid());
+        mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" + firebaseAuth.getCurrentUser().getUid());
+
 
         studyPrograms = new HashMap<>();
 
@@ -149,19 +149,15 @@ public class ChatBot extends AppCompatActivity {
         getInformation();
         initTextButtons();
         getInfoDatabase();
+        addMessageToChatArray("Hey! My name is uniBOT, and I'm here to help you with study- and student opportunities at NTNU Trondheim. \nYou can ask me almost anything related to our data-orientated studies. Perhaps you'd like to compare a couple studies? Or submit some interests and let me make a study recommendation?\n" +
+                "\nIf you wish to see more examples, click the 'HELP'-button in the top right corner. You can also press 'UNIBOT' in the header to let me prompt you with some questions. I look forward to assisting you!");
     }
 
     //Retrieving information from the spezified fields from the firebase-database
     public void getInfoDatabase() {
-
-        Firebase userInfoRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/");
-
-        userInfoRef.child(firebaseAuth.getCurrentUser().getUid()).
-                addValueEventListener(new ValueEventListener() {
+        mRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        System.out.println("GGGGGG");
-                        System.out.println(dataSnapshot.getValue(UserInfo.class));
                         setUser(dataSnapshot.getValue(UserInfo.class));
                     }
                     @Override
@@ -416,7 +412,7 @@ public class ChatBot extends AppCompatActivity {
         // Denne metoden skal lage et objekt av ProcessAiResponse klassen, og kalle på en av dens metoder
         // klassen må ta inn infoen den trenger, dvs studyinfo listen
 
-        ProcessAiResponse processAiResponse = new ProcessAiResponse(studyPrograms);
+        ProcessAiResponse processAiResponse = new ProcessAiResponse(studyPrograms, user);
 
         String ut = null;
 

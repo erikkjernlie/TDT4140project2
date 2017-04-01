@@ -1,5 +1,9 @@
 package com.example.erikkjernlie.tdt4140project;
 
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,9 +19,11 @@ import ai.api.model.AIResponse;
 public class ProcessAiResponse {
 
     private HashMap<String, StudyProgramInfo> studyPrograms;
+    UserInfo userInfo;
 
-    public ProcessAiResponse(HashMap<String, StudyProgramInfo> studyPrograms) {
+    public ProcessAiResponse(HashMap<String, StudyProgramInfo> studyPrograms, UserInfo userInfo) {
         this.studyPrograms = studyPrograms;
+        this.userInfo = userInfo;
     }
 
 
@@ -64,10 +70,18 @@ public class ProcessAiResponse {
                 ut = this.getAllStudies();
                 break;
             case "getUserInfo":
-                // kall på metoden som håndterer dette tilfellet
+                ut = this.getUserInfo();
                 break;
-            case "getStudies":
-                // kall på metoden som håndterer dette tilfellet
+            case "addInterests":
+                System.out.println("kommer den hit?");
+                ArrayList<String> interests = new ArrayList<>();
+
+                for (JsonElement interest : aiResponse.getResult().getParameters().get("Interests").getAsJsonArray()) {
+                    interests.add(interest.toString());
+                    System.out.println(interest.toString());
+
+                }
+                ut = this.addInterst(interests);
                 break;
         }
 
@@ -79,7 +93,7 @@ public class ProcessAiResponse {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
         double grade = studyPrograms.get(studyProgram).getGrade();
         System.out.println(studyPrograms.get(studyProgram).getGrade());
-        return "The grade to get into " + studyProgram + " is " + grade +".";
+        return "The grade to get into " + studyProgram + " is " + grade + ".";
     }
 
     // Method for getting girlPoints
@@ -87,7 +101,7 @@ public class ProcessAiResponse {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
         boolean girlPoints = studyPrograms.get(studyProgram).isGirlPoints();
 
-        if(girlPoints) {
+        if (girlPoints) {
             return studyProgram + " has girlspoints.";
         } else {
             return studyProgram + " has not girlpoints";
@@ -109,7 +123,7 @@ public class ProcessAiResponse {
         for (String workField : commonWorkFields) {
             ut += workField + ", ";
         }
-        ut = ut.substring(0, ut.length()-2);
+        ut = ut.substring(0, ut.length() - 2);
         return ut + ".";
     }
 
@@ -128,19 +142,19 @@ public class ProcessAiResponse {
     // Method for getting courses
     private String getCourses(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
-        String ut = "The courses at " + studyProgram  + " is: ";
+        String ut = "The courses at " + studyProgram + " is: ";
         ArrayList<String> courses = studyPrograms.get(studyProgram).getCourses();
         for (String course : courses) {
             ut += course + ", ";
         }
-        ut = ut.substring(0, ut.length()-2);
+        ut = ut.substring(0, ut.length() - 2);
         return ut + ".";
     }
 
     // Method for getting union
     private String getUnion(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
-        String ut = "The courses at " + studyProgram  + " is: ";
+        String ut = "The courses at " + studyProgram + " is: ";
 
         return "Denne er ikke ferdig";
     }
@@ -160,8 +174,51 @@ public class ProcessAiResponse {
         while (iterator.hasNext()) {
             ut += iterator.next() + ", ";
         }
-        ut = ut.substring(0, ut.length()-2);
+        ut = ut.substring(0, ut.length() - 2);
         return ut + ".";
+    }
+
+    // Method for telling the user about himself
+    private String getUserInfo() {
+        String ut = "";
+        if (userInfo.getGender() == 'M') {
+            ut += "You are a Male";
+        } else {
+            ut += "You are a Female";
+        }
+
+        int age = 2017 - userInfo.getBirthYear();
+
+        ut += ", aged " + age;
+
+        ut += "\n you have " + userInfo.getCalculatedGrade() + " points to apply with.";
+
+        return ut;
+    }
+
+    // Method for adding an interest to the user
+    private String addInterst(ArrayList<String> interests) {
+        ArrayList<String> existingInterest = userInfo.getInterests();
+        // Removes ""
+        for (String i : interests) {
+            interests.set(interests.indexOf(i), i.replace("\"", ""));
+            //interests.set(interests.indexOf(i), i.replace("[", ""));
+           // interests.set(interests.indexOf(i), i.replace("]", ""));
+        }
+        int size = interests.size();
+        for (int i = 0; i < size; i++) {
+            if (existingInterest.contains(interests.get(i))) {
+                interests.remove(interests.indexOf(i));
+            }
+        }
+        String ut = "We've just added ";
+        for (String i : interests) {
+            userInfo.addInterests(i);
+            ut += interests + ", ";
+        }
+        ut = ut.substring(0, ut.length()-2) + " to your interests";
+
+        return ut;
     }
 
 
