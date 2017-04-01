@@ -29,6 +29,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
@@ -405,9 +406,13 @@ public class ChatBot extends AppCompatActivity {
         }
         if(response.getResult().getAction().contains("getInformation")) {
             if ((response.getResult().getParameters().get("Studies") != null)) {
-                System.out.println("CCCCCC");
-                System.out.println(response.getResult().getParameters().get("Studies").toString());
-                return studyPrograms.get(response.getResult().getParameters().get("Studies")).toString();
+                System.out.println("DDDDDD");
+                System.out.println(response.getResult().getParameters().get("Studies").
+                        toString());
+                System.out.println(response.getResult().getParameters().get("Studies").
+                        toString().replace("\"", ""));
+                return studyPrograms.get(response.getResult().getParameters().get("Studies").
+                        toString().replace("\"", "")).toString();
             }
         }
         return response.getResult().getFulfillment().getSpeech();
