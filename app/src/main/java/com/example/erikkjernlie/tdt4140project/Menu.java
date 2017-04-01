@@ -159,8 +159,10 @@ public class Menu extends AppCompatActivity {
         }
 
         if (this.courses != null) {
-            t7.setText("You have had the following courses:");
-            t3.setText(this.courses.toString());
+            t7.setText("You have had the following courses that gives extra points:");
+            String array = this.courses.toString();
+            array = array.substring(1, array.length()-1);
+            t3.setText(array);
         } else {
             t3.setVisibility(View.GONE);
             t7.setVisibility(View.GONE);
@@ -172,7 +174,9 @@ public class Menu extends AppCompatActivity {
         }
         if (this.extraEducation != null) {
             t8.setText("You have also had:");
-            t5.setText(this.extraEducation.toString());
+            String array = this.extraEducation.toString();
+            array = array.substring(1, array.length()-1);
+            t5.setText(array);
         } else {
             t8.setVisibility(View.GONE);
             t5.setVisibility(View.GONE);

@@ -91,7 +91,7 @@ public class Add_information extends AppCompatActivity {
 
 
     private List<String> courses_array = new ArrayList<String>(); //list for storing the courses
-    private final CharSequence[] courses = {"Matematikk S1", "Matematikk S2", "Matematikk R1", "Matematikk R2", "Fysikk 1", "Fysikk 2", "Kjemi 1", "Kjemi 2", "Biologi 1", "Biologi 2", "Geofag 1", "Geofag 2", "Informasjonsteknologi 1", "Informasjonsteknologi 2", "Teknologi og forskningslære 1", "Teknologi og forskningslære 2", "VG3 naturbruk", "Fremmedspråk 3"}; //items in the alertdialog that displays checkboxes
+    private final CharSequence[] courses = {"Matematikk S1", "Matematikk S2", "Matematikk R1", "Matematikk R2", "Fysikk 1", "Fysikk 2", "Kjemi 1", "Kjemi 2", "Biologi 1", "Biologi 2", "Geofag 1", "Geofag 2", "Informasjonsteknologi 1", "Informasjonsteknologi 2", "Teknologi og forskningslære 1", "Teknologi og forskningslære 2", "VG3 Naturbruk", "Fremmedspråk 3"}; //items in the alertdialog that displays checkboxes
     private final boolean checked_state_courses[] = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 
     private List<String> extra_education_array = new ArrayList<String>(); //list for storing the courses
