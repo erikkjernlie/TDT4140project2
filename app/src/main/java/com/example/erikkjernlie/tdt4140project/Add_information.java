@@ -31,6 +31,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -144,7 +145,8 @@ public class Add_information extends AppCompatActivity {
 
     private void storeVariables() {
         UserInfo user = new UserInfo(this.year, this.calculatedGrade, this.coursesArray,
-                this.extraEducationArray, this.gender, this.R2Grade);
+                this.extraEducationArray, this.gender, this.R2Grade,
+                new ArrayList<>(Arrays.asList("Studies")));
 
         mRef.setValue(user);
 

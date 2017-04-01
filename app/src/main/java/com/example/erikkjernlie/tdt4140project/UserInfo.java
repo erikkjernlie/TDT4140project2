@@ -14,14 +14,18 @@ public class UserInfo {
     private ArrayList<String> extraEducation;
     private char gender;
     private int R2Grade;
+    private ArrayList<String> interests;
 
-    public UserInfo(int birthYear, double calculatedGrade, ArrayList<String> courses, ArrayList<String> extraEducation, char gender, int r2Grade) {
+    public UserInfo(int birthYear, double calculatedGrade, ArrayList<String> courses,
+                    ArrayList<String> extraEducation, char gender, int r2Grade,
+                    ArrayList<String> interests) {
         this.birthYear = birthYear;
         this.calculatedGrade = calculatedGrade;
         this.courses = courses;
         this.extraEducation = extraEducation;
         this.gender = gender;
         this.R2Grade = r2Grade;
+        this.interests = interests;
     }
 
     public UserInfo() {}
@@ -72,6 +76,18 @@ public class UserInfo {
 
     public void setR2Grade(int r2Grade) {
         R2Grade = r2Grade;
+    }
+
+    public void setInterests(ArrayList<String> interests) {
+        this.interests = interests;
+    }
+
+    public ArrayList<String> getInterests() {
+        return interests;
+    }
+
+    public void addInterests(String interest) {
+        this.interests.add(interest);
     }
 
     @Override
