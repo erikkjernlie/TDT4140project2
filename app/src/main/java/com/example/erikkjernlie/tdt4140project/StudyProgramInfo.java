@@ -10,75 +10,77 @@ import java.util.Map;
 
 public class StudyProgramInfo {
 
+    private double grade;
+    private boolean girlPoints;
+    private ArrayList<String> keywords;
+    private ArrayList<String> commonWorkFields;
     private String info;
-    private Double grade;
-    private boolean isGirlPoints;
-    private double girlPercentage;
-    private String studentUnion;
-    private ArrayList<String> specializations;
     private String studyEnvironment;
+    private String studentUnion;
+    private ArrayList<String> courses;
 
-    public StudyProgramInfo() {
-
+    public StudyProgramInfo(double grade, boolean girlPoints, ArrayList<String> keywords,
+                            ArrayList<String> commonWorkFields, String info,
+                            String studyEnvironment, String studentUnion,
+                            ArrayList<String> courses) {
+        this.grade = grade;
+        this.girlPoints = girlPoints;
+        this.keywords = keywords;
+        this.commonWorkFields = commonWorkFields;
+        this.info = info;
+        this.studyEnvironment = studyEnvironment;
+        this.studentUnion = studentUnion;
+        this.courses = courses;
     }
 
-    public StudyProgramInfo(String info, Double grade,
-                            boolean isGirlPoints, double girlPercentage, String studentUnion,
-                            ArrayList<String> specializations,
-                            String studyEnvironment) {
-        this.info = info;
+    public StudyProgramInfo() {}
+
+    public double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(double grade) {
         this.grade = grade;
-        this.isGirlPoints = isGirlPoints;
-        this.girlPercentage = girlPercentage;
-        this.studentUnion = studentUnion;
-        this.specializations = specializations;
-        this.studyEnvironment = studyEnvironment;
+    }
+
+    public boolean isGirlPoints() {
+        return girlPoints;
+    }
+
+    public void setGirlPoints(boolean girlPoints) {
+        this.girlPoints = girlPoints;
+    }
+
+    public ArrayList<String> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(ArrayList<String> keywords) {
+        this.keywords = keywords;
+    }
+
+    public ArrayList<String> getCommonWorkFields() {
+        return commonWorkFields;
+    }
+
+    public void setCommonWorkFields(ArrayList<String> commonWorkFields) {
+        this.commonWorkFields = commonWorkFields;
     }
 
     public String getInfo() {
         return info;
     }
 
-    @Override
-    public String toString() {
-        return "StudyProgramInfo{" +
-                "info='" + info + '\'' +
-                ", grade=" + grade +
-                ", isGirlPoints=" + isGirlPoints +
-                ", girPercentage=" + girlPercentage +
-                ", studentUnion='" + studentUnion + '\'' +
-                ", specializations=" + specializations +
-                ", studyEnvironment='" + studyEnvironment + '\'' +
-                '}';
-    }
-
     public void setInfo(String info) {
         this.info = info;
     }
 
-    public Double getGrade() {
-        return grade;
+    public String getStudyEnvironment() {
+        return studyEnvironment;
     }
 
-    public void setGrade(Double grade) {
-        this.grade = grade;
-    }
-
-
-    public boolean isGirlPoints() {
-        return isGirlPoints;
-    }
-
-    public void setGirlPoints(boolean girlPoints) {
-        isGirlPoints = girlPoints;
-    }
-
-    public double getGirlPercentage() {
-        return girlPercentage;
-    }
-
-    public void setGirlPercentage(double girPercentage) {
-        this.girlPercentage = girPercentage;
+    public void setStudyEnvironment(String studyEnvironment) {
+        this.studyEnvironment = studyEnvironment;
     }
 
     public String getStudentUnion() {
@@ -89,19 +91,25 @@ public class StudyProgramInfo {
         this.studentUnion = studentUnion;
     }
 
-    public ArrayList<String> getSpecializations() {
-        return specializations;
+    public ArrayList<String> getCourses() {
+        return courses;
     }
 
-    public void setSpecializations(ArrayList<String> specializations) {
-        this.specializations = specializations;
+    public void setCourses(ArrayList<String> courses) {
+        this.courses = courses;
     }
 
-    public String getStudyEnvironment() {
-        return studyEnvironment;
-    }
-
-    public void setStudyEnvironment(String studyEnvironment) {
-        this.studyEnvironment = studyEnvironment;
+    @Override
+    public String toString() {
+        return "StudyProgramInfo{" +
+                "grade=" + grade +
+                ", girlPoints=" + girlPoints +
+                ", keywords=" + keywords +
+                ", commonWorkFields=" + commonWorkFields +
+                ", info='" + info + '\'' +
+                ", studyEnvironment='" + studyEnvironment + '\'' +
+                ", studentUnion='" + studentUnion + '\'' +
+                ", courses=" + courses +
+                '}';
     }
 }

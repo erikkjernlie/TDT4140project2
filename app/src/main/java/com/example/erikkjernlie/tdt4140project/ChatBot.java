@@ -22,6 +22,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.gson.JsonElement;
 
 import java.lang.reflect.Array;
@@ -67,6 +68,7 @@ public class ChatBot extends AppCompatActivity {
     private int randomNumber = -1;
     private ArrayList<String> sentencesToUnibot;
     private ArrayList<String> sentencesOutput;
+    private HashMap<String, StudyProgramInfo> studyPrograms;
 
     FirebaseAuth firebaseAuth;
     Firebase mRef;
@@ -87,6 +89,7 @@ public class ChatBot extends AppCompatActivity {
         mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
                 firebaseAuth.getCurrentUser().getUid());
 
+        studyPrograms = new HashMap<>();
 
         buttonSend = (Button) findViewById(R.id.send);
 
@@ -129,10 +132,9 @@ public class ChatBot extends AppCompatActivity {
         aiDataService = new AIDataService(this, config);
 
 
+        getInformation();
         initTextButtons();
         getInfoDatabase();
-        //setStudyInformations("MTING");
-
     }
 
     public void getInfoDatabase() {
@@ -326,7 +328,41 @@ public class ChatBot extends AppCompatActivity {
     }
 
     private void getAiResponse(String a) {
-        setStudyInformations("MTING");
+        //IF YOU WANT TO INSERT THE 4 STUDIES INTO THE DATABASE
+        /*if (a.equals("setInformatics")) {
+            setStudyInformation(new StudyProgramInfo(51.2, false,
+                    new ArrayList<String>(Arrays.asList("Data", "IKT", "IT")),
+                    new ArrayList<String>(Arrays.asList("Data", "Consultant")), "Informatics is a bachelor",
+                    "Very good environment", "Online",
+                    new ArrayList<String>(Arrays.asList("TDT4100", "TDT4120"))), "Informatics");
+        }
+        if (a.equals("setICT")) {
+            setStudyInformation(new StudyProgramInfo(54.4, true,
+                    new ArrayList<String>(Arrays.asList("Data", "IKT", "Engineering")),
+                    new ArrayList<String>(Arrays.asList("Consultant", "Engineer")), "ICT is a master",
+                    "Amazing environment", "Hybrida",
+                    new ArrayList<String>(Arrays.asList("TMA4100", "TDT4100", "TDT4120"))),
+                    "Engineering and ICT");
+        }
+        if (a.equals("setIndok")) {
+            setStudyInformation(new StudyProgramInfo(64.0, false,
+                    new ArrayList<String>(Arrays.asList("Data", "IKT", "Economics")),
+                    new ArrayList<String>(Arrays.asList("Data", "Consultant", "Leader")),
+                    "Indok is very weird",
+                    "Very bad environment", "Janus",
+                    new ArrayList<String>(Arrays.asList("TDT4100", "TDT4120"))),
+                    "Industrial Economics and Technology Management and ICT");
+        }
+        if (a.equals("setData")) {
+            setStudyInformation(new StudyProgramInfo(57.0, true,
+                    new ArrayList<String>(Arrays.asList("Data", "IKT", "IT")),
+                    new ArrayList<String>(Arrays.asList("Data", "Consultant", "Programmer")),
+                    "Computer science is a master",
+                    "Okey environment", "Abakus",
+                    new ArrayList<String>(Arrays.asList("TDT4100", "TDT4120"))),
+                    "Computer Science");
+        }*/
+
 
         final AIRequest aiRequest = new AIRequest();
         if (!a.isEmpty()) {
@@ -369,8 +405,9 @@ public class ChatBot extends AppCompatActivity {
         }
         if(response.getResult().getAction().contains("getInformation")) {
             if ((response.getResult().getParameters().get("Studies") != null)) {
-                getInformation(response.getResult().getParameters().get("Studies").toString());
-
+                System.out.println("CCCCCC");
+                System.out.println(response.getResult().getParameters().get("Studies").toString());
+                return studyPrograms.get(response.getResult().getParameters().get("Studies")).toString();
             }
         }
         return response.getResult().getFulfillment().getSpeech();
@@ -378,42 +415,28 @@ public class ChatBot extends AppCompatActivity {
     }
 
     //This method retrieves information about the study the user wants to know more about
-    private void getInformation(String study) {
+    private void getInformation() {
         //Sends a StudyProgramInfo-object to the database (TEST)
         Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies/");
-        System.out.println("AAAAAA");
-        System.out.println(infoRef + study);
-        infoRef.child(study).addListenerForSingleValueEvent(new ValueEventListener() {
+        infoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("BBBBBB");
-                StudyProgramInfo people =  dataSnapshot.getValue(StudyProgramInfo.class);
-                System.out.println(people);
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    System.out.println("AAAAAA");
+                    System.out.println(snapshot.getKey());
+                    addStudyPrograms(snapshot.getKey(), snapshot.getValue(StudyProgramInfo.class));
+                    System.out.println(snapshot.getValue(StudyProgramInfo.class).toString());
+                }
             }
-
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
             }
         });
     }
 
-    public void setStudyInformations (String study) {
-        //Sends a StudyProgramInfo-object to the database (TEST)
-        GetInfo getInfo = new GetInfo();
-        ArrayList<String> studySpecialization = new ArrayList<>(Arrays.asList("ICT and production development", "ICT and construction"));
-        String miljo = "Line Association: hybrida line Society for Engineering and ICT called Hybrida. Perhaps the most important task is to contribute to the social environment in the program. Line Society has therefore responsible for events like the buddy program, entrance examination, matriculation party, sports, graduation parties and Christmas shutdown. Early in the New Year organizes Hybrida trip to Åre in Sweden. These are not alone, as almost all NTNU packages skiing and snowboarding and pulls eastward to create revel in one of Scandinavia's premier resorts. Hybrida is also an important link between students and faculty, industry and the other degree programs at the university. Hybridajentene ICT girls conducts activities of both the academic and social nature with a focus on girls, for, inter alia, strengthen solidarity on the line. Mentor Period One of the first you meet as a new student at the Engineering and ICT is a well-organized buddy organized by student association hybrida. The new students are divided into small groups and each group is assigned a mentor. The mentor is a student of higher classes, who want to help new students get to know the student town of Trondheim and NTNU. This is also a golden opportunity to meet their first new friends in Trondheim. During the buddy program includes a number of social activities like barbecues, football, guided tours through the city and all sorts of festivities. Ends with trials for admission to the bar association, and the infamous badekarpadlingen on Nidelva. After trials follows a solemn matriculation party, where you are warmly welcomed to the student community by Engineering and ICT. Integrated use of data in education for students of Engineering and ICT will use the data to be more integrated in the teaching than many of the other degree programs at the university. The study therefore put in place for the use of their own laptop. NTNU and study program prepares each year a student offer notebook and the software you need at the start of the study. This is a favorable alternative to computer labs. The first weeks after start getting some students from higher classes assigned to help the new students to get started using your own PC. Students will receive training and supervision in the use of PC and software. NTNU also has its own support to all students. Engineering and ICT is a demanding course of study there including programming and technical engineering skills are used together to create the future of technology. Be aware that the program uses software that makes heavy demands on the computer. Read more about this in technocrats start their sides. StudiebyEN Trondheim Trondheim has several times been voted the best student city. One of the reasons for this are the dozens of student organizations that exist. These are helping to contribute to a diverse and exciting study existence. Union, UKA, biannual, Tekna and NTNUI are all examples of gathering places for engagement, learning and well-being. Here the students who want it is also useful organizational and work experience.";
-        // denne ble henta med jSoup og translata med google
-
-        study = "Engineering and ICT";
+    public void setStudyInformation(StudyProgramInfo info, String study) {
         Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies/");
-        StudyProgramInfo info = new StudyProgramInfo(
-                //getInfo.getBasicInformation("mting"),
-                "ikt er så gøy",
-                54.4, false, 2, "Hybrida", studySpecialization, miljo);
-
-
-         infoRef.child(study).setValue(info);
+        infoRef.child(study).setValue(info);
     }
 
     private void addMessageToChatArray(String message) {
@@ -490,6 +513,10 @@ public class ChatBot extends AppCompatActivity {
 
     public void setR2Grade(int r2Grade) {
         R2Grade = r2Grade;
+    }
+
+    public void addStudyPrograms(String study, StudyProgramInfo info) {
+        this.studyPrograms.put(study, info);
     }
 
 }
