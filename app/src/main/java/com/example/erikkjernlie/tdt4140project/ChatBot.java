@@ -144,7 +144,7 @@ public class ChatBot extends AppCompatActivity {
                 listView.setSelection(chatArrayAdapter.getCount() - 1);
             }
         });
-        config = new AIConfiguration("3e19cea342f04764b1665e37099f1e23",
+        config = new AIConfiguration("97d4794875414bacb99fc54ba5de1086",
                 AIConfiguration.SupportedLanguages.English,
                 AIConfiguration.RecognitionEngine.Speaktoit);
 
