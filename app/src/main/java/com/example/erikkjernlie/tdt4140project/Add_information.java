@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,7 +55,6 @@ public class Add_information extends AppCompatActivity {
     private double temporaryGrade;
     private int R2Grade = 0;
     private int extraPoints = 0;
-    private Firebase mRootRef;
     private Firebase mRef;
     private FirebaseAuth firebaseAuth;
     private Button grade;
@@ -90,13 +90,13 @@ public class Add_information extends AppCompatActivity {
     private TextView add_average_grade;
 
 
-    private List<String> courses_array = new ArrayList<String>(); //list for storing the courses
+    private ArrayList<String> coursesArray = new ArrayList<String>(); //list for storing the courses
     private final CharSequence[] courses = {"Matematikk S1", "Matematikk S2", "Matematikk R1", "Matematikk R2", "Fysikk 1", "Fysikk 2", "Kjemi 1", "Kjemi 2", "Biologi 1", "Biologi 2", "Geofag 1", "Geofag 2", "Informasjonsteknologi 1", "Informasjonsteknologi 2", "Teknologi og forskningslære 1", "Teknologi og forskningslære 2", "VG3 Naturbruk", "Fremmedspråk 3"}; //items in the alertdialog that displays checkboxes
-    private final boolean checked_state_courses[] = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+    private final boolean checkedStateCourses[] = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 
-    private List<String> extra_education_array = new ArrayList<String>(); //list for storing the courses
-    private final CharSequence[] extra_education = {"Folkehøgskole", "Militærtjeneste", "Siviltjeneste", "Høyere utdanning"}; //items in the alertdialog that displays checkboxes
-    private final boolean checked_state_education[] = {false, false, false, false};
+    private ArrayList<String> extraEducationArray = new ArrayList<String>(); //list for storing the courses
+    private final CharSequence[] extraEducation = {"Folkehøgskole", "Militærtjeneste", "Siviltjeneste", "Høyere utdanning"}; //items in the alertdialog that displays checkboxes
+    private final boolean checkedStateEducation[] = {false, false, false, false};
     private HashMap<String, Double> fagbase = new HashMap<>();
 
 
@@ -110,10 +110,7 @@ public class Add_information extends AppCompatActivity {
 
         firebaseAuth = firebaseAuth.getInstance();
 
-        mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
-                firebaseAuth.getCurrentUser().getUid());
-
-        mRootRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
+        mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
                 firebaseAuth.getCurrentUser().getUid());
 
         LinearLayout l = (LinearLayout) findViewById(R.id.linear_add_information);
@@ -146,7 +143,12 @@ public class Add_information extends AppCompatActivity {
     }
 
     private void storeVariables() {
-        //Store averageGrade
+        UserInfo user = new UserInfo(this.year, this.calculatedGrade, this.coursesArray,
+                this.extraEducationArray, this.gender, this.R2Grade);
+
+        mRef.setValue(user);
+
+        /*//Store averageGrade
         Firebase mRefChildGrade = mRootRef.child("CalculatedGrade");
         mRefChildGrade.setValue(this.calculatedGrade);
 
@@ -156,19 +158,19 @@ public class Add_information extends AppCompatActivity {
 
         //Store courses
         Firebase mRefChildCourses = mRootRef.child("Courses");
-        mRefChildCourses.setValue(this.courses_array);
+        mRefChildCourses.setValue(this.coursesArray);
 
         //Store extra education
         Firebase mRefChildExEd = mRootRef.child("Extra education");
-        mRefChildExEd.setValue(extra_education_array);
+        mRefChildExEd.setValue(this.extraEducationArray);
 
         //Store birthyear
         Firebase mRefChildYear = mRootRef.child("BirthYear");
-        mRefChildYear.setValue(year);
+        mRefChildYear.setValue(this.year);
 
         //Store R2Grade
         Firebase mRefChildR2Grade = mRootRef.child("R2Grade");
-        mRefChildR2Grade.setValue(R2Grade);
+        mRefChildR2Grade.setValue(this.R2Grade);*/
     }
 
 
@@ -238,7 +240,7 @@ public class Add_information extends AppCompatActivity {
         dropdownCourses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                courses_array = new ArrayList<String>();
+                coursesArray = new ArrayList<String>();
                 //resets if the user goes in and out
                 alertCourses();
             }
@@ -248,7 +250,7 @@ public class Add_information extends AppCompatActivity {
         dropdownExtraPoints.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                extra_education_array = new ArrayList<String>();
+                extraEducationArray = new ArrayList<String>();
                 alertExtraEducation();
             }
         });
@@ -327,11 +329,11 @@ public class Add_information extends AppCompatActivity {
         grade_calculated = (temporaryGrade) * 10;
         grade_calculated = round(grade_calculated, 2);
 
-        if (extra_education_array.size() > 0) {
+        if (extraEducationArray.size() > 0) {
             this.extraPoints = 2;
         }
 
-        for (String course : courses_array) {
+        for (String course : coursesArray) {
             realFagPoints += fagbase.get(course);
         }
 
@@ -348,11 +350,11 @@ public class Add_information extends AppCompatActivity {
     private void alertCourses() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(Add_information.this)
                 .setTitle("Choose courses")
-                .setMultiChoiceItems(courses, checked_state_courses, new DialogInterface.OnMultiChoiceClickListener() {
+                .setMultiChoiceItems(courses, checkedStateCourses, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 
-                        checked_state_courses[which] = isChecked;
+                        checkedStateCourses[which] = isChecked;
                     }
                 }).setPositiveButton("I have selected all my courses", new DialogInterface.OnClickListener() {
 
@@ -360,16 +362,16 @@ public class Add_information extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         for (int i = 0; i < (courses.length); i++) {
-                            if (checked_state_courses[i] == true) {
-                                courses_array.add(courses[i].toString());
+                            if (checkedStateCourses[i] == true) {
+                                coursesArray.add(courses[i].toString());
                             }
                         }
 
                         Toast.makeText(getApplicationContext(), "Selected courses: "
-                                + courses_array.toString(), Toast.LENGTH_SHORT).show();
+                                + coursesArray.toString(), Toast.LENGTH_SHORT).show();
 
 
-                        if (courses_array.contains("Matematikk R2")) {
+                        if (coursesArray.contains("Matematikk R2")) {
                             alertR2Grade();
                         }
 
@@ -384,25 +386,25 @@ public class Add_information extends AppCompatActivity {
     private void alertExtraEducation() {
         AlertDialog.Builder builder2 = new AlertDialog.Builder(Add_information.this)
                 .setTitle("Choose education")
-                .setMultiChoiceItems(extra_education, checked_state_education, new DialogInterface.OnMultiChoiceClickListener() {
+                .setMultiChoiceItems(extraEducation, checkedStateEducation, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 
-                        checked_state_education[which] = isChecked;
+                        checkedStateEducation[which] = isChecked;
                     }
                 }).setPositiveButton("I have selected all my education", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        for (int i = 0; i < (extra_education.length); i++) {
-                            if (checked_state_education[i] == true) {
-                                extra_education_array.add(extra_education[i].toString());
+                        for (int i = 0; i < (extraEducation.length); i++) {
+                            if (checkedStateEducation[i] == true) {
+                                extraEducationArray.add(extraEducation[i].toString());
                             }
                         }
 
                         Toast.makeText(getApplicationContext(), "Selected education: "
-                                + extra_education_array.toString(), Toast.LENGTH_SHORT).show();
+                                + extraEducationArray.toString(), Toast.LENGTH_SHORT).show();
 
 
                         //alertdialog_r2grade.dismiss(); if we want it to be able to close the window if the user presses outside the alert
@@ -700,11 +702,11 @@ public class Add_information extends AppCompatActivity {
         return extraPoints;
     }
 
-    public List<String> getExtra_education_array() {
-        return extra_education_array;
+    public List<String> getExtraEducationArray() {
+        return extraEducationArray;
     }
 
-    public List<String> getCourses_array() {
-        return courses_array;
+    public List<String> getCoursesArray() {
+        return coursesArray;
     }
 }

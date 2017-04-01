@@ -62,6 +62,7 @@ public class ChatBot extends AppCompatActivity {
     private ArrayList<String> extraEducation;
     private char gender;
     private int R2Grade;
+    private UserInfo user;
 
     private ChatArrayAdapter chatArrayAdapter;
     private ListView listView;
@@ -158,7 +159,22 @@ public class ChatBot extends AppCompatActivity {
 
     //Retrieving information from the spezified fields from the firebase-database
     public void getInfoDatabase() {
-        mRef.child("BirthYear").addListenerForSingleValueEvent(new ValueEventListener() {
+
+        Firebase userInfoRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/");
+
+        userInfoRef.child(firebaseAuth.getCurrentUser().getUid()).
+                addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        System.out.println("GGGGGG");
+                        System.out.println(dataSnapshot.getValue(UserInfo.class));
+                        setUser(dataSnapshot.getValue(UserInfo.class));
+                    }
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {}
+                });
+
+        /*mRef.child("BirthYear").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 setBirthYear(dataSnapshot.getValue(Integer.class));
@@ -223,27 +239,11 @@ public class ChatBot extends AppCompatActivity {
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
-        });
+        });*/
     }
 
     public String displayUserInformation() {
-        String userInfo = "";
-        userInfo += "Your birth year: " + this.birthYear + "\n";
-        userInfo += "Your calculated grade: " + this.calculatedGrade + "\n";
-        userInfo += "Your courses: ";
-        for (int i = 0; i < this.courses.size(); i++) {
-            userInfo += this.courses.get(i) + ", ";
-        }
-        //Deletes the last comma
-        userInfo = userInfo.substring(0, userInfo.length() - 2) + "\n";
-        userInfo += "Your extra education: ";
-        for (int i = 0; i < this.extraEducation.size(); i++) {
-            userInfo += this.extraEducation.get(i) + ", ";
-        }
-        //Deletes the last comma
-        userInfo = userInfo.substring(0, userInfo.length() - 2) + "\n";
-        userInfo += "Your gender: " + this.gender + "\n";
-        userInfo += "Your R2-grade: " + this.R2Grade;
+        String userInfo = this.user.toString();
         return userInfo;
     }
 
@@ -426,17 +426,12 @@ public class ChatBot extends AppCompatActivity {
 
     private String processAiResponse(AIResponse response) {
 
-        if (response.getResult().getAction().toString().contains("displayUserInformation")) {
+        if (response.getResult().getAction().toString().contains("ExploreMyself")) {
             return displayUserInformation();
         }
-        if(response.getResult().getAction().contains("getInformation")) {
-            if ((response.getResult().getParameters().get("Studies") != null)) {
-                System.out.println("DDDDDD");
-                System.out.println(response.getResult().getParameters().get("Studies").
-                        toString());
-                System.out.println(response.getResult().getParameters().get("Studies").
-                        toString().replace("\"", ""));
-                return studyPrograms.get(response.getResult().getParameters().get("Studies").
+        if(response.getResult().getAction().contains("getInfo")) {
+            if ((response.getResult().getParameters().get("StudyProgram") != null)) {
+                return studyPrograms.get(response.getResult().getParameters().get("StudyProgram").
                         toString().replace("\"", "")).toString();
             }
         }
@@ -548,6 +543,10 @@ public class ChatBot extends AppCompatActivity {
 
     public void addStudyPrograms(String study, StudyProgramInfo info) {
         this.studyPrograms.put(study, info);
+    }
+
+    public void setUser(UserInfo user) {
+        this.user = user;
     }
 
 }
