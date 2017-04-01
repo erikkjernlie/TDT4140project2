@@ -103,6 +103,10 @@ public class StudyProgramInfo {
         this.courses = courses;
     }
 
+
+
+
+
     @Override
     public String toString() {
         return "StudyProgramInfo{" +

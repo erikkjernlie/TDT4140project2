@@ -429,7 +429,20 @@ public class ChatBot extends AppCompatActivity {
 
         ProcessAiResponse processAiResponse = new ProcessAiResponse(studyPrograms);
 
-        String ut = processAiResponse.processAiRespons(response);
+        String ut = null;
+
+        // sjekker hvordan et tomt svar ser ut
+        System.out.println("aksdøsa");
+        System.out.println(response.getResult().getFulfillment().getSpeech().equals(""));
+
+        System.out.println(response.getResult().getFulfillment().getSpeech().toString());
+
+
+        if (response.getResult().getFulfillment().getSpeech().equals("")) {
+            ut = processAiResponse.processAiRespons(response);
+        } else {
+            ut = response.getResult().getFulfillment().getSpeech().toString();
+        }
 
 
 //        if (response.getResult().getAction().toString().contains("displayUserInformation")) {
@@ -441,7 +454,7 @@ public class ChatBot extends AppCompatActivity {
 //                        toString().replace("\"", "")).toString();
 //            }
 //        }
-        return response.getResult().getFulfillment().getSpeech();
+        return ut;
 
 
     }
