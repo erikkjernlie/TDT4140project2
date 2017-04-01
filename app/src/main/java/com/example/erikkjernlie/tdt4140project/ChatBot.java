@@ -423,19 +423,39 @@ public class ChatBot extends AppCompatActivity {
         }.execute(aiRequest);
     }
 
-
     private String processAiResponse(AIResponse response) {
+        // Denne metoden skal lage et objekt av ProcessAiResponse klassen, og kalle på en av dens metoder
+        // klassen må ta inn infoen den trenger, dvs studyinfo listen
 
-        if (response.getResult().getAction().toString().contains("ExploreMyself")) {
-            return displayUserInformation();
+        ProcessAiResponse processAiResponse = new ProcessAiResponse(studyPrograms);
+
+        String ut = null;
+
+        // sjekker hvordan et tomt svar ser ut
+        System.out.println("aksdøsa");
+        System.out.println(response.getResult().getFulfillment().getSpeech().equals(""));
+
+        System.out.println(response.getResult().getFulfillment().getSpeech().toString());
+
+
+        if (response.getResult().getFulfillment().getSpeech().equals("")) {
+            ut = processAiResponse.processAiRespons(response);
+        } else {
+            ut = response.getResult().getFulfillment().getSpeech().toString();
         }
-        if(response.getResult().getAction().contains("getInfo")) {
-            if ((response.getResult().getParameters().get("StudyProgram") != null)) {
-                return studyPrograms.get(response.getResult().getParameters().get("StudyProgram").
-                        toString().replace("\"", "")).toString();
-            }
-        }
-        return response.getResult().getFulfillment().getSpeech();
+
+
+//        if (response.getResult().getAction().toString().contains("displayUserInformation")) {
+//            return displayUserInformation();
+//        }
+//        if(response.getResult().getAction().contains("getInformation")) {
+//            if ((response.getResult().getParameters().get("Studies") != null)) {
+//                return studyPrograms.get(response.getResult().getParameters().get("Studies").
+//                        toString().replace("\"", "")).toString();
+//            }
+//        }
+        return ut;
+
 
     }
 
@@ -490,7 +510,6 @@ public class ChatBot extends AppCompatActivity {
                 "\nAction: " + result.getAction() +
                 "\nParameters: " + parameterString);
     }
-
 
     //getters and setters
     public int getBirthYear() {
