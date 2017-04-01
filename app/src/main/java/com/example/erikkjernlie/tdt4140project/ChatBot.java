@@ -423,24 +423,26 @@ public class ChatBot extends AppCompatActivity {
         }.execute(aiRequest);
     }
 
-
     private String processAiResponse(AIResponse response) {
+        // Denne metoden skal lage et objekt av ProcessAiResponse klassen, og kalle på en av dens metoder
+        // klassen må ta inn infoen den trenger, dvs studyinfo listen
 
-        if (response.getResult().getAction().toString().contains("displayUserInformation")) {
-            return displayUserInformation();
-        }
-        if(response.getResult().getAction().contains("getInformation")) {
-            if ((response.getResult().getParameters().get("Studies") != null)) {
-                System.out.println("DDDDDD");
-                System.out.println(response.getResult().getParameters().get("Studies").
-                        toString());
-                System.out.println(response.getResult().getParameters().get("Studies").
-                        toString().replace("\"", ""));
-                return studyPrograms.get(response.getResult().getParameters().get("Studies").
-                        toString().replace("\"", "")).toString();
-            }
-        }
+        ProcessAiResponse processAiResponse = new ProcessAiResponse(studyPrograms);
+
+        String ut = processAiResponse.processAiRespons(response);
+
+
+//        if (response.getResult().getAction().toString().contains("displayUserInformation")) {
+//            return displayUserInformation();
+//        }
+//        if(response.getResult().getAction().contains("getInformation")) {
+//            if ((response.getResult().getParameters().get("Studies") != null)) {
+//                return studyPrograms.get(response.getResult().getParameters().get("Studies").
+//                        toString().replace("\"", "")).toString();
+//            }
+//        }
         return response.getResult().getFulfillment().getSpeech();
+
 
     }
 
@@ -495,7 +497,6 @@ public class ChatBot extends AppCompatActivity {
                 "\nAction: " + result.getAction() +
                 "\nParameters: " + parameterString);
     }
-
 
     //getters and setters
     public int getBirthYear() {
