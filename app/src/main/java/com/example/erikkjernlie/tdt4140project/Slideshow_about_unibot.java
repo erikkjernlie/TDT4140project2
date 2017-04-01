@@ -1,3 +1,11 @@
+/*  Slideshow_about_unibot
+ *
+ *  Animation to tell the user about uniBOTs values and other imporant information.
+ *
+ *  Created by Erik Kjernlie
+ *  Copyright © uniBOT
+ */
+
 package com.example.erikkjernlie.tdt4140project;
 
 import android.content.Context;
@@ -36,7 +44,10 @@ public class Slideshow_about_unibot extends AppCompatActivity {
         //setter layouten
         setContentView(R.layout.activity_slideshow);
 
-        //Displays an arbitrary image, such as an icon.
+        initVariables();
+    }
+
+    private void initVariables(){
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
         btnBack = (Button) findViewById(R.id.btn_back);
@@ -44,7 +55,6 @@ public class Slideshow_about_unibot extends AppCompatActivity {
 
 
         // layouts of all welcome sliders
-        // add few more layouts if you want
         layouts = new int[]{
                 R.layout.welcome_slide1,
                 R.layout.welcome_slide2,
@@ -62,14 +72,13 @@ public class Slideshow_about_unibot extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int current = getItem(-1);
-                if (current >= 0 ){
+                if (current >= 0) {
                     viewPager.setCurrentItem(current);
                 } else {
                     launchHomeScreen();
                 }
             }
         });
-
 
 
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -124,12 +133,9 @@ public class Slideshow_about_unibot extends AppCompatActivity {
         public void onPageSelected(int position) {
             addBottomDots(position);
 
-            // changing the next button text 'NEXT' / 'GOT IT'
+            // changing the next button text 'NEXT' to 'GOT IT' on the last page
             if (position == layouts.length - 1) {
-                // last page. make button text to GOT IT
                 btnNext.setText(getString(R.string.start));
-                //må prøve å fikse at det står back istedenfor prev
-                //problemet er at det ikke er noen verdi som lagrer position foreløpig
 
             } else if (position > 0) {
                 btnNext.setText(getString(R.string.next));
@@ -150,9 +156,8 @@ public class Slideshow_about_unibot extends AppCompatActivity {
         }
     };
 
-    /**
-     * Making notification bar transparent
-     */
+
+     // Making notification bar transparent
     private void changeStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -161,9 +166,7 @@ public class Slideshow_about_unibot extends AppCompatActivity {
         }
     }
 
-    /**
-     * View pager adapter
-     */
+    //View pager adapter
     public class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
 

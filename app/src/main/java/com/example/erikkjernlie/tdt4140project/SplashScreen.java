@@ -1,3 +1,13 @@
+/*  SplashScreen
+ *
+ *  SplashScreen that appears when the user opens the app.
+ *  This is visible for SPLASH_TIME_OUT-seconds, which is set to 3000 milliseconds,
+ *  and contains a simple background with our logo.
+ *
+ *  Created by Erik Kjernlie
+ *  Copyright © uniBOT
+ */
+
 package com.example.erikkjernlie.tdt4140project;
 
 import android.content.Intent;
@@ -22,7 +32,7 @@ public class SplashScreen extends AppCompatActivity {
                 startActivity(homeIntent);
                 finish();
             }
-        },SPLASH_TIME_OUT);
+        }, SPLASH_TIME_OUT);
 
     }
 }

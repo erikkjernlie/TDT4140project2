@@ -1,3 +1,12 @@
+/*  Register_user
+ *
+ *  Register the user in firebase.
+ *
+ *  Created by Jørgen Mortensen and Erik Kjernlie
+ *  Copyright © uniBOT
+ */
+
+
 package com.example.erikkjernlie.tdt4140project;
 
 import android.app.ProgressDialog;
@@ -12,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -26,10 +36,13 @@ public class Register_user extends AppCompatActivity {
     private Button registerBtn;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
+    private Firebase mRef;
     private Button switchRegisterToLogin;
 
+
+    //the user can press outside the keyboard, and the keyboard will hide automatically
     public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Register_user.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Register_user.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
@@ -42,6 +55,10 @@ public class Register_user extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(Register_user.this);
 
+
+    }
+
+    private void initButtons(){
         enterEmailAddress = (EditText) findViewById(R.id.enterEmailAddress);
         enterPassword1 = (EditText) findViewById(R.id.enterPassword1);
         enterPassword2 = (EditText) findViewById(R.id.enterPassword2);
@@ -94,7 +111,7 @@ public class Register_user extends AppCompatActivity {
     public void registerUser() {
         String email = enterEmailAddress.getText().toString().trim();
         String password1 = enterPassword1.getText().toString().trim();
-        String password2= enterPassword2.getText().toString().trim();
+        String password2 = enterPassword2.getText().toString().trim();
 
         if (TextUtils.isEmpty(email)) {
             //Write email again
@@ -129,7 +146,14 @@ public class Register_user extends AppCompatActivity {
                     //Successfull user registration
                     Toast.makeText(Register_user.this, "User was successfully registered", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
-                    Intent intent  = new Intent(Register_user.this, Menu.class);
+                    Intent intent = new Intent(Register_user.this, Menu.class);
+                    Firebase.setAndroidContext(Register_user.this);
+
+                    firebaseAuth = firebaseAuth.getInstance();
+
+                    mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
+                            firebaseAuth.getCurrentUser().getUid());
+                    storeVariables();
                     startActivity(intent);
 
                 } else {
@@ -141,8 +165,34 @@ public class Register_user extends AppCompatActivity {
         });
 
 
+    }
 
 
+    //creates initiated information to make sure the
+    private void storeVariables() {
+        //Store averageGrade
+        Firebase mRefChildGrade = mRef.child("CalculatedGrade");
+        mRefChildGrade.setValue(0.0);
+
+        //Store gender
+        Firebase mRefChildGender = mRef.child("Gender");
+        mRefChildGender.setValue('\u0000');
+
+        //Store courses
+        Firebase mRefChildCourses = mRef.child("Courses");
+        mRefChildCourses.setValue(null);
+
+        //Store extra education
+        Firebase mRefChildExEd = mRef.child("Extra education");
+        mRefChildExEd.setValue(null);
+
+        //Store birthyear
+        Firebase mRefChildYear = mRef.child("BirthYear");
+        mRefChildYear.setValue(0);
+
+        //Store R2Grade
+        Firebase mRefChildR2Grade = mRef.child("R2Grade");
+        mRefChildR2Grade.setValue(0);
     }
 
 

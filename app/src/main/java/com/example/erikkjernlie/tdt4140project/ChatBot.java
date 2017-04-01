@@ -1,3 +1,12 @@
+/*  ChatBot
+ *
+ *  This is the class where the chatting happends. Connecting with API.AI and firebase.
+ *  Sends the user's input to a format API.AI understands, and responds the user right away
+ *
+ *  Created by Erik Kjernlie
+ *  Copyright © uniBOT
+ */
+
 package com.example.erikkjernlie.tdt4140project;
 
 
@@ -11,7 +20,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -73,7 +84,7 @@ public class ChatBot extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
     Firebase mRef;
-
+    //gets the required access from API.AI a
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +106,13 @@ public class ChatBot extends AppCompatActivity {
         buttonSend = (Button) findViewById(R.id.send);
 
         listView = (ListView) findViewById(R.id.msgview);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                hideKeyboard(v);
+            }
+        });
 
         chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), R.layout.right_chat);
         listView.setAdapter(chatArrayAdapter);
@@ -126,7 +144,7 @@ public class ChatBot extends AppCompatActivity {
                 listView.setSelection(chatArrayAdapter.getCount() - 1);
             }
         });
-        config = new AIConfiguration("3e19cea342f04764b1665e37099f1e23", // denne burde egentlig være skjult
+        config = new AIConfiguration("3e19cea342f04764b1665e37099f1e23",
                 AIConfiguration.SupportedLanguages.English,
                 AIConfiguration.RecognitionEngine.Speaktoit);
 
@@ -138,6 +156,7 @@ public class ChatBot extends AppCompatActivity {
         getInfoDatabase();
     }
 
+    //Retrieving information from the spezified fields from the firebase-database
     public void getInfoDatabase() {
         mRef.child("BirthYear").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -228,6 +247,11 @@ public class ChatBot extends AppCompatActivity {
         return userInfo;
     }
 
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(ChatBot.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
     private void initTextButtons() {
         uniBot = (TextView) findViewById(R.id.unibot);
         back = (TextView) findViewById(R.id.back);
@@ -239,12 +263,12 @@ public class ChatBot extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        // alertDialog if the user presses the help button
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         context);
-
                 // set title
                 alertDialogBuilder.setTitle("Help with uniBOT");
 
@@ -317,7 +341,7 @@ public class ChatBot extends AppCompatActivity {
             System.out.println(chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString());
             translationFromUserToAI();
             return true;
-        } else if (messageFromUser.toLowerCase().equals("no")  && (chatArrayAdapter.getCount() > 2) && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber) )) {
+        } else if (messageFromUser.toLowerCase().equals("no") && (chatArrayAdapter.getCount() > 2) && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber))) {
             addMessageToChatArray("You can always press the uniBOT-button to get more random questions. ");
             return true;
         }
@@ -399,9 +423,10 @@ public class ChatBot extends AppCompatActivity {
         }.execute(aiRequest);
     }
 
+
     private String processAiResponse(AIResponse response) {
 
-        if(response.getResult().getAction().toString().contains("displayUserInformation")) {
+        if (response.getResult().getAction().toString().contains("displayUserInformation")) {
             return displayUserInformation();
         }
         if(response.getResult().getAction().contains("getInformation")) {
@@ -458,7 +483,6 @@ public class ChatBot extends AppCompatActivity {
         }
         Result result = response.getResult();
 
-
         // Get parameters
         String parameterString = "";
         if (result.getParameters() != null && !result.getParameters().isEmpty()) {
@@ -472,6 +496,8 @@ public class ChatBot extends AppCompatActivity {
                 "\nParameters: " + parameterString);
     }
 
+
+    //getters and setters
     public int getBirthYear() {
         return birthYear;
     }

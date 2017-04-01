@@ -1,3 +1,12 @@
+/** LogInTest
+ *
+ * GUI test for the Register-activity
+ *
+ * Created by Herman Horn
+ * Copyright © uniBOT
+ */
+
+
 package com.example.erikkjernlie.tdt4140project;
 
 

@@ -1,3 +1,11 @@
+/** LogInTextTest
+ *
+ * GUI test for the specific text on the login-activity.
+ *
+ * Created by Herman Horn
+ * Copyright © uniBOT
+ */
+
 package com.example.erikkjernlie.tdt4140project;
 
 
@@ -18,7 +26,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;

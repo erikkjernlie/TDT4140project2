@@ -1,12 +1,16 @@
+/*  StudyProgramInfo
+ *
+ *  Contains all the information that is needed about a study program.
+ *
+ *  Created by Jonas Sagild on 22.03.2017.
+ *  Copyright © uniBOT
+ */
+
 package com.example.erikkjernlie.tdt4140project;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Map;
 
-/**
- * Created by jonas on 22.03.2017.
- */
+
 
 public class StudyProgramInfo {
 

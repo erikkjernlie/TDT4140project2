@@ -120,10 +120,17 @@
 
             />
 
-        <View
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="34"></View>
+            android:text="Forgot password"
+            android:textColor="#FFFFFF"
+            android:paddingTop="10dp"
+            android:textSize="14dp"
+            android:clickable="true"
+            android:id="@+id/forgotPassword"
+            android:gravity="center_horizontal"
+            android:layout_weight="34"></TextView>
 
     </LinearLayout>
 

@@ -7,32 +7,34 @@
     <string name="start">GOT IT</string>
     <string name="back">BACK</string>
     <string name="slide_1_title">Instant response</string>
-    <string name="slide_1_desc">uniBOT responds right away. No waiting, planning or delays; just </string>
+    <string name="slide_1_desc">uniBOT responds right away.\nNo waiting, planning, scheduling or delays!</string>
 
     <string name="slide_2_title">Easy access</string>
-    <string name="slide_2_desc">uniBOT uses different APIs and artifical intelligence</string>
+    <string name="slide_2_desc">Get access whenever and wherever you want! All you need is an Android phone with regular 3G or 4G connection</string>
 
     <string name="slide_3_title">Smart Technology</string>
-    <string name="slide_3_desc">Get access whenever and wherever you want! </string>
+    <string name="slide_3_desc">With artifical intelligence and other smart APIs, uniBOT is able to personalize your experience without any configuations!</string>
 
-    <string name="slide_4_title">Enjoy uniBOT</string>
-    <string name="slide_4_desc">Let it help you with your questions regarding study, grades or something else </string>
+    <string name="slide_4_title">Enjoy uniBOT!</string>
+    <string name="slide_4_desc">We hope our app can help you decide what to do with your future</string>
 
 
-    <string name="about_1_title">the uniBOT team</string>
-    <string name="about_1_desc">uniBOT is developed in the course <i>Software engineering</i> at NTNU Trondheim.\n\n We are all 2. year students at <i>Engineering and ICT</i>. </string>
+    <string name="about_1_title">The uniBOT team</string>
+    <string name="about_1_desc">We developed this app as a part of the <i>TDT4140 Software engineering</i> course at NTNU Trondheim. Our goal was
+            to create an intelligent and efficient way for potential students to explore their educational possibilities. We are all second year students
+        at the <i>Engineering and ICT</i> program.</string>
 
-    <string name="about_2_title">Herman Horn</string>
+    <string name="about_2_title">Herman Wika Horn</string>
     <string name="about_2_desc"><i>Project Manager</i></string>
-    <string name="about_2"><b>Contact information:</b>\n hermanwh@stud.ntnu.no</string>
+    <string name="about_2"><b>Contact information:</b>\nhermanwh@stud.ntnu.no</string>
 
-    <string name="about_3_title">Jonas Sagild</string>
+    <string name="about_3_title">Jonas Åsnes Sagild</string>
     <string name="about_3_desc"><i>Application Developer</i></string>
-    <string name="about_3"><b>Contact information:</b>\n jonassagild@gmail.com</string>
+    <string name="about_3"><b>Contact information:</b>\njonasasa@stud.ntnu.no</string>
 
     <string name="about_4_title">Jørgen Mortensen</string>
     <string name="about_4_desc"><i>Application Developer</i></string>
-    <string name="about_4"><b>Contact information:</b>\njorgen_bm96@hotmail.com</string>
+    <string name="about_4"><b>Contact information:</b>\njorgemor@stud.ntnu.no</string>
 
     <string name="about_5_title">Erik Kjernlie</string>
     <string name="about_5_desc"><i>GUI Developer</i></string>
@@ -40,4 +42,13 @@
 
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
+
+    <string name="ratings">Submit your grades</string>
+    <string name="cancel">DELETE</string>
+    <string name="confirm">CONFIRM</string>
+    <string name="confirm_email">CONFIRM E-MAIL</string>
+    <string name="or"><b>OR</b></string>
+
+
+    <string name="matematikkR2">You selected <i>Matematikk R2</i>.\nWhat is your grade?</string>
 </resources>

@@ -1,259 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_add_information"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-
-    android:paddingTop="16dp"
-    android:orientation="vertical"
-    android:background="@drawable/background_1"
-    tools:context="com.example.erikkjernlie.tdt4140project.Add_information"
-    >
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="@drawable/background_1"
+    android:weightSum="100"
+    android:id="@+id/linear_add_information">
 
 
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="33">
+        <TextView
+            android:id="@+id/cbPicView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+
+            android:paddingTop="10dp"
+            android:text="Choose gender (male / female):"
+            android:textSize="18dp"
+            android:textColor="#FFFFFF"
+            android:paddingBottom="15dp"
+            />
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+
+            >
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:paddingLeft="15dp"
+                android:src="@drawable/man_notselected"
+                android:adjustViewBounds="true"
+                android:layout_weight="0.5"
+                android:id="@+id/man"
+                android:background="@android:color/transparent"
+                />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/female_notselected"
+                android:adjustViewBounds="true"
+                android:paddingRight="15dp"
+                android:scaleType="fitCenter"
+                android:layout_weight="0.5"
+                android:onClick="onClick"
+                android:id="@+id/female"
+                android:background="@android:color/transparent"/>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="32"
+        android:weightSum="1"
+        android:paddingTop="20dp"
         >
+
+        <TextView
+            android:layout_margin="15dp"
+            android:text="I am born in"
+            android:id="@+id/birthYear"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_vertical"
+
+
+            />
+
+
+        <NumberPicker
+            android:id="@+id/np"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textSize="16dp"
+            android:theme="@style/AppTheme.Picker"
+
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="35"
+        android:orientation="vertical"
+        android:gravity="bottom">
+
+        <View android:layout_height="2px"
+            android:layout_width="fill_parent"
+            android:background="#FFFFFF"
+            />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-
-            android:descendantFocusability="beforeDescendants"
-            android:focusableInTouchMode="true"
-            >
-
-
-
-            <TextView
-                android:id="@+id/cbPicView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-
-                android:paddingTop="10dp"
-                android:text="Choose gender (male / female):"
-                android:textSize="18dp"
-                android:textColor="#FFFFFF"
-                android:paddingBottom="15dp"
-                />
-
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="15dp"
-                >
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="150dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/man_notselected"
-                    android:adjustViewBounds="true"
-                    android:layout_weight="0.5"
-                    android:id="@+id/man"
-                    android:background="@android:color/transparent"
-                    />
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="150dp"
-                    android:src="@drawable/female_notselected"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitCenter"
-                    android:layout_weight="0.5"
-                    android:onClick="onClick"
-                    android:id="@+id/female"
-                    android:background="@android:color/transparent"/>
-
-
-            </LinearLayout>
-
-
-            <View android:layout_height="2px"
-                android:layout_width="fill_parent"
-                android:background="#FFFFFF"
-                />
-
-
-                />
-            <EditText
-                android:layout_margin="15dp"
-                android:hint="Add your grades separated with comma"
-                android:id="@+id/gradeSingle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:backgroundTint="#000000"
-                android:textColorHint="#FFFFFF"
-                android:textColor="#FFFFFF"
-                android:gravity="center_horizontal"
-                android:textSize="16dp"
-                />
-
-            <View android:layout_height="2px"
-                android:layout_width="fill_parent"
-                android:background="#FFFFFF"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"/>
-
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <TextView
-                    android:layout_margin="15dp"
-                    android:text="I am born in"
-                    android:id="@+id/birthYear"
-                    android:layout_weight="0.5"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:gravity="center_horizontal"
-                    android:layout_gravity="center_vertical"
-
-
-                    />
-
-
-                <NumberPicker
-                    android:id="@+id/np"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:textSize="16dp"
-                    android:theme="@style/AppTheme.Picker"
-
-                    />
-
-            </LinearLayout>
-            <View android:layout_height="2px"
-                android:layout_width="fill_parent"
-                android:background="#FFFFFF"
-                />
-
-
-
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:orientation="vertical">
-
-                <View android:layout_height="2px"
-                    android:layout_width="fill_parent"
-                    android:background="#FFFFFF"
-                    />
-
-                <Button
-                    android:id="@+id/dropdownCourses"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/hover_button"
-                    android:textColor="#FFFFFF"
-                    android:text="Add courses"/>
-
-                <View android:layout_height="2px"
-                    android:layout_width="fill_parent"
-                    android:background="#FFFFFF"
-                    />
-
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="10dp"
-                android:orientation="vertical">
-
-                <View android:layout_height="2px"
-                    android:layout_width="fill_parent"
-                    android:background="#FFFFFF"
-                    />
-                <Button
-                    android:id="@+id/dropdownExtrapoints"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/hover_button"
-                    android:textColor="#FFFFFF"
-                    android:text="Add extra points"/>
-
-                <View android:layout_height="2px"
-                    android:layout_width="fill_parent"
-                    android:background="#FFFFFF"
-                    />
-
-
-
-            </LinearLayout>
-
-            <View android:layout_height="2px"
-                android:layout_width="fill_parent"
-                android:background="#FFFFFF"
-                android:paddingBottom="15dp"
-                />
-
+            android:orientation="horizontal"
+            android:weightSum="50">
+        <Button
+            android:id="@+id/gradeBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/hover_button"
+            android:text="Add grades"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:layout_weight="23"
+            android:textSize="16dp"
+            />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
                 android:gravity="center"
-                android:textColor="#FFFFFF"
-                android:text="Are you ready to submit your information?"/>
+                android:textSize="16dp"
+                android:textColor="#abb0ba"
+                android:text="@string/or"
+                android:background="#20f0f0f0"/>
 
-            <View android:layout_height="2px"
-                android:layout_width="fill_parent"
-                android:background="#FFFFFF"
-                android:paddingTop="20dp"
-                />
             <Button
-
-                android:layout_width="match_parent"
+                android:id="@+id/averageBtn"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Submit"
-                android:id="@+id/submit"
                 android:background="@drawable/hover_button"
+                android:text="Add average"
                 android:textColor="#FFFFFF"
-
-                />
-
-            <View android:layout_height="2px"
-                android:layout_width="fill_parent"
-                android:background="#FFFFFF"
-
-                />
-
+                android:textSize="16dp"
+                android:gravity="center"
+                android:layout_weight="23"/>
         </LinearLayout>
+        <View android:layout_height="2px"
+            android:layout_width="fill_parent"
+            android:background="#FFFFFF"
+            />
+        <Button
+            android:id="@+id/dropdownCourses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:background="@drawable/hover_button"
+            android:text="Add courses"
+            android:textColor="#FFFFFF" />
+        <View android:layout_height="2px"
+            android:layout_width="fill_parent"
+            android:background="#FFFFFF"
+            />
+        <Button
+            android:id="@+id/dropdownExtrapoints"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:background="@drawable/hover_button"
+            android:text="Add extra points"
+            android:textColor="#FFFFFF" />
+        <View android:layout_height="2px"
+            android:layout_width="fill_parent"
+            android:background="#FFFFFF"
+            />
+        <Button
+
+            android:id="@+id/submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:background="@drawable/hover_button"
+            android:text="Submit"
+            android:textColor="#FFFFFF"
+
+            />
+
+        <View android:layout_height="2px"
+            android:layout_width="fill_parent"
+            android:background="#FFFFFF"
+            />
 
 
-
-
-
-    </ScrollView>
-
-
-
+    </LinearLayout>
 
 
 </LinearLayout>
