@@ -15,12 +15,12 @@ public class SplashScreenTest {
     private SplashScreen ss;
 
     @Before
-    public void setUp(){
+    public void setUp() throws Exception {
         ss = new SplashScreen();
     }
 
     @Test
-    public void testOnCreate(){
+    public void testOnCreate() throws Exception {
 
         assertEquals(true, ss != null);
 
@@ -28,7 +28,7 @@ public class SplashScreenTest {
 
 
     @After
-    public void tearDown(){
+    public void tearDown() throws Exception {
         ss = null;
     }
 }

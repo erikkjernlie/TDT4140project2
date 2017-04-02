@@ -21,18 +21,18 @@ public class ChatMessageTest {
     }
 
     @Test
-    public void testChatMessage(){
+    public void testChatMessage() throws Exception {
         assertEquals(true, cm.message.equals("test"));
         assertEquals(true, cm.left);
     }
 
     @Test
-    public void testToString(){
+    public void testToString() throws Exception {
         assertEquals(true, cm.toString().equals("test"));
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() throws Exception {
         cm = null;
     }
 }
