@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,11 +20,13 @@ import ai.api.model.AIResponse;
 public class ProcessAiResponse {
 
     private HashMap<String, StudyProgramInfo> studyPrograms;
-    UserInfo userInfo;
+    private UserInfo userInfo;
+    private HashMap<String, Union> unions;
 
-    public ProcessAiResponse(HashMap<String, StudyProgramInfo> studyPrograms, UserInfo userInfo) {
+    public ProcessAiResponse(HashMap<String, StudyProgramInfo> studyPrograms, UserInfo userInfo, HashMap<String, Union> unions) {
         this.studyPrograms = studyPrograms;
         this.userInfo = userInfo;
+        this.unions = unions;
     }
 
 
@@ -61,7 +64,7 @@ public class ProcessAiResponse {
                 ut = this.getCourses(aiResponse.getResult().getParameters().get("StudyProgram").toString());
                 break;
             case "getUnion":
-                ut = this.getUnion(aiResponse.getResult().getParameters().get("StudyProgram").toString());
+                ut = this.getUnion(aiResponse.getResult().getParameters().get("Union").toString());
                 break;
             case "compareStudies":
                 ut = this.getCompareStudies(aiResponse.getResult().getParameters().get("StudyProgram").toString(), aiResponse.getResult().getParameters().get("StudyProgram1").toString());
@@ -80,6 +83,10 @@ public class ProcessAiResponse {
                 }
                 ut = this.addInterst(interests);
                 break;
+            case "getIntoStudy":
+                ut = this.getInto(aiResponse.getResult().getParameters().get("StudyProgram").toString());
+                break;
+
         }
 
         return ut;
@@ -148,11 +155,9 @@ public class ProcessAiResponse {
     }
 
     // Method for getting union
-    private String getUnion(String studyProgram) {
-        studyProgram = studyProgram.replace("\"", ""); // removes ""
-        String ut = "The courses at " + studyProgram + " is: ";
-
-        return "Denne er ikke ferdig";
+    private String getUnion(String union) {
+        union = union.replace("\"", ""); // removes ""
+        return unions.get(union).getInfo();
     }
 
     // Method for comparing studies
@@ -177,15 +182,16 @@ public class ProcessAiResponse {
     // Method for telling the user about himself
     private String getUserInfo() {
         String ut = "";
-        if (userInfo.getGender() == 'M') {
+
+        if (userInfo.getGender() != '\u0000' && userInfo.getGender() == 'M') {
             ut += "You are a Male";
-        } else {
+        } else if (userInfo.getCalculatedGrade() != '\u0000') {
             ut += "You are a Female";
         }
+        if (ut.equals("")) {
 
-        int age = 2017 - userInfo.getBirthYear();
-
-        ut += ", aged " + age;
+        }
+        ut += ", and born in " + userInfo.getBirthYear();
 
         ut += "\n you have " + userInfo.getCalculatedGrade() + " points to apply with.";
 
@@ -196,23 +202,79 @@ public class ProcessAiResponse {
     private String addInterst(ArrayList<String> interests) {
         ArrayList<String> existingInterest = userInfo.getInterests();
         // Removes ""
+
         for (String i : interests) {
             interests.set(interests.indexOf(i), i.replace("\"", ""));
             //interests.set(interests.indexOf(i), i.replace("[", ""));
            // interests.set(interests.indexOf(i), i.replace("]", ""));
         }
+
+        ArrayList<String> indexList = new ArrayList<>();
+
         int size = interests.size();
+        System.out.println(userInfo.getInterests());
         for (int i = 0; i < size; i++) {
             if (existingInterest.contains(interests.get(i))) {
-                interests.remove(interests.indexOf(i));
+                indexList.add(interests.get(i));
             }
         }
+
+        for(String i : indexList) {
+            interests.remove(i);
+        }
+
         String ut = "We've just added ";
+
         for (String i : interests) {
             userInfo.addInterests(i);
-            ut += interests + ", ";
+            ut += i + ", ";
         }
+
+        System.out.println(userInfo.getInterests());
+        userInfo.updateFirebase();
+
         ut = ut.substring(0, ut.length()-2) + " to your interests";
+
+        if (interests.isEmpty()) {
+            ut = "We could not match your interests";
+        }
+
+        return ut;
+    }
+
+    // Method for checking if user gets into
+    private String getInto(String studyProgram) {
+
+        // Ta hensyn til r2
+
+        studyProgram = studyProgram.replace("\"", ""); // removes ""
+        String ut = "";
+        double grade = userInfo.getCalculatedGrade();
+
+        if (!studyProgram.equals("Informatics") && userInfo.getR2Grade() < 4) {
+
+            ut += "You need at least 4 at the course R2, you have " + userInfo.getR2Grade() + ".\nTherefore you need to retake the exam. ";
+
+            if (studyPrograms.get(studyProgram).isGirlPoints()) {
+                grade += 2;
+            }
+            if (studyPrograms.get(studyProgram).getGrade() < grade) {
+                ut += "Your grade of " + grade + " is highter than last years grade of " + studyPrograms.get(studyProgram).getGrade() + " at "  + studyProgram + ".";
+            } else {
+                ut += "Your grade of " + grade + " is lower than last year grade of " + studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
+            }
+            return ut;
+
+        }
+
+        if (studyPrograms.get(studyProgram).isGirlPoints()) {
+            grade += 2;
+        }
+        if (studyPrograms.get(studyProgram).getGrade() < grade) {
+            ut = "Your grade of " + grade + " is higher than last years grade of " + studyPrograms.get(studyProgram).getGrade() + " at "  + studyProgram + ".";
+        } else {
+            ut = "Your grade of " + grade + " is lower than last year grade of " + studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
+        }
 
         return ut;
     }
