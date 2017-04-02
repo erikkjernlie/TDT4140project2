@@ -54,7 +54,7 @@ public class Register_user extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         progressDialog = new ProgressDialog(Register_user.this);
-
+        initButtons();
 
     }
 

@@ -22,6 +22,10 @@ public class StudyProgramInfo {
     private ArrayList<String> specializations;
     private String studyEnvironment;
 
+    public StudyProgramInfo(){
+
+    }
+
     public StudyProgramInfo(String info, Double grade,
                             boolean isGirlPoints, double girPercentage, String studentUnion,
                             ArrayList<String> specializations,
