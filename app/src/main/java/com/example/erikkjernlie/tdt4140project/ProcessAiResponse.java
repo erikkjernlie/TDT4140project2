@@ -270,7 +270,6 @@ public class ProcessAiResponse {
         ArrayList<String> indexList = new ArrayList<>();
 
         int size = interests.size();
-        System.out.println(userInfo.getInterests());
         for (int i = 0; i < size; i++) {
             if (existingInterest.contains(interests.get(i))) {
                 indexList.add(interests.get(i));
@@ -288,7 +287,6 @@ public class ProcessAiResponse {
             ut += i + ", ";
         }
 
-        System.out.println(userInfo.getInterests());
         userInfo.updateFirebase();
 
         ut = ut.substring(0, ut.length() - 2) + " to your interests";
@@ -317,9 +315,9 @@ public class ProcessAiResponse {
                     new ArrayList<String>(Arrays.asList("Data", "Consultant", "Programmer")), "The Computer Science programme of study is a 5 years Master of Science (sivilingeniør) programme. Computer Science is not only about excellent computer skills - it also deals with contributing to the social development. How can we improve existing systems? What could be useful in the future? With computer engineering skills you can create computer systems which people need, want, or not yet know that they need.",
                     "The student union Abakus is very popular among students and arrange many different activities for all students at Computer Science.",
                     "Abakus", new ArrayList<String>(Arrays.asList("EXPH0004", "TDT4110", "TMA4100"))));
-            UserInfo user = new UserInfo(1996, 55.6, new ArrayList<>(Arrays.asList("Matematikk R1",
+            UserInfo user = new UserInfo(1996, 53.6, new ArrayList<>(Arrays.asList("Matematikk R1",
                     "Matematikk R2")),new ArrayList<>(Arrays.asList("Folkehøgskole")), 'M', 5,
-                    new ArrayList<>(Arrays.asList("Studies", "Computers")));
+                    new ArrayList<>(Arrays.asList("Studies", "web development")));
             aiResponse = new ProcessAiResponse(studyProgramInfoMap, user, null);
         }
 
@@ -413,14 +411,27 @@ public class ProcessAiResponse {
             fail(aiResponse.processAiRespons(null));
         }
 
-        @Test
+        @Test(expected =IllegalStateException.class)
         public void testAddInterest() throws Exception {
-            assertTrue(aiResponse.addInterest(
-                    new ArrayList<String>(Arrays.asList("Computers",
-                            "Machines"))).contains("Computers"));
-            assertTrue(aiResponse.addInterest(
-                    new ArrayList<String>(Arrays.asList("Computers",
-                            "Machines"))).contains("Machines"));
+            fail(aiResponse.addInterest(new ArrayList<String>(
+                    Arrays.asList("Computers", "Machines"))));
+        }
+
+        @Test
+        public void testGetInto() throws Exception {
+            assertTrue(aiResponse.getInto("Informatics").toLowerCase()
+                    .contains("higher"));
+            assertTrue(aiResponse.getInto("Computer Science").toLowerCase()
+                    .contains("lower"));
+        }
+
+        @Test
+        public void testRecommendStudy() throws Exception {
+            if (aiResponse.userInfo.getInterests().size() <= 1) {
+                assertTrue(aiResponse.recommendStudy().contains(
+                        "You have not told us any of your interests. If you tell us your interests," +
+                                "we could better help you find a suitable study"));
+            }
         }
 
         @After
@@ -494,7 +505,6 @@ public class ProcessAiResponse {
 
         // går gjennom alle studiene, legger til poeng på pointsMap, om interessen er en av keywordsa
         for (String study : studyPrograms.keySet()) {
-            System.out.println(study);
             for (String interest : interests) {
                 interest = interest.toLowerCase();
 
