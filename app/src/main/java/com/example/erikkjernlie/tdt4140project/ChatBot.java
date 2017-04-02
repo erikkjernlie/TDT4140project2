@@ -89,7 +89,6 @@ public class ChatBot extends AppCompatActivity {
         Firebase.setAndroidContext(ChatBot.this);
 
         firebaseAuth = firebaseAuth.getInstance();
-        firebaseAuth.signInWithEmailAndPassword("jonassagild@hotmail.com", "jonas12");
 
         mRefUsers = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
                 firebaseAuth.getCurrentUser().getUid());
