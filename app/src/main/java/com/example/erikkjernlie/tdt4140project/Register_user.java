@@ -27,6 +27,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class Register_user extends AppCompatActivity {
 
@@ -60,6 +63,7 @@ public class Register_user extends AppCompatActivity {
 
     private void initButtons(){
         enterEmailAddress = (EditText) findViewById(R.id.enterEmailAddress);
+        enterPassword1 = (EditText) findViewById(R.id.enterPassword1);
         enterPassword1 = (EditText) findViewById(R.id.enterPassword1);
         enterPassword2 = (EditText) findViewById(R.id.enterPassword2);
 
@@ -151,7 +155,7 @@ public class Register_user extends AppCompatActivity {
 
                     firebaseAuth = firebaseAuth.getInstance();
 
-                    mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
+                    mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
                             firebaseAuth.getCurrentUser().getUid());
                     storeVariables();
                     startActivity(intent);
@@ -170,29 +174,9 @@ public class Register_user extends AppCompatActivity {
 
     //creates initiated information to make sure the
     private void storeVariables() {
-        //Store averageGrade
-        Firebase mRefChildGrade = mRef.child("CalculatedGrade");
-        mRefChildGrade.setValue(0.0);
-
-        //Store gender
-        Firebase mRefChildGender = mRef.child("Gender");
-        mRefChildGender.setValue('\u0000');
-
-        //Store courses
-        Firebase mRefChildCourses = mRef.child("Courses");
-        mRefChildCourses.setValue(null);
-
-        //Store extra education
-        Firebase mRefChildExEd = mRef.child("Extra education");
-        mRefChildExEd.setValue(null);
-
-        //Store birthyear
-        Firebase mRefChildYear = mRef.child("BirthYear");
-        mRefChildYear.setValue(0);
-
-        //Store R2Grade
-        Firebase mRefChildR2Grade = mRef.child("R2Grade");
-        mRefChildR2Grade.setValue(0);
+        UserInfo user = new UserInfo(0, 0.0, null,
+                null, '\u0000', 0, new ArrayList<>(Arrays.asList("Studies")));
+        mRef.setValue(user);
     }
 
 
