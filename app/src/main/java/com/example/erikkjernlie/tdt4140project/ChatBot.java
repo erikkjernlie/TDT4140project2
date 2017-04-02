@@ -296,58 +296,6 @@ public class ChatBot extends AppCompatActivity {
     }
 
     private void getAiResponse(String a) {
-        //TO SEND INFO ABOUT UNIONS TO FIREBASE
-        /*if (a.equals("Send")) {
-            Union TP = new Union("TeknologiPorten", "Tidenes beste port", 50);
-            Union NTNUI = new Union("NTNUI", "Idrettsforening", 1000);
-            Union UKA = new Union("UKA", "Tidenes beste festival", 2000);
-            Union Bindeleddet = new Union("Bindeleddet", "Tidenes beste ledd", 60);
-            Union Start_NTNU = new Union("START NTNU", "Tidenes beste start", 55);
-            Union SIT = new Union("SIT", "Tidenes beste studentsamskipnad", 20000);
-            TP.sendToFirebase();
-            NTNUI.sendToFirebase();
-            UKA.sendToFirebase();
-            Bindeleddet.sendToFirebase();
-            Start_NTNU.sendToFirebase();
-            SIT.sendToFirebase();
-
-        }*/
-
-        //IF YOU WANT TO INSERT THE 4 STUDIES INTO THE DATABASE
-        /*if (a.equals("setInformatics")) {
-            setStudyInformation(new StudyProgramInfo(51.2, false,
-                    new ArrayList<String>(Arrays.asList("Data", "IKT", "IT")),
-                    new ArrayList<String>(Arrays.asList("Data", "Consultant")), "Informatics is a bachelor",
-                    "Very good environment", "Online",
-                    new ArrayList<String>(Arrays.asList("TDT4100", "TDT4120"))), "Informatics");
-        }
-        if (a.equals("setICT")) {
-            setStudyInformation(new StudyProgramInfo(54.4, true,
-                    new ArrayList<String>(Arrays.asList("Data", "IKT", "Engineering")),
-                    new ArrayList<String>(Arrays.asList("Consultant", "Engineer")), "ICT is a master",
-                    "Amazing environment", "Hybrida",
-                    new ArrayList<String>(Arrays.asList("TMA4100", "TDT4100", "TDT4120"))),
-                    "Engineering and ICT");
-        }
-        if (a.equals("setIndok")) {
-            setStudyInformation(new StudyProgramInfo(64.0, false,
-                    new ArrayList<String>(Arrays.asList("Data", "IKT", "Economics")),
-                    new ArrayList<String>(Arrays.asList("Data", "Consultant", "Leader")),
-                    "Indok is very weird",
-                    "Very bad environment", "Janus",
-                    new ArrayList<String>(Arrays.asList("TDT4100", "TDT4120"))),
-                    "Industrial Economics and Technology Management and ICT");
-        }
-        if (a.equals("setData")) {
-            setStudyInformation(new StudyProgramInfo(57.0, true,
-                    new ArrayList<String>(Arrays.asList("Data", "IKT", "IT")),
-                    new ArrayList<String>(Arrays.asList("Data", "Consultant", "Programmer")),
-                    "Computer science is a master",
-                    "Okey environment", "Abakus",
-                    new ArrayList<String>(Arrays.asList("TDT4100", "TDT4120"))),
-                    "Computer Science");
-        }*/
-
 
         final AIRequest aiRequest = new AIRequest();
         if (!a.isEmpty()) {
@@ -423,10 +371,6 @@ public class ChatBot extends AppCompatActivity {
                 parameterString += "(" + entry.getKey() + ", " + entry.getValue() + ") ";
             }
         }
-        // Show results in TextView.
-        resultTextView.setText("Query:" + result.getResolvedQuery() +
-                "\nAction: " + result.getAction() +
-                "\nParameters: " + parameterString);
     }
 
     public void addStudyPrograms(String study, StudyProgramInfo info) {
