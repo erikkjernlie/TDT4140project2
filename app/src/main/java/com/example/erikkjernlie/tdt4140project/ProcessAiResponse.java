@@ -1,7 +1,11 @@
 package com.example.erikkjernlie.tdt4140project;
 
 
+import android.test.suitebuilder.annotation.Suppress;
+
 import com.google.gson.JsonElement;
+
+import junit.framework.Assert;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.UndeclaredThrowableException;
@@ -17,6 +21,7 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
+import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -315,15 +320,16 @@ public class ProcessAiResponse {
             UserInfo user = new UserInfo(1996, 55.6, new ArrayList<>(Arrays.asList("Matematikk R1",
                     "Matematikk R2")),new ArrayList<>(Arrays.asList("Folkehøgskole")), 'M', 5,
                     new ArrayList<>(Arrays.asList("Studies", "Computers")));
-            aiResponse = new ProcessAiResponse(studyProgramInfoMap, user);
+            aiResponse = new ProcessAiResponse(studyProgramInfoMap, user, null);
         }
 
         @Test
         public void testConstructor() throws Exception {
             ProcessAiResponse res = new ProcessAiResponse(
-                    aiResponse.studyPrograms, aiResponse.userInfo);
+                    aiResponse.studyPrograms, aiResponse.userInfo ,null);
             assertEquals(res.studyPrograms, aiResponse.studyPrograms);
             assertEquals(res.userInfo, aiResponse.userInfo);
+            assertTrue(res.userInfo.getInterests().contains("Studies"));
         }
 
         @Test
@@ -377,11 +383,50 @@ public class ProcessAiResponse {
             "EXPH0004, TDT4110, MA0001.");
         }
 
+        @Test
+        public void testGetCompareStudies() throws Exception {
+            assertTrue(!aiResponse.getCompareStudies("Informatics",
+                    "Computer Science").isEmpty());
+        }
+
+        @Test
+        public void testGetAllStudies() throws Exception {
+            assertTrue(aiResponse.getAllStudies().contains("Informatics"));
+            assertTrue(aiResponse.getAllStudies().contains("Computer Science"));
+        }
+
+        @Test
+        public void testGetUserInfo() throws Exception {
+            assertTrue(aiResponse.getUserInfo().contains(
+                    aiResponse.userInfo.getBirthYear() + ""));
+            assertTrue(aiResponse.getUserInfo().contains(
+                    aiResponse.userInfo.getCalculatedGrade() + ""));
+        }
+
+        @Test(expected=NullPointerException.class)
+        public void testGetUnion() throws Exception {
+            fail(aiResponse.getUnion(null));
+        }
+
+        @Test(expected=NullPointerException.class)
+        public void testProcessAiResponse() throws Exception{
+            fail(aiResponse.processAiRespons(null));
+        }
+
+        @Test
+        public void testAddInterest() throws Exception {
+            assertTrue(aiResponse.addInterest(
+                    new ArrayList<String>(Arrays.asList("Computers",
+                            "Machines"))).contains("Computers"));
+            assertTrue(aiResponse.addInterest(
+                    new ArrayList<String>(Arrays.asList("Computers",
+                            "Machines"))).contains("Machines"));
+        }
+
         @After
         public void tearDown() throws Exception{
             aiResponse = null;
         }
-
     }
 
     // Method for checking if user gets into
