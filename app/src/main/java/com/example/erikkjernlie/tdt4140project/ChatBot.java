@@ -56,12 +56,6 @@ import ai.api.model.Result;
 public class ChatBot extends AppCompatActivity {
     private static final String TAG = "ChatActivity";
 
-    private int birthYear;
-    private double calculatedGrade;
-    private ArrayList<String> courses;
-    private ArrayList<String> extraEducation;
-    private char gender;
-    private int R2Grade;
     private UserInfo user;
 
     private ChatArrayAdapter chatArrayAdapter;
@@ -97,10 +91,10 @@ public class ChatBot extends AppCompatActivity {
 
         firebaseAuth = firebaseAuth.getInstance();
 
-        firebaseAuth.signInWithEmailAndPassword("jaja@neinei.com", "123456");
+        firebaseAuth.signInWithEmailAndPassword("jonassagild@hotmail.com", "jonas12");
 
-        mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
-                firebaseAuth.getCurrentUser().getUid());
+        mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" + firebaseAuth.getCurrentUser().getUid());
+
 
         studyPrograms = new HashMap<>();
 
@@ -154,19 +148,15 @@ public class ChatBot extends AppCompatActivity {
         getInformation();
         initTextButtons();
         getInfoDatabase();
+        addMessageToChatArray("Hey! My name is uniBOT, and I'm here to help you with study- and student opportunities at NTNU Trondheim. \nYou can ask me almost anything related to our data-orientated studies. Perhaps you'd like to compare a couple studies? Or submit some interests and let me make a study recommendation?\n" +
+                "\nIf you wish to see more examples, click the 'HELP'-button in the top right corner. You can also press 'UNIBOT' in the header to let me prompt you with some questions. I look forward to assisting you!");
     }
 
     //Retrieving information from the spezified fields from the firebase-database
     public void getInfoDatabase() {
-
-        Firebase userInfoRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/");
-
-        userInfoRef.child(firebaseAuth.getCurrentUser().getUid()).
-                addValueEventListener(new ValueEventListener() {
+        mRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        System.out.println("GGGGGG");
-                        System.out.println(dataSnapshot.getValue(UserInfo.class));
                         setUser(dataSnapshot.getValue(UserInfo.class));
                     }
                     @Override
@@ -241,11 +231,6 @@ public class ChatBot extends AppCompatActivity {
         });*/
     }
 
-    public String displayUserInformation() {
-        String userInfo = this.user.toString();
-        return userInfo;
-    }
-
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(ChatBot.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -312,7 +297,7 @@ public class ChatBot extends AppCompatActivity {
 
     //translates the printed question to a format API.AI understands, so the user can answer directly
     private void translationFromUserToAI() {
-        sentencesToUnibot = new ArrayList<String>(Arrays.asList("Tell me about engineering and ict", "I want to compare some studies", "print"));
+        sentencesToUnibot = new ArrayList<String>(Arrays.asList("Tell me about engineering and ict", "I want to compare some studies", "show me a list of studies"));
         getAiResponse(sentencesToUnibot.get(randomNumber));
     }
 
@@ -443,16 +428,9 @@ public class ChatBot extends AppCompatActivity {
         // Denne metoden skal lage et objekt av ProcessAiResponse klassen, og kalle på en av dens metoder
         // klassen må ta inn infoen den trenger, dvs studyinfo listen
 
-        ProcessAiResponse processAiResponse = new ProcessAiResponse(studyPrograms);
+        ProcessAiResponse processAiResponse = new ProcessAiResponse(studyPrograms, user);
 
         String ut = null;
-
-        // sjekker hvordan et tomt svar ser ut
-        System.out.println("aksdøsa");
-        System.out.println(response.getResult().getFulfillment().getSpeech().equals(""));
-
-        System.out.println(response.getResult().getFulfillment().getSpeech().toString());
-
 
         if (response.getResult().getFulfillment().getSpeech().equals("")) {
             ut = processAiResponse.processAiRespons(response);
@@ -460,16 +438,6 @@ public class ChatBot extends AppCompatActivity {
             ut = response.getResult().getFulfillment().getSpeech().toString();
         }
 
-
-//        if (response.getResult().getAction().toString().contains("displayUserInformation")) {
-//            return displayUserInformation();
-//        }
-//        if(response.getResult().getAction().contains("getInformation")) {
-//            if ((response.getResult().getParameters().get("Studies") != null)) {
-//                return studyPrograms.get(response.getResult().getParameters().get("Studies").
-//                        toString().replace("\"", "")).toString();
-//            }
-//        }
         return ut;
 
 
@@ -506,10 +474,8 @@ public class ChatBot extends AppCompatActivity {
         chatArrayAdapter.add(new ChatMessage(true, message));
     }
 
-    public void listenButtonOnClick(View view) {
-        aiService.startListening();
-    }
 
+    // Not in use, kept only for later use
     public void onResult(final AIResponse response) {
         if (response.isError()) {
 
@@ -527,55 +493,6 @@ public class ChatBot extends AppCompatActivity {
         resultTextView.setText("Query:" + result.getResolvedQuery() +
                 "\nAction: " + result.getAction() +
                 "\nParameters: " + parameterString);
-    }
-
-    //getters and setters
-    public int getBirthYear() {
-        return birthYear;
-    }
-
-    public void setBirthYear(int birthYear) {
-        this.birthYear = birthYear;
-    }
-
-    public double getCalculatedGrade() {
-        return calculatedGrade;
-    }
-
-    public void setCalculatedGrade(double calculatedGrade) {
-        this.calculatedGrade = calculatedGrade;
-    }
-
-    public ArrayList<String> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(ArrayList<String> courses) {
-        this.courses = courses;
-    }
-
-    public ArrayList<String> getExtraEducation() {
-        return extraEducation;
-    }
-
-    public void setExtraEducation(ArrayList<String> extraEducation) {
-        this.extraEducation = extraEducation;
-    }
-
-    public char getGender() {
-        return gender;
-    }
-
-    public void setGender(char gender) {
-        this.gender = gender;
-    }
-
-    public int getR2Grade() {
-        return R2Grade;
-    }
-
-    public void setR2Grade(int r2Grade) {
-        R2Grade = r2Grade;
     }
 
     public void addStudyPrograms(String study, StudyProgramInfo info) {

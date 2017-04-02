@@ -1,5 +1,8 @@
 package com.example.erikkjernlie.tdt4140project;
 
+import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 
 /**
@@ -15,6 +18,8 @@ public class UserInfo {
     private char gender;
     private int R2Grade;
     private ArrayList<String> interests;
+    private Firebase mRef;
+    private FirebaseAuth firebaseAuth;
 
     public UserInfo(int birthYear, double calculatedGrade, ArrayList<String> courses,
                     ArrayList<String> extraEducation, char gender, int r2Grade,
@@ -98,7 +103,16 @@ public class UserInfo {
                 ", courses=" + courses +
                 ", extraEducation=" + extraEducation +
                 ", gender=" + gender +
+                ", interests=" + interests +
                 ", R2Grade=" + R2Grade +
                 '}';
+    }
+
+    public void updateFirebase() {
+        firebaseAuth = firebaseAuth.getInstance();
+
+        mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/");
+
+        mRef.child(firebaseAuth.getCurrentUser().getUid().toString()).setValue(this);
     }
 }

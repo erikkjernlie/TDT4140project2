@@ -49,6 +49,7 @@ public class Menu extends AppCompatActivity {
     private ArrayList<String> courses;
     private ArrayList<String> extraEducation;
     private int R2Grade;
+    private UserInfo user;
 
 
     public void initButtons() {
@@ -235,73 +236,42 @@ public class Menu extends AppCompatActivity {
         e.show();
     }
 
+    /*private void getInformation() {
+        //Sends a StudyProgramInfo-object to the database (TEST)
+        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies/");
+        infoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    System.out.println("AAAAAA");
+                    System.out.println(snapshot.getKey());
+                    addStudyPrograms(snapshot.getKey(), snapshot.getValue(StudyProgramInfo.class));
+                    System.out.println(snapshot.getValue(StudyProgramInfo.class).toString());
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+    }*/
+
     public void getInfoDatabase() {
-        mRef.child("BirthYear").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setBirthYear(dataSnapshot.getValue(Integer.class));
-            }
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                firebaseError.getMessage();
-            }
-        });
+        Firebase userInfoRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/");
 
-        mRef.child("CalculatedGrade").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setCalculatedGrade(dataSnapshot.getValue(Double.class));
-            }
+        userInfoRef.child(firebaseAuth.getCurrentUser().getUid()).
+                addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        System.out.println("GGGGGG");
+                        System.out.println(dataSnapshot.getValue(UserInfo.class));
+                        setUser(dataSnapshot.getValue(UserInfo.class));
+                    }
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-        mRef.child("Courses").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setCourses(dataSnapshot.getValue(ArrayList.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-        mRef.child("Extra education").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setExtraEducation(dataSnapshot.getValue(ArrayList.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-        mRef.child("Gender").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setGender(dataSnapshot.getValue(Character.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-        mRef.child("R2Grade").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setR2Grade(dataSnapshot.getValue(Integer.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+                    }
+                });
     }
 
 
@@ -353,5 +323,7 @@ public class Menu extends AppCompatActivity {
         R2Grade = r2Grade;
     }
 
-
+    public void setUser(UserInfo user) {
+        this.user = user;
+    }
 }
