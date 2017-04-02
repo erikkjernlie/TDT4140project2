@@ -31,8 +31,6 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
-
 public class Menu extends AppCompatActivity {
 
     private Button register; //register button
@@ -246,5 +244,9 @@ public class Menu extends AppCompatActivity {
 
     public void setUser(UserInfo user) {
         this.user = user;
+    }
+
+    public UserInfo getUser(){
+        return this.user;
     }
 }
