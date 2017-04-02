@@ -193,14 +193,14 @@ public class ProcessAiResponse {
                 ut += keyWord + ", ";
             }
             ut = ut.substring(0, ut.length() - 2) + ".";
-            ut += "\nThe differences are: \n " + studyProgram + " have the keywords: ";
+            ut += "\n\nThe differences are: \n\n" + studyProgram + " have the keywords: ";
             for (String keyWord : keyWordsStudyProgram) {
                 ut += keyWord + ", ";
 
             }
             ut = ut.substring(0, ut.length() - 2) + ".";
 
-            ut += "\n" + studyProgram1 + " have the keywords: ";
+            ut += "\n\n" + studyProgram1 + " have the keywords: ";
             for (String keyWord : keyWordsStudyProgram1) {
                 ut += keyWord + ", ";
             }
