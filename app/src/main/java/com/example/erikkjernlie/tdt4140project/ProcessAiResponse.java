@@ -79,7 +79,7 @@ public class ProcessAiResponse {
                 for (JsonElement interest : aiResponse.getResult().getParameters().get("Interests").getAsJsonArray()) {
                     interests.add(interest.toString());
                 }
-                ut = this.addInterst(interests);
+                ut = this.addInterest(interests);
                 break;
             case "getIntoStudy":
                 ut = this.getInto(aiResponse.getResult().getParameters().get("StudyProgram").toString());
@@ -162,9 +162,52 @@ public class ProcessAiResponse {
 
     // Method for comparing studies
     private String getCompareStudies(String studyProgram, String studyProgram1) {
+        // Displays similar keywords, and nonsimilar keywords from the given studyprograms
+
         studyProgram = studyProgram.replace("\"", ""); // removes ""
         studyProgram1 = studyProgram1.replace("\"", ""); // removes ""
-        return "We will compare " + studyProgram + " and " + studyProgram1 + ".";
+
+        ArrayList<String> keyWordsStudyProgram = studyPrograms.get(studyProgram).getKeywords();
+        ArrayList<String> keyWordsStudyProgram1 = studyPrograms.get(studyProgram1).getKeywords();
+
+        ArrayList<String> similarKeyWords = new ArrayList<>();
+
+        for (String keyWord : keyWordsStudyProgram) {
+            if (keyWordsStudyProgram1.contains(keyWord)) {
+                similarKeyWords.add(keyWord);
+            }
+        }
+
+        for (String keyWord : similarKeyWords) {
+            keyWordsStudyProgram.remove(keyWord);
+            keyWordsStudyProgram1.remove(keyWord);
+        }
+
+        String ut = "";
+
+        if (similarKeyWords.size() == 0) {
+            ut += "There are no similarities";
+        } else {
+            ut += "The similar keywords are: ";
+            for (String keyWord : similarKeyWords) {
+                ut += keyWord + ", ";
+            }
+            ut = ut.substring(0, ut.length() - 2) + ".";
+            ut += "\n\nThe differences are: \n\n" + studyProgram + " have the keywords: ";
+            for (String keyWord : keyWordsStudyProgram) {
+                ut += keyWord + ", ";
+
+            }
+            ut = ut.substring(0, ut.length() - 2) + ".";
+
+            ut += "\n\n" + studyProgram1 + " have the keywords: ";
+            for (String keyWord : keyWordsStudyProgram1) {
+                ut += keyWord + ", ";
+            }
+            ut = ut.substring(0, ut.length() - 2) + ".";
+        }
+
+        return ut;
     }
 
     // Method for getting all studies
@@ -175,7 +218,7 @@ public class ProcessAiResponse {
         while (iterator.hasNext()) {
             ut += iterator.next() + ", ";
         }
-        ut = ut.substring(0, ut.length() - 2);
+        ut = ut.substring(0, ut.length() - 2) + ".";
         return ut + ".";
     }
 
@@ -199,7 +242,7 @@ public class ProcessAiResponse {
     }
 
     // Method for adding an interest to the user
-    private String addInterst(ArrayList<String> interests) {
+    private String addInterest(ArrayList<String> interests) {
         ArrayList<String> existingInterest = userInfo.getInterests();
         // Removes ""
 
