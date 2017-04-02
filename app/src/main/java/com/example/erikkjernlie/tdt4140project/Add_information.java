@@ -99,7 +99,6 @@ public class Add_information extends AppCompatActivity {
     private final boolean checked_state_education[] = {false, false, false, false};
     private HashMap<String, Double> fagbase = new HashMap<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -321,6 +320,7 @@ public class Add_information extends AppCompatActivity {
 
     //calculates the enitre grade
     public double grade_calculation() {
+        initFagbase();
         double grade_calculated = 0;
         double realFagPoints = 0;
 
@@ -335,10 +335,14 @@ public class Add_information extends AppCompatActivity {
             realFagPoints += fagbase.get(course);
         }
 
+
         if (realFagPoints > 4) {
             realFagPoints = 4;
         }
         grade_calculated += (agePoints(year) + extraPoints + realFagPoints);
+        calculatedGrade = grade_calculated;
+
+
         return grade_calculated;
 
 
@@ -707,4 +711,38 @@ public class Add_information extends AppCompatActivity {
     public List<String> getCourses_array() {
         return courses_array;
     }
+
+    public void setCalculatedGrade(double calculatedGrade) {
+        this.calculatedGrade = calculatedGrade;
+    }
+
+    public void setGender(char gender) {
+        this.gender = gender;
+    }
+
+
+
+    public void setR2Grade(int r2Grade) {
+        R2Grade = r2Grade;
+    }
+
+    public void setExtraPoints(int extraPoints) {
+        this.extraPoints = extraPoints;
+    }
+
+    public void setCourses_array(List<String> courses_array) {
+        this.courses_array = courses_array;
+        grade_calculation();
+    }
+
+    public void setExtra_education_array(List<String> extra_education_array) {
+        this.extra_education_array = extra_education_array;
+        grade_calculation();
+    }
+
+    public void setYear(int year){
+        this.year = year;
+    }
 }
+
+

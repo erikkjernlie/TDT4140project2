@@ -1,4 +1,4 @@
-/** AboutUnibotTest
+/** Add_informationTest
  *
  * JUNIT-test for add_information.
  *
@@ -12,6 +12,10 @@ package com.example.erikkjernlie.tdt4140project;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -31,6 +35,22 @@ public class Add_informationTest {
         assertEquals(true, add_information.getGender() ==  '\u0000');
         assertEquals(true, add_information.getR2Grade() == 0);
         assertEquals(true, add_information.getExtraPoints() == 0);
+        assertEquals(true, add_information.getExtra_education_array().isEmpty());
+        assertEquals(true, add_information.getCourses_array().isEmpty());
+    }
+
+    @Test
+    public void testCalculation() throws Exception{
+
+        List<String> c = new ArrayList<>(Arrays.asList("Kjemi 1"));
+        add_information.setYear(2002);
+        add_information.setCourses_array(c);
+
+        assertEquals(true, add_information.getCalculatedGrade() == 0.5);
+        c.add("Matematikk R2");
+        add_information.setCourses_array(c);
+        assertEquals(true, add_information.getCalculatedGrade() == 1.5);
+
     }
 
     @Test
@@ -43,6 +63,7 @@ public class Add_informationTest {
         assertEquals(true, add_information.agePoints(1998) == 0);
         assertEquals(true, add_information.agePoints(2016) == 0);
     }
+
 
     @After
     public void tearDown() throws Exception {
