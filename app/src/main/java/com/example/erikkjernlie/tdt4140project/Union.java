@@ -1,7 +1,5 @@
 package com.example.erikkjernlie.tdt4140project;
 
-import com.firebase.client.Firebase;
-
 /**
  * Created by Jørgen on 01.04.2017.
  */
@@ -11,7 +9,7 @@ public class Union {
     private String name;
     private String info;
     private int members;
-    private Firebase mRef = new Firebase("https://tdt4140project2.firebaseio.com/Unions/");
+
 
     public Union(String name, String info, int members) {
         this.name = name;
@@ -45,9 +43,7 @@ public class Union {
         this.name = name;
     }
 
-    public void sendToFirebase() {
-        mRef.child(this.name).setValue(this);
-    }
+
 
     @Override
     public String toString() {

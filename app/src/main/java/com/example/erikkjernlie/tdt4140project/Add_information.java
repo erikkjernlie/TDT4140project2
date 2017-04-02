@@ -29,7 +29,6 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -708,13 +707,13 @@ public class Add_information extends AppCompatActivity {
         this.extraPoints = extraPoints;
     }
 
-    public void setCourses_array(List<String> courses_array) {
-        this.courses_array = courses_array;
+    public void setCourses_array(ArrayList<String> courses_array) {
+        this.coursesArray = courses_array;
         grade_calculation();
     }
 
-    public void setExtra_education_array(List<String> extra_education_array) {
-        this.extra_education_array = extra_education_array;
+    public void setExtra_education_array(ArrayList<String> extra_education_array) {
+        this.extraEducationArray = extra_education_array;
         grade_calculation();
     }
 

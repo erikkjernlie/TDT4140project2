@@ -15,7 +15,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -35,14 +34,14 @@ public class Add_informationTest {
         assertEquals(true, add_information.getGender() ==  '\u0000');
         assertEquals(true, add_information.getR2Grade() == 0);
         assertEquals(true, add_information.getExtraPoints() == 0);
-        assertEquals(true, add_information.getExtra_education_array().isEmpty());
-        assertEquals(true, add_information.getCourses_array().isEmpty());
+        assertEquals(true, add_information.getExtraEducationArray().isEmpty());
+        assertEquals(true, add_information.getCoursesArray().isEmpty());
     }
 
     @Test
     public void testCalculation() throws Exception{
 
-        List<String> c = new ArrayList<>(Arrays.asList("Kjemi 1"));
+        ArrayList<String> c = new ArrayList<>(Arrays.asList("Kjemi 1"));
         add_information.setYear(2002);
         add_information.setCourses_array(c);
 

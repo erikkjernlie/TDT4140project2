@@ -1,10 +1,8 @@
 package com.example.erikkjernlie.tdt4140project;
 
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;

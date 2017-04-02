@@ -16,19 +16,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 
 public class StudyProgramInfoTest {
 
     private StudyProgramInfo spi;
-
-    private String info;
-    private Double grade;
-    private boolean isGirlPoints;
-    private double girPercentage;
-    private String studentUnion;
-    private ArrayList<String> specializations;
-    private String studyEnvironment;
 
     @Before
     public void setUp() throws Exception {
@@ -39,12 +34,18 @@ public class StudyProgramInfoTest {
 
 
     @Test
-    public void testStudyProgramInfo(){
+    public void testStudyProgramInfo() throws Exception {
         ArrayList<String> spec = new ArrayList<>(Arrays.asList("programming", "data"));
-        spi = new StudyProgramInfo("info", 0.0, true, 50, "studentUnion", spec, "studyEnvironment");
+        spi = new StudyProgramInfo(5.0, true,spec, spec, "info","studyEnvironment", "studentUnion", spec);
         assertEquals(true, spi.getStudentUnion().equals("studentUnion"));
         assertEquals(true, spi.getInfo().equals("info"));
+        assertTrue(spi.getStudentUnion().equals("studentUnion"));
+        assertTrue(spi.getStudyEnvironment().equals("studyEnvironment"));
+        assertTrue(spi.getInfo().equals("info"));
+        assertTrue(spi.getCommonWorkFields().equals(spec));
+        assertEquals(spi.toString(), "StudyProgramInfo{grade=5.0, girlPoints=true, keywords=[programming, data], commonWorkFields=[programming, data], info='info', studyEnvironment='studyEnvironment', studentUnion='studentUnion', courses=[programming, data]}");
         spi = new StudyProgramInfo();
+
     }
 
 
@@ -52,50 +53,60 @@ public class StudyProgramInfoTest {
     @Test
     public void testGetInfo() throws Exception {
         spi.setInfo("info");
-        assertEquals(true, spi.getInfo().equals("info"));
-        assertEquals(false, "hello".equals(spi.getInfo()));
+        assertTrue(spi.getInfo().equals("info"));
+        assertFalse("hello".equals(spi.getInfo()));
         spi.setInfo("nfo");
-        assertEquals(false, spi.getInfo().equals("hello"));
-        assertEquals(true, "nfo".equals(spi.getInfo()));
+        assertFalse(spi.getInfo().equals("hello"));
+        assertTrue("nfo".equals(spi.getInfo()));
     }
 
     @Test
     public void testGetGrade() throws Exception {
         spi.setGrade(5.0);
-        assertEquals(true, 5.0 == spi.getGrade());
-        assertEquals(false, 4.9 == spi.getGrade());
+        assertTrue(5.0 == spi.getGrade());
+        assertFalse(4.9 == spi.getGrade());
         spi.setGrade(4.9);
-        assertEquals(false, 5.0 == spi.getGrade());
-        assertEquals(true, 4.9 == spi.getGrade());
+        assertFalse(5.0 == spi.getGrade());
+        assertTrue(4.9 == spi.getGrade());
     }
 
-    @Test
-    public void testGetGirPercentage() throws Exception {
-        spi.setGirPercentage(49);
-        assertEquals(true, 49 == spi.getGirPercentage());
-        assertEquals(false, 50 == spi.getGirPercentage());
-        spi.setGirPercentage(48);
-        assertEquals(true, 48 == spi.getGirPercentage());
-        assertEquals(false, 50 == spi.getGirPercentage());
-    }
+
     @Test
     public void testGetStudentUnion() throws Exception {
         spi.setStudentUnion("Hybrida");
-        assertEquals(true, spi.getStudentUnion().equals("Hybrida"));
-        assertEquals(false, spi.getStudentUnion().equals("Hybrid"));
+        assertTrue(spi.getStudentUnion().equals("Hybrida"));
+        assertFalse(spi.getStudentUnion().equals("Hybrid"));
         spi.setStudentUnion("Abakus");
-        assertEquals(false, spi.getStudentUnion().equals("Hybrida"));
-        assertEquals(true, spi.getStudentUnion().equals("Abakus"));
+        assertFalse(spi.getStudentUnion().equals("Hybrida"));
+        assertTrue(spi.getStudentUnion().equals("Abakus"));
     }
     @Test
-    public void testGetSpecializations() throws Exception {
+    public void testCommonWorkFields() throws Exception {
         ArrayList<String> spec = new ArrayList<>(Arrays.asList("programming", "data"));
-        spi.setSpecializations(spec);
-        assertEquals(true,spi.getSpecializations().equals(spec));
-        assertEquals(true, spi.getSpecializations().contains("programming"));
-        assertEquals(false, spi.getSpecializations().contains("program"));
+        spi.setCommonWorkFields(spec);
+        assertTrue(spi.getCommonWorkFields().equals(spec));
+        assertTrue(spi.getCommonWorkFields().contains("programming"));
+        assertFalse(spi.getCommonWorkFields().contains("program"));
     }
 
+    @Test
+    public void testGetCourses() throws Exception {
+        ArrayList<String> spec = new ArrayList<>(Arrays.asList("programming", "data"));
+        spi.setCourses(spec);
+        assertTrue(spi.getCourses().equals(spec));
+        assertTrue(spi.getCourses().contains("programming"));
+        assertFalse(spi.getCourses().contains("program"));
+    }
+
+    @Test
+    public void testGetKeywords() throws Exception {
+        ArrayList<String> spec = new ArrayList<>(Arrays.asList("programming", "data"));
+        assertNull(spi.getKeywords());
+        spi.setKeywords(spec);
+        assertTrue(spi.getKeywords().equals(spec));
+        assertTrue(spi.getKeywords().contains("programming"));
+        assertFalse(spi.getKeywords().contains("program"));
+    }
     @Test
     public void testGetStudyEnvironment() throws Exception {
         spi.setStudyEnvironment("awesome");
@@ -108,12 +119,14 @@ public class StudyProgramInfoTest {
     }
 
     @Test
-    public void testIsGirlPoints(){
+    public void testIsGirlPoints() throws Exception {
         spi.setGirlPoints(true);
-        assertEquals(true, spi.isGirlPoints());
+        assertTrue(spi.isGirlPoints());
         spi.setGirlPoints(false);
-        assertEquals(false, spi.isGirlPoints());
+        assertFalse(spi.isGirlPoints());
     }
+
+
 
     @After
     public void tearDown() throws Exception {
