@@ -82,13 +82,14 @@ public class ChatBot extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestPermissions(new String[]{"android.permission.RECORD_AUDIO"}, 2);
+        // requestPermissions(new String[]{"android.permission.RECORD_AUDIO"}, 2); // not in use
 
         setContentView(R.layout.chatbot);
 
         Firebase.setAndroidContext(ChatBot.this);
 
         firebaseAuth = firebaseAuth.getInstance();
+        firebaseAuth.signInWithEmailAndPassword("jonassagild@hotmail.com", "jonas12");
 
         mRefUsers = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
                 firebaseAuth.getCurrentUser().getUid());
@@ -386,7 +387,7 @@ public class ChatBot extends AppCompatActivity {
         // Denne metoden skal lage et objekt av ProcessAiResponse klassen, og kalle på en av dens metoder
         // klassen må ta inn infoen den trenger, dvs studyinfo listen
 
-        ProcessAiResponse processAiResponse = new ProcessAiResponse(studyPrograms, user);
+        ProcessAiResponse processAiResponse = new ProcessAiResponse(studyPrograms, user, unions);
 
         String ut = null;
 
@@ -411,7 +412,6 @@ public class ChatBot extends AppCompatActivity {
     private void addMessageToChatArray(String message) {
         chatArrayAdapter.add(new ChatMessage(true, message));
     }
-
 
     // Not in use, kept only for later use
     public void onResult(final AIResponse response) {

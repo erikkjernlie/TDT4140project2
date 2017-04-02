@@ -3,6 +3,8 @@ package com.example.erikkjernlie.tdt4140project;
 
 import com.google.gson.JsonElement;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,14 +30,15 @@ import ai.api.model.AIResponse;
 public class ProcessAiResponse {
 
     private HashMap<String, StudyProgramInfo> studyPrograms;
-    UserInfo userInfo;
-    ProcessAiResponse aiResponse;
+    private UserInfo userInfo;
+    private HashMap<String, Union> unions;
+    private ProcessAiResponse aiResponse;
 
-    public ProcessAiResponse(HashMap<String, StudyProgramInfo> studyPrograms, UserInfo userInfo) {
+    public ProcessAiResponse(HashMap<String, StudyProgramInfo> studyPrograms, UserInfo userInfo, HashMap<String, Union> unions) {
         this.studyPrograms = studyPrograms;
         this.userInfo = userInfo;
+        this.unions = unions;
     }
-
 
     public String processAiRespons(AIResponse aiResponse) {
         String action = aiResponse.getResult().getAction().toString();
@@ -70,7 +73,7 @@ public class ProcessAiResponse {
                 ut = this.getCourses(aiResponse.getResult().getParameters().get("StudyProgram").toString());
                 break;
             case "getUnion":
-                ut = this.getUnion(aiResponse.getResult().getParameters().get("StudyProgram").toString());
+                ut = this.getUnion(aiResponse.getResult().getParameters().get("Union").toString());
                 break;
             case "compareStudies":
                 ut = this.getCompareStudies(aiResponse.getResult().getParameters().get("StudyProgram").toString(), aiResponse.getResult().getParameters().get("StudyProgram1").toString());
@@ -83,11 +86,16 @@ public class ProcessAiResponse {
                 break;
             case "addInterests":
                 ArrayList<String> interests = new ArrayList<>();
-
                 for (JsonElement interest : aiResponse.getResult().getParameters().get("Interests").getAsJsonArray()) {
                     interests.add(interest.toString());
                 }
                 ut = this.addInterest(interests);
+                break;
+            case "getIntoStudy":
+                ut = this.getInto(aiResponse.getResult().getParameters().get("StudyProgram").toString());
+                break;
+            case "recommendStudy":
+                ut = this.recommendStudy();
                 break;
         }
 
@@ -157,18 +165,59 @@ public class ProcessAiResponse {
     }
 
     // Method for getting union
-    private String getUnion(String studyProgram) {
-        studyProgram = studyProgram.replace("\"", ""); // removes ""
-        String ut = "The courses at " + studyProgram + " is: ";
-
-        return "Denne er ikke ferdig";
+    private String getUnion(String union) {
+        union = union.replace("\"", ""); // removes ""
+        return unions.get(union).getInfo();
     }
 
     // Method for comparing studies
     private String getCompareStudies(String studyProgram, String studyProgram1) {
+        // Displays similar keywords, and nonsimilar keywords from the given studyprograms
+
         studyProgram = studyProgram.replace("\"", ""); // removes ""
         studyProgram1 = studyProgram1.replace("\"", ""); // removes ""
-        return "We will compare " + studyProgram + " and " + studyProgram1 + ".";
+
+        ArrayList<String> keyWordsStudyProgram = studyPrograms.get(studyProgram).getKeywords();
+        ArrayList<String> keyWordsStudyProgram1 = studyPrograms.get(studyProgram1).getKeywords();
+
+        ArrayList<String> similarKeyWords = new ArrayList<>();
+
+        for (String keyWord : keyWordsStudyProgram) {
+            if (keyWordsStudyProgram1.contains(keyWord)) {
+                similarKeyWords.add(keyWord);
+            }
+        }
+
+        for (String keyWord : similarKeyWords) {
+            keyWordsStudyProgram.remove(keyWord);
+            keyWordsStudyProgram1.remove(keyWord);
+        }
+
+        String ut = "";
+
+        if (similarKeyWords.size() == 0) {
+            ut += "There are no similarities";
+        } else {
+            ut += "The similar keywords are: ";
+            for (String keyWord : similarKeyWords) {
+                ut += keyWord + ", ";
+            }
+            ut = ut.substring(0, ut.length() - 2) + ".";
+            ut += "\n\nThe differences are: \n\n" + studyProgram + " have the keywords: ";
+            for (String keyWord : keyWordsStudyProgram) {
+                ut += keyWord + ", ";
+
+            }
+            ut = ut.substring(0, ut.length() - 2) + ".";
+
+            ut += "\n\n" + studyProgram1 + " have the keywords: ";
+            for (String keyWord : keyWordsStudyProgram1) {
+                ut += keyWord + ", ";
+            }
+            ut = ut.substring(0, ut.length() - 2) + ".";
+        }
+
+        return ut;
     }
 
     // Method for getting all studies
@@ -179,22 +228,23 @@ public class ProcessAiResponse {
         while (iterator.hasNext()) {
             ut += iterator.next() + ", ";
         }
-        ut = ut.substring(0, ut.length() - 2);
+        ut = ut.substring(0, ut.length() - 2) + ".";
         return ut + ".";
     }
 
     // Method for telling the user about himself
     private String getUserInfo() {
         String ut = "";
-        if (userInfo.getGender() == 'M') {
+
+        if (userInfo.getGender() != '\u0000' && userInfo.getGender() == 'M') {
             ut += "You are a Male";
-        } else {
+        } else if (userInfo.getCalculatedGrade() != '\u0000') {
             ut += "You are a Female";
         }
+        if (ut.equals("")) {
 
-        int age = 2017 - userInfo.getBirthYear();
-
-        ut += ", aged " + age;
+        }
+        ut += ", and born in " + userInfo.getBirthYear();
 
         ut += "\n you have " + userInfo.getCalculatedGrade() + " points to apply with.";
 
@@ -205,23 +255,42 @@ public class ProcessAiResponse {
     private String addInterest(ArrayList<String> interests) {
         ArrayList<String> existingInterest = userInfo.getInterests();
         // Removes ""
+
         for (String i : interests) {
             interests.set(interests.indexOf(i), i.replace("\"", ""));
             //interests.set(interests.indexOf(i), i.replace("[", ""));
-           // interests.set(interests.indexOf(i), i.replace("]", ""));
+            // interests.set(interests.indexOf(i), i.replace("]", ""));
         }
+
+        ArrayList<String> indexList = new ArrayList<>();
+
         int size = interests.size();
+        System.out.println(userInfo.getInterests());
         for (int i = 0; i < size; i++) {
             if (existingInterest.contains(interests.get(i))) {
-                interests.remove(interests.indexOf(i));
+                indexList.add(interests.get(i));
             }
         }
+
+        for (String i : indexList) {
+            interests.remove(i);
+        }
+
         String ut = "We've just added ";
+
         for (String i : interests) {
             userInfo.addInterests(i);
-            ut += interests + ", ";
+            ut += i + ", ";
         }
-        ut = ut.substring(0, ut.length()-2) + " to your interests";
+
+        System.out.println(userInfo.getInterests());
+        userInfo.updateFirebase();
+
+        ut = ut.substring(0, ut.length() - 2) + " to your interests";
+
+        if (interests.isEmpty()) {
+            ut = "We could not match your interests";
+        }
 
         return ut;
     }
@@ -315,5 +384,110 @@ public class ProcessAiResponse {
 
     }
 
+    // Method for checking if user gets into
+    private String getInto(String studyProgram) {
+
+        // Ta hensyn til r2
+
+        studyProgram = studyProgram.replace("\"", ""); // removes ""
+        String ut = "";
+        double grade = userInfo.getCalculatedGrade();
+
+        if (!studyProgram.equals("Informatics") && userInfo.getR2Grade() < 4) {
+
+            ut += "You need at least 4 at the course R2, you have " + userInfo.getR2Grade() + ".\nTherefore you need to retake the exam. ";
+
+            if (studyPrograms.get(studyProgram).isGirlPoints()) {
+                grade += 2;
+            }
+            if (studyPrograms.get(studyProgram).getGrade() < grade) {
+                ut += "Your grade of " + grade + " is highter than last years grade of " + studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
+            } else {
+                ut += "Your grade of " + grade + " is lower than last year grade of " + studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
+            }
+            return ut;
+
+        }
+
+        if (studyPrograms.get(studyProgram).isGirlPoints()) {
+            grade += 2;
+        }
+        if (studyPrograms.get(studyProgram).getGrade() < grade) {
+            ut = "Your grade of " + grade + " is higher than last years grade of " + studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
+        } else {
+            ut = "Your grade of " + grade + " is lower than last year grade of " + studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
+        }
+
+        return ut;
+    }
+
+    // Method for recommending the user a study
+    private String recommendStudy() {
+        // Henter alle interessene til brukeren, og sammenligner med keywordene til alle studiene.
+        // Legger til en int til hvert studie, det studiet med høyest ints, blir anbefalt.
+
+        HashMap<String, Integer> pointMap = new HashMap<>(); // hashmap som skal inneholder alle studienavnene, og koble det opp mot antall keywordstreff
+
+        ArrayList<String> interests = userInfo.getInterests(); // interessene til brukeren
+
+        Iterator<String> iterator = studyPrograms.keySet().iterator(); // iterator som går gjennom alle studienavnene
+
+        HashMap<String, ArrayList<String>> keyWords = new HashMap<>(); // hashmap som skal holde alle interessene til hvert studie
+
+        HashMap<String, ArrayList<String>> matchedInterests = new HashMap<>(); // hashmap som skal holde på alle interessene
+
+        if (interests.size() == 1) {
+            return "You have not told us any of your interests. If you tell us your interests, we could better help you find a suitable study";
+        }
+
+        while (iterator.hasNext()) {
+            String study = iterator.next();
+            keyWords.put(study, studyPrograms.get(study).getKeywords());
+            pointMap.put(study, 0);
+            matchedInterests.put(study, new ArrayList<String>());
+        }
+
+        // går gjennom alle studiene, legger til poeng på pointsMap, om interessen er en av keywordsa
+        for (String study : studyPrograms.keySet()) {
+            System.out.println(study);
+            for (String interest : interests) {
+                interest = interest.toLowerCase();
+
+                if (keyWords.get(study).contains(interest)) {
+                    pointMap.put(study, pointMap.get(study) + 1); // legger til 1 verdi på det gitte studiet
+                    matchedInterests.get(study).add(interest);  // legger til interessen til studiet
+                }
+            }
+        }
+
+        Iterator<String> iterator1 = studyPrograms.keySet().iterator();
+        if (iterator1.hasNext()) {
+            String bestStudy = iterator1.next();
+
+            while (iterator1.hasNext()) {
+                String nextStudy = iterator1.next();
+                if (pointMap.get(bestStudy) < pointMap.get(nextStudy)) {
+                    bestStudy = nextStudy;
+                }
+            }
+
+            if (matchedInterests.get(bestStudy).size() == 0) {
+                return "We could not find any suitable study. Please tell us more about your interests, so that we can help you find a study. ";
+            }
+
+            String ut = "We think you might like " + bestStudy + " because you have interests which the study might match. The " +
+                    "interests that matched was: ";
+
+
+            for (String interest : matchedInterests.get(bestStudy)) {
+                ut += interest + ", ";
+            }
+
+            return ut.substring(0, ut.length() - 2) + ".";
+        }
+
+        return "You have not told us any of your interests. If you tell us your interests, we could better help you find a suitable study"; // Hvis den kommer hit, er interesselisten tom
+
+    }
 
 }
