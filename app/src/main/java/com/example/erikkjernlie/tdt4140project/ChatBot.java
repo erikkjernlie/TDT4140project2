@@ -352,6 +352,23 @@ public class ChatBot extends AppCompatActivity {
     }
 
     private void getAiResponse(String a) {
+        //TO SEND INFO ABOUT UNIONS TO FIREBASE
+        /*if (a.equals("Send")) {
+            Union TP = new Union("TeknologiPorten", "Tidenes beste port", 50);
+            Union NTNUI = new Union("NTNUI", "Idrettsforening", 1000);
+            Union UKA = new Union("UKA", "Tidenes beste festival", 2000);
+            Union Bindeleddet = new Union("Bindeleddet", "Tidenes beste ledd", 60);
+            Union Start_NTNU = new Union("START NTNU", "Tidenes beste start", 55);
+            Union SIT = new Union("SIT", "Tidenes beste studentsamskipnad", 20000);
+            TP.sendToFirebase();
+            NTNUI.sendToFirebase();
+            UKA.sendToFirebase();
+            Bindeleddet.sendToFirebase();
+            Start_NTNU.sendToFirebase();
+            SIT.sendToFirebase();
+
+        }*/
+
         //IF YOU WANT TO INSERT THE 4 STUDIES INTO THE DATABASE
         /*if (a.equals("setInformatics")) {
             setStudyInformation(new StudyProgramInfo(51.2, false,
