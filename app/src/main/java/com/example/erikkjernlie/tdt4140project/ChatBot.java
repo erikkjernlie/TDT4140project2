@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -33,14 +34,11 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.gson.JsonElement;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
@@ -76,9 +74,10 @@ public class ChatBot extends AppCompatActivity {
     private ArrayList<String> sentencesToUnibot;
     private ArrayList<String> sentencesOutput;
     private HashMap<String, StudyProgramInfo> studyPrograms;
+    private HashMap<String, Union> unions;
 
     FirebaseAuth firebaseAuth;
-    Firebase mRef;
+    Firebase mRefUsers;
     //gets the required access from API.AI a
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,12 +90,11 @@ public class ChatBot extends AppCompatActivity {
 
         firebaseAuth = firebaseAuth.getInstance();
 
-        firebaseAuth.signInWithEmailAndPassword("jonassagild@hotmail.com", "jonas12");
-
-        mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" + firebaseAuth.getCurrentUser().getUid());
-
+        mRefUsers = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
+                firebaseAuth.getCurrentUser().getUid());
 
         studyPrograms = new HashMap<>();
+        unions = new HashMap<>();
 
         buttonSend = (Button) findViewById(R.id.send);
 
@@ -145,16 +143,17 @@ public class ChatBot extends AppCompatActivity {
 
         aiDataService = new AIDataService(this, config);
 
-        getInformation();
+        getUserInfoDatabase();
         initTextButtons();
-        getInfoDatabase();
+        getStudyInfoDatabase();
+        getUnionInfoDatabase();
         addMessageToChatArray("Hey! My name is uniBOT, and I'm here to help you with study- and student opportunities at NTNU Trondheim. \nYou can ask me almost anything related to our data-orientated studies. Perhaps you'd like to compare a couple studies? Or submit some interests and let me make a study recommendation?\n" +
                 "\nIf you wish to see more examples, click the 'HELP'-button in the top right corner. You can also press 'UNIBOT' in the header to let me prompt you with some questions. I look forward to assisting you!");
     }
 
     //Retrieving information from the spezified fields from the firebase-database
-    public void getInfoDatabase() {
-        mRef.addValueEventListener(new ValueEventListener() {
+    public void getUserInfoDatabase() {
+        mRefUsers.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         setUser(dataSnapshot.getValue(UserInfo.class));
@@ -162,73 +161,38 @@ public class ChatBot extends AppCompatActivity {
                     @Override
                     public void onCancelled(FirebaseError firebaseError) {}
                 });
+    }
 
-        /*mRef.child("BirthYear").addListenerForSingleValueEvent(new ValueEventListener() {
+    //Retrieving information about the unions at NTNU
+    public void getUnionInfoDatabase() {
+        Firebase unionRef = new Firebase("https://tdt4140project2.firebaseio.com/Unions/");
+        unionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                setBirthYear(dataSnapshot.getValue(Integer.class));
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    addUnions(snapshot.getValue(Union.class));
+                }
             }
-
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                firebaseError.getMessage();
-            }
+            public void onCancelled(FirebaseError firebaseError) {}
         });
+    }
 
-        mRef.child("CalculatedGrade").addListenerForSingleValueEvent(new ValueEventListener() {
+    //This method retrieves information about the study the user wants to know more about
+    private void getStudyInfoDatabase() {
+        //Sends a StudyProgramInfo-object to the database (TEST)
+        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies/");
+        infoRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                setCalculatedGrade(dataSnapshot.getValue(Double.class));
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    addStudyPrograms(snapshot.getKey(), snapshot.getValue(StudyProgramInfo.class));
+                }
             }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-        mRef.child("Courses").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setCourses(dataSnapshot.getValue(ArrayList.class));
-            }
-
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
         });
-
-        mRef.child("Extra education").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setExtraEducation(dataSnapshot.getValue(ArrayList.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-        mRef.child("Gender").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setGender(dataSnapshot.getValue(Character.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-        mRef.child("R2Grade").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setR2Grade(dataSnapshot.getValue(Integer.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });*/
     }
 
     public void hideKeyboard(View view) {
@@ -320,9 +284,7 @@ public class ChatBot extends AppCompatActivity {
         //checks if the user wants to answer the random question.
         // Also checks if the last question uniBOT printed equals the question that was printed because the user pressed the uniBOT-button
         //This needs to be checked, or else the user can type "yes" whenever (s)he wants, and the answer to the last question will be printed
-        System.out.println(messageFromUser.toString());
         if (messageFromUser.toLowerCase().equals("yes") && randomNumber > -1 && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber))) {
-            System.out.println(chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString());
             translationFromUserToAI();
             return true;
         } else if (messageFromUser.toLowerCase().equals("no") && (chatArrayAdapter.getCount() > 2) && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber))) {
@@ -415,10 +377,6 @@ public class ChatBot extends AppCompatActivity {
                     String response = processAiResponse(aiResponse);
                     addMessageToChatArray(response);
                     //addMessageToChatArray(aiResponse.getResult().getFulfillment().getSpeech()); // returnere svar når ferdig
-                    System.out.println(aiResponse.getResult());
-                    System.out.println(aiResponse.getResult().getParameters());
-
-
                 }
             }
         }.execute(aiRequest);
@@ -441,26 +399,6 @@ public class ChatBot extends AppCompatActivity {
         return ut;
 
 
-    }
-
-    //This method retrieves information about the study the user wants to know more about
-    private void getInformation() {
-        //Sends a StudyProgramInfo-object to the database (TEST)
-        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies/");
-        infoRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    System.out.println("AAAAAA");
-                    System.out.println(snapshot.getKey());
-                    addStudyPrograms(snapshot.getKey(), snapshot.getValue(StudyProgramInfo.class));
-                    System.out.println(snapshot.getValue(StudyProgramInfo.class).toString());
-                }
-            }
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
     }
 
     public void setStudyInformation(StudyProgramInfo info, String study) {
@@ -499,8 +437,11 @@ public class ChatBot extends AppCompatActivity {
         this.studyPrograms.put(study, info);
     }
 
+    public void addUnions(Union union) {
+        this.unions.put(union.getName(), union);
+    }
+
     public void setUser(UserInfo user) {
         this.user = user;
     }
-
 }

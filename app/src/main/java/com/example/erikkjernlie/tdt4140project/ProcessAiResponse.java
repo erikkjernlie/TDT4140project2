@@ -73,13 +73,10 @@ public class ProcessAiResponse {
                 ut = this.getUserInfo();
                 break;
             case "addInterests":
-                System.out.println("kommer den hit?");
                 ArrayList<String> interests = new ArrayList<>();
 
                 for (JsonElement interest : aiResponse.getResult().getParameters().get("Interests").getAsJsonArray()) {
                     interests.add(interest.toString());
-                    System.out.println(interest.toString());
-
                 }
                 ut = this.addInterst(interests);
                 break;
@@ -92,7 +89,6 @@ public class ProcessAiResponse {
     private String getGrade(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
         double grade = studyPrograms.get(studyProgram).getGrade();
-        System.out.println(studyPrograms.get(studyProgram).getGrade());
         return "The grade to get into " + studyProgram + " is " + grade + ".";
     }
 

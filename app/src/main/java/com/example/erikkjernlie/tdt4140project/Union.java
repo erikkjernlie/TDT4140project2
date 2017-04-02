@@ -49,4 +49,12 @@ public class Union {
         mRef.child(this.name).setValue(this);
     }
 
+    @Override
+    public String toString() {
+        return "Union{" +
+                "members=" + members +
+                ", info='" + info + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

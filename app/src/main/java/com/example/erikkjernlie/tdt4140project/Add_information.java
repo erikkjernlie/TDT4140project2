@@ -148,30 +148,6 @@ public class Add_information extends AppCompatActivity {
                 this.extraEducationArray, this.gender, this.R2Grade,
                 new ArrayList<>(Arrays.asList("Studies")));
         mRef.setValue(user);
-
-        /*//Store averageGrade
-        Firebase mRefChildGrade = mRootRef.child("CalculatedGrade");
-        mRefChildGrade.setValue(this.calculatedGrade);
-
-        //Store gender
-        Firebase mRefChildGender = mRootRef.child("Gender");
-        mRefChildGender.setValue(this.gender);
-
-        //Store courses
-        Firebase mRefChildCourses = mRootRef.child("Courses");
-        mRefChildCourses.setValue(this.coursesArray);
-
-        //Store extra education
-        Firebase mRefChildExEd = mRootRef.child("Extra education");
-        mRefChildExEd.setValue(this.extraEducationArray);
-
-        //Store birthyear
-        Firebase mRefChildYear = mRootRef.child("BirthYear");
-        mRefChildYear.setValue(this.year);
-
-        //Store R2Grade
-        Firebase mRefChildR2Grade = mRootRef.child("R2Grade");
-        mRefChildR2Grade.setValue(this.R2Grade);*/
     }
 
 
@@ -302,7 +278,6 @@ public class Add_information extends AppCompatActivity {
         }
         int points = 0;
         points = 2 * ((today.getYear() - birthYear + 1900) - 19);
-        System.out.println(points);
         if (points > 8) {
             points = 8;
         } else if (points < 0) {
