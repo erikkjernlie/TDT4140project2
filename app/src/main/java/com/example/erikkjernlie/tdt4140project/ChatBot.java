@@ -61,9 +61,6 @@ public class ChatBot extends AppCompatActivity {
     private EditText chatText;
     private Button buttonSend;
     private boolean side = false;
-    private AIService aiService;
-    public Button listenButton;
-    private TextView resultTextView;
     private AIConfiguration config;
     private AIDataService aiDataService;
     private TextView uniBot;
