@@ -73,6 +73,7 @@ public class ChatBot extends AppCompatActivity {
     private ArrayList<String> sentencesOutput;
     private HashMap<String, StudyProgramInfo> studyPrograms;
     private HashMap<String, Union> unions;
+    private ArrayList<String> usedInterests = new ArrayList<>();
 
     // fields for the interview
     private boolean interview = false; // if the user is doing the interview
@@ -325,6 +326,7 @@ public class ChatBot extends AppCompatActivity {
 
     private void handleInterview() {
         if (!user.getInterests().contains(interest)) {
+            usedInterests.add(interest);
             user.addInterests(interest);
             user.updateFirebase();
         }
@@ -458,7 +460,15 @@ public class ChatBot extends AppCompatActivity {
                         }
                     }
                 }
-                ut = prompts.get(0) + interests.get(0) + "?"; // '0' må byttes ut med random tall
+                Random random = new Random();
+
+                int randomInt = random.nextInt(interests.size());
+
+                // må legges til at man ikke velger en fra useInterests lista
+
+                usedInterests.add(interests.get(randomInt));
+
+                ut = prompts.get(new Random().nextInt(prompts.size())) + interests.get(randomInt) + "?"; // '0' må byttes ut med random tall
             }
 
         }
