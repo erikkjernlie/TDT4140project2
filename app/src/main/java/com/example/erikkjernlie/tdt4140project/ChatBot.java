@@ -36,6 +36,7 @@ import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonElement;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -61,9 +62,6 @@ public class ChatBot extends AppCompatActivity {
     private EditText chatText;
     private Button buttonSend;
     private boolean side = false;
-    private AIService aiService;
-    public Button listenButton;
-    private TextView resultTextView;
     private AIConfiguration config;
     private AIDataService aiDataService;
     private TextView uniBot;
@@ -76,8 +74,13 @@ public class ChatBot extends AppCompatActivity {
     private HashMap<String, StudyProgramInfo> studyPrograms;
     private HashMap<String, Union> unions;
 
+    // fields for the interview
+    private boolean interview = false; // if the user is doing the interview
+    private String interest;
+
     FirebaseAuth firebaseAuth;
     Firebase mRefUsers;
+
     //gets the required access from API.AI a
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -155,13 +158,15 @@ public class ChatBot extends AppCompatActivity {
     //Retrieving information from the spezified fields from the firebase-database
     public void getUserInfoDatabase() {
         mRefUsers.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        setUser(dataSnapshot.getValue(UserInfo.class));
-                    }
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {}
-                });
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setUser(dataSnapshot.getValue(UserInfo.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
     }
 
     //Retrieving information about the unions at NTNU
@@ -174,8 +179,10 @@ public class ChatBot extends AppCompatActivity {
                     addUnions(snapshot.getValue(Union.class));
                 }
             }
+
             @Override
-            public void onCancelled(FirebaseError firebaseError) {}
+            public void onCancelled(FirebaseError firebaseError) {
+            }
         });
     }
 
@@ -190,6 +197,7 @@ public class ChatBot extends AppCompatActivity {
                     addStudyPrograms(snapshot.getKey(), snapshot.getValue(StudyProgramInfo.class));
                 }
             }
+
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
@@ -247,7 +255,8 @@ public class ChatBot extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                sentencesOutput = new ArrayList<String>(Arrays.asList("Do you want to know about Engineering and ICT?", "Do you want to compare some studies?", "Do you want to see a list of studies that you can compare?"));
+                sentencesOutput = new ArrayList<String>(Arrays.asList("Do you want to know about a study?", "Do you want to compare some studies?", "Do you want to see a list of studies that we support?", "Do you want me to interview you?", "Do you want to" +
+                        "learn about yourself?"));
 
                 Random rn = new Random();
                 int range = sentencesOutput.size();
@@ -262,13 +271,15 @@ public class ChatBot extends AppCompatActivity {
 
     //translates the printed question to a format API.AI understands, so the user can answer directly
     private void translationFromUserToAI() {
-        sentencesToUnibot = new ArrayList<String>(Arrays.asList("Tell me about engineering and ict", "I want to compare some studies", "show me a list of studies"));
+        sentencesToUnibot = new ArrayList<String>(Arrays.asList("Tell me about a study", "I want to compare some studies", "Show me a list of studies", "I want to be interviewed.", "tell me about me"));
         getAiResponse(sentencesToUnibot.get(randomNumber));
     }
 
     //this is where the messages are received and sent
     private boolean sendChatMessage() {
         String messageFromUser = chatText.getText().toString();
+
+        ArrayList<String> positiveResponse = new ArrayList<>(Arrays.asList(new String[] {"yes", "mhm", "jepp", "yeh", "yes please", "please", "definitely", "absolutely"}));
 
         //For displayUserInformation:
         if (messageFromUser.isEmpty()) {
@@ -277,6 +288,20 @@ public class ChatBot extends AppCompatActivity {
 
         if (!messageFromUser.isEmpty()) { // sjekker at meldingen ikke er tom
             chatArrayAdapter.add(new ChatMessage(side, messageFromUser));
+        }
+
+        if (interview) {
+
+            if (messageFromUser.toLowerCase().equals("quit")) {
+                interview = false;
+                chatText.setText("");
+                user.updateFirebase();
+                addMessageToChatArray("Thank you for the interview. We will now try to find you a suitable study.");
+                getAiResponse("Can you recommend me a study?");
+                return true;
+            } else if (positiveResponse.contains(messageFromUser.toLowerCase())){
+                handleInterview();
+            }
         }
 
         chatText.setText(""); //resets the chatbox
@@ -288,15 +313,21 @@ public class ChatBot extends AppCompatActivity {
         if (messageFromUser.toLowerCase().equals("yes") && randomNumber > -1 && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber))) {
             translationFromUserToAI();
             return true;
-        } else if (messageFromUser.toLowerCase().equals("no") && (chatArrayAdapter.getCount() > 2) && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber))) {
+        } else if (chatArrayAdapter != null && sentencesOutput != null && messageFromUser.toLowerCase().equals("no") && (chatArrayAdapter.getCount() > 2) && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber))) {
             addMessageToChatArray("You can always press the uniBOT-button to get more random questions. ");
             return true;
         }
 
-
         getAiResponse(messageFromUser);
 
         return true;
+    }
+
+    private void handleInterview() {
+        if (!user.getInterests().contains(interest)) {
+            user.addInterests(interest);
+            user.updateFirebase();
+        }
     }
 
     private void getAiResponse(String a) {
@@ -384,18 +415,54 @@ public class ChatBot extends AppCompatActivity {
     }
 
     private String processAiResponse(AIResponse response) {
+
         // Denne metoden skal lage et objekt av ProcessAiResponse klassen, og kalle på en av dens metoder
         // klassen må ta inn infoen den trenger, dvs studyinfo listen
 
-        ProcessAiResponse processAiResponse = new ProcessAiResponse(studyPrograms, user, unions);
-
         String ut = null;
 
-        if (response.getResult().getFulfillment().getSpeech().equals("")) {
-            ut = processAiResponse.processAiRespons(response);
+
+        ProcessAiResponse processAiResponse = new ProcessAiResponse(studyPrograms, user, unions);
+
+        if (interview) {
+            ArrayList<String> prompts = new ArrayList<>(Arrays.asList(new String[]{"Are you interested in ", "Do you like ", "Do you enjoy ", "Would you like to work with "})); // Denne kan gjerne økes.
+            ArrayList<String> interests = new ArrayList<>();
+
+            for (String study : studyPrograms.keySet()) {
+                for (String interest : studyPrograms.get(study).getKeywords()) {
+                    if (!interests.contains(interest)) {
+                        interests.add(interest);
+                    }
+                }
+            }
+            interest = interests.get(new Random().nextInt(interests.size())); // skal være random interest
+
+            return prompts.get(new Random().nextInt(prompts.size())) + interest + "?"; // '0' må byttes ut med random tall
         } else {
-            ut = response.getResult().getFulfillment().getSpeech().toString();
+            if (response.getResult().getFulfillment().getSpeech().equals("")) {
+                ut = processAiResponse.processAiRespons(response);
+            } else {
+                ut = response.getResult().getFulfillment().getSpeech().toString();
+            }
+
+            if (ut.equals("startInterview")) {
+                interview = true;
+                addMessageToChatArray("We will now start an interview and try to find a study that matches your interests. Please write 'quit' to stop the interview. ");
+                ArrayList<String> prompts = new ArrayList<>(Arrays.asList(new String[]{"Are you interested in ", "Do you like ", "Do you enjoy ", "Would you like to work with "})); // Denne kan gjerne økes.
+                ArrayList<String> interests = new ArrayList<>();
+
+                for (String study : studyPrograms.keySet()) {
+                    for (String interest : studyPrograms.get(study).getKeywords()) {
+                        if (!interests.contains(interest)) {
+                            interests.add(interest);
+                        }
+                    }
+                }
+                ut = prompts.get(0) + interests.get(0) + "?"; // '0' må byttes ut med random tall
+            }
+
         }
+
 
         return ut;
 
@@ -427,10 +494,7 @@ public class ChatBot extends AppCompatActivity {
                 parameterString += "(" + entry.getKey() + ", " + entry.getValue() + ") ";
             }
         }
-        // Show results in TextView.
-        resultTextView.setText("Query:" + result.getResolvedQuery() +
-                "\nAction: " + result.getAction() +
-                "\nParameters: " + parameterString);
+
     }
 
     public void addStudyPrograms(String study, StudyProgramInfo info) {

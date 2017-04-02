@@ -87,6 +87,9 @@ public class ProcessAiResponse {
             case "recommendStudy":
                 ut = this.recommendStudy();
                 break;
+            case "startInterview":
+                ut = this.interview();
+                break;
         }
 
         return ut;
@@ -352,7 +355,9 @@ public class ProcessAiResponse {
         for (String study : studyPrograms.keySet()) {
             System.out.println(study);
             for (String interest : interests) {
-                interest = interest.toLowerCase();
+                if (interest != null) {
+                    interest = interest.toLowerCase();
+                }
 
                 if (keyWords.get(study).contains(interest)) {
                     pointMap.put(study, pointMap.get(study) + 1); // legger til 1 verdi på det gitte studiet
@@ -389,6 +394,11 @@ public class ProcessAiResponse {
 
         return "You have not told us any of your interests. If you tell us your interests, we could better help you find a suitable study"; // Hvis den kommer hit, er interesselisten tom
 
+    }
+
+    // Method for starting interview
+    private String interview() {
+        return "startInterview";
     }
 
 }
