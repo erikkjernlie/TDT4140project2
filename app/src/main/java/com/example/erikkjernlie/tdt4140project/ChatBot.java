@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -37,6 +38,7 @@ import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -52,9 +54,8 @@ import ai.api.model.Result;
 public class ChatBot extends AppCompatActivity {
     private static final String TAG = "ChatActivity";
 
-    private ArrayList<String> courses;
-    private ArrayList<String> extraEducation;
-    private int R2Grade;
+    private UserInfo user;
+
     private ChatArrayAdapter chatArrayAdapter;
     private ListView listView;
     private EditText chatText;
@@ -72,14 +73,12 @@ public class ChatBot extends AppCompatActivity {
     private int randomNumber = -1;
     private ArrayList<String> sentencesToUnibot;
     private ArrayList<String> sentencesOutput;
-    private boolean odd = true; // boolean to make sure getAiResponse only return actual ai object half of the time.
-    private Firebase mRef;
-    private char gender;
-    private double calculatedGrade;
-    private int birthYear;
-    private FirebaseAuth firebaseAuth;
+    private HashMap<String, StudyProgramInfo> studyPrograms;
+    private HashMap<String, Union> unions;
 
-    //gets the required access from API.AI and firebase
+    FirebaseAuth firebaseAuth;
+    Firebase mRefUsers;
+    //gets the required access from API.AI a
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,8 +90,11 @@ public class ChatBot extends AppCompatActivity {
 
         firebaseAuth = firebaseAuth.getInstance();
 
-        mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
+        mRefUsers = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
                 firebaseAuth.getCurrentUser().getUid());
+
+        studyPrograms = new HashMap<>();
+        unions = new HashMap<>();
 
         buttonSend = (Button) findViewById(R.id.send);
 
@@ -135,107 +137,62 @@ public class ChatBot extends AppCompatActivity {
                 listView.setSelection(chatArrayAdapter.getCount() - 1);
             }
         });
-        config = new AIConfiguration("3e19cea342f04764b1665e37099f1e23",
+        config = new AIConfiguration("97d4794875414bacb99fc54ba5de1086",
                 AIConfiguration.SupportedLanguages.English,
                 AIConfiguration.RecognitionEngine.Speaktoit);
 
         aiDataService = new AIDataService(this, config);
 
-
+        getUserInfoDatabase();
         initTextButtons();
-        getInfoDatabase();
-
+        getStudyInfoDatabase();
+        getUnionInfoDatabase();
+        addMessageToChatArray("Hey! My name is uniBOT, and I'm here to help you with study- and student opportunities at NTNU Trondheim. \nYou can ask me almost anything related to our data-orientated studies. Perhaps you'd like to compare a couple studies? Or submit some interests and let me make a study recommendation?\n" +
+                "\nIf you wish to see more examples, click the 'HELP'-button in the top right corner. You can also press 'UNIBOT' in the header to let me prompt you with some questions. I look forward to assisting you!");
     }
 
     //Retrieving information from the spezified fields from the firebase-database
-    public void getInfoDatabase() {
-        mRef.child("BirthYear").addListenerForSingleValueEvent(new ValueEventListener() {
+    public void getUserInfoDatabase() {
+        mRefUsers.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        setUser(dataSnapshot.getValue(UserInfo.class));
+                    }
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {}
+                });
+    }
+
+    //Retrieving information about the unions at NTNU
+    public void getUnionInfoDatabase() {
+        Firebase unionRef = new Firebase("https://tdt4140project2.firebaseio.com/Unions/");
+        unionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                setBirthYear(dataSnapshot.getValue(Integer.class));
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    addUnions(snapshot.getValue(Union.class));
+                }
             }
-
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                firebaseError.getMessage();
-            }
-        });
-
-        mRef.child("CalculatedGrade").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setCalculatedGrade(dataSnapshot.getValue(Double.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-        mRef.child("Courses").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setCourses(dataSnapshot.getValue(ArrayList.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-        mRef.child("Extra education").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setExtraEducation(dataSnapshot.getValue(ArrayList.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-        mRef.child("Gender").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setGender(dataSnapshot.getValue(Character.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-        mRef.child("R2Grade").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setR2Grade(dataSnapshot.getValue(Integer.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
+            public void onCancelled(FirebaseError firebaseError) {}
         });
     }
 
-    public String displayUserInformation() {
-        String userInfo = "";
-        userInfo += "Your birth year: " + this.birthYear + "\n";
-        userInfo += "Your calculated grade: " + this.calculatedGrade + "\n";
-        userInfo += "Your courses: ";
-        for (int i = 0; i < this.courses.size(); i++) {
-            userInfo += this.courses.get(i) + ", ";
-        }
-        //Deletes the last comma
-        userInfo = userInfo.substring(0, userInfo.length() - 2) + "\n";
-        userInfo += "Your extra education: ";
-        for (int i = 0; i < this.extraEducation.size(); i++) {
-            userInfo += this.extraEducation.get(i) + ", ";
-        }
-        //Deletes the last comma
-        userInfo = userInfo.substring(0, userInfo.length() - 2) + "\n";
-        userInfo += "Your gender: " + this.gender + "\n";
-        userInfo += "Your R2-grade: " + this.R2Grade;
-        return userInfo;
+    //This method retrieves information about the study the user wants to know more about
+    private void getStudyInfoDatabase() {
+        //Sends a StudyProgramInfo-object to the database (TEST)
+        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies/");
+        infoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    addStudyPrograms(snapshot.getKey(), snapshot.getValue(StudyProgramInfo.class));
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
     }
 
     public void hideKeyboard(View view) {
@@ -289,7 +246,7 @@ public class ChatBot extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                sentencesOutput = new ArrayList<String>(Arrays.asList("Do you want to know about physics?", "Do you want to compare some studies?", "Do you want to see a list of studies that you can compare?"));
+                sentencesOutput = new ArrayList<String>(Arrays.asList("Do you want to know about Engineering and ICT?", "Do you want to compare some studies?", "Do you want to see a list of studies that you can compare?"));
 
                 Random rn = new Random();
                 int range = sentencesOutput.size();
@@ -304,7 +261,7 @@ public class ChatBot extends AppCompatActivity {
 
     //translates the printed question to a format API.AI understands, so the user can answer directly
     private void translationFromUserToAI() {
-        sentencesToUnibot = new ArrayList<String>(Arrays.asList("Tell me about physics", "I want to compare some studies", "print"));
+        sentencesToUnibot = new ArrayList<String>(Arrays.asList("Tell me about engineering and ict", "I want to compare some studies", "show me a list of studies"));
         getAiResponse(sentencesToUnibot.get(randomNumber));
     }
 
@@ -327,9 +284,7 @@ public class ChatBot extends AppCompatActivity {
         //checks if the user wants to answer the random question.
         // Also checks if the last question uniBOT printed equals the question that was printed because the user pressed the uniBOT-button
         //This needs to be checked, or else the user can type "yes" whenever (s)he wants, and the answer to the last question will be printed
-        System.out.println(messageFromUser.toString());
         if (messageFromUser.toLowerCase().equals("yes") && randomNumber > -1 && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber))) {
-            System.out.println(chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString());
             translationFromUserToAI();
             return true;
         } else if (messageFromUser.toLowerCase().equals("no") && (chatArrayAdapter.getCount() > 2) && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber))) {
@@ -344,6 +299,58 @@ public class ChatBot extends AppCompatActivity {
     }
 
     private void getAiResponse(String a) {
+        //TO SEND INFO ABOUT UNIONS TO FIREBASE
+        /*if (a.equals("Send")) {
+            Union TP = new Union("TeknologiPorten", "Tidenes beste port", 50);
+            Union NTNUI = new Union("NTNUI", "Idrettsforening", 1000);
+            Union UKA = new Union("UKA", "Tidenes beste festival", 2000);
+            Union Bindeleddet = new Union("Bindeleddet", "Tidenes beste ledd", 60);
+            Union Start_NTNU = new Union("START NTNU", "Tidenes beste start", 55);
+            Union SIT = new Union("SIT", "Tidenes beste studentsamskipnad", 20000);
+            TP.sendToFirebase();
+            NTNUI.sendToFirebase();
+            UKA.sendToFirebase();
+            Bindeleddet.sendToFirebase();
+            Start_NTNU.sendToFirebase();
+            SIT.sendToFirebase();
+
+        }*/
+
+        //IF YOU WANT TO INSERT THE 4 STUDIES INTO THE DATABASE
+        /*if (a.equals("setInformatics")) {
+            setStudyInformation(new StudyProgramInfo(51.2, false,
+                    new ArrayList<String>(Arrays.asList("Data", "IKT", "IT")),
+                    new ArrayList<String>(Arrays.asList("Data", "Consultant")), "Informatics is a bachelor",
+                    "Very good environment", "Online",
+                    new ArrayList<String>(Arrays.asList("TDT4100", "TDT4120"))), "Informatics");
+        }
+        if (a.equals("setICT")) {
+            setStudyInformation(new StudyProgramInfo(54.4, true,
+                    new ArrayList<String>(Arrays.asList("Data", "IKT", "Engineering")),
+                    new ArrayList<String>(Arrays.asList("Consultant", "Engineer")), "ICT is a master",
+                    "Amazing environment", "Hybrida",
+                    new ArrayList<String>(Arrays.asList("TMA4100", "TDT4100", "TDT4120"))),
+                    "Engineering and ICT");
+        }
+        if (a.equals("setIndok")) {
+            setStudyInformation(new StudyProgramInfo(64.0, false,
+                    new ArrayList<String>(Arrays.asList("Data", "IKT", "Economics")),
+                    new ArrayList<String>(Arrays.asList("Data", "Consultant", "Leader")),
+                    "Indok is very weird",
+                    "Very bad environment", "Janus",
+                    new ArrayList<String>(Arrays.asList("TDT4100", "TDT4120"))),
+                    "Industrial Economics and Technology Management and ICT");
+        }
+        if (a.equals("setData")) {
+            setStudyInformation(new StudyProgramInfo(57.0, true,
+                    new ArrayList<String>(Arrays.asList("Data", "IKT", "IT")),
+                    new ArrayList<String>(Arrays.asList("Data", "Consultant", "Programmer")),
+                    "Computer science is a master",
+                    "Okey environment", "Abakus",
+                    new ArrayList<String>(Arrays.asList("TDT4100", "TDT4120"))),
+                    "Computer Science");
+        }*/
+
 
         final AIRequest aiRequest = new AIRequest();
         if (!a.isEmpty()) {
@@ -370,60 +377,43 @@ public class ChatBot extends AppCompatActivity {
                     String response = processAiResponse(aiResponse);
                     addMessageToChatArray(response);
                     //addMessageToChatArray(aiResponse.getResult().getFulfillment().getSpeech()); // returnere svar når ferdig
-                    System.out.println(aiResponse.getResult());
-                    System.out.println(aiResponse.getResult().getParameters());
-
-                    System.out.println("asdølaøsdl");
-
                 }
             }
         }.execute(aiRequest);
     }
 
-
     private String processAiResponse(AIResponse response) {
+        // Denne metoden skal lage et objekt av ProcessAiResponse klassen, og kalle på en av dens metoder
+        // klassen må ta inn infoen den trenger, dvs studyinfo listen
 
-        if (response.getResult().getAction().toString().contains("displayUserInformation")) {
-            return displayUserInformation();
+        ProcessAiResponse processAiResponse = new ProcessAiResponse(studyPrograms, user);
+
+        String ut = null;
+
+        if (response.getResult().getFulfillment().getSpeech().equals("")) {
+            ut = processAiResponse.processAiRespons(response);
+        } else {
+            ut = response.getResult().getFulfillment().getSpeech().toString();
         }
-        if (response.getResult().getAction().contains("getInformation")) {
-            getInformation(response.getResult().getParameters().get("Studies").toString());
-        }
-        return response.getResult().getFulfillment().getSpeech();
+
+        return ut;
+
 
     }
 
-    //This method retrieves information about the study the user wants to know more about
-    private void getInformation(String study) {
-        //Sends a StudyProgramInfo-object to the database (TEST)
-        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies");
-    }
-
-    public void setStudyInformations(String study) {
-        //Sends a StudyProgramInfo-object to the database (TEST)
-        GetInfo getInfo = new GetInfo();
-        ArrayList<String> studySpecialization = new ArrayList<>(Arrays.asList("ICT and production development", "ICT and construction"));
-        String miljo = "Line Association: hybrida line Society for Engineering and ICT called Hybrida. Perhaps the most important task is to contribute to the social environment in the program. Line Society has therefore responsible for events like the buddy program, entrance examination, matriculation party, sports, graduation parties and Christmas shutdown. Early in the New Year organizes Hybrida trip to Åre in Sweden. These are not alone, as almost all NTNU packages skiing and snowboarding and pulls eastward to create revel in one of Scandinavia's premier resorts. Hybrida is also an important link between students and faculty, industry and the other degree programs at the university. Hybridajentene ICT girls conducts activities of both the academic and social nature with a focus on girls, for, inter alia, strengthen solidarity on the line. Mentor Period One of the first you meet as a new student at the Engineering and ICT is a well-organized buddy organized by student association hybrida. The new students are divided into small groups and each group is assigned a mentor. The mentor is a student of higher classes, who want to help new students get to know the student town of Trondheim and NTNU. This is also a golden opportunity to meet their first new friends in Trondheim. During the buddy program includes a number of social activities like barbecues, football, guided tours through the city and all sorts of festivities. Ends with trials for admission to the bar association, and the infamous badekarpadlingen on Nidelva. After trials follows a solemn matriculation party, where you are warmly welcomed to the student community by Engineering and ICT. Integrated use of data in education for students of Engineering and ICT will use the data to be more integrated in the teaching than many of the other degree programs at the university. The study therefore put in place for the use of their own laptop. NTNU and study program prepares each year a student offer notebook and the software you need at the start of the study. This is a favorable alternative to computer labs. The first weeks after start getting some students from higher classes assigned to help the new students to get started using your own PC. Students will receive training and supervision in the use of PC and software. NTNU also has its own support to all students. Engineering and ICT is a demanding course of study there including programming and technical engineering skills are used together to create the future of technology. Be aware that the program uses software that makes heavy demands on the computer. Read more about this in technocrats start their sides. StudiebyEN Trondheim Trondheim has several times been voted the best student city. One of the reasons for this are the dozens of student organizations that exist. These are helping to contribute to a diverse and exciting study existence. Union, UKA, biannual, Tekna and NTNUI are all examples of gathering places for engagement, learning and well-being. Here the students who want it is also useful organizational and work experience.";
-        // this was from jSoup and translatet with google
-
-
-        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies");
-        StudyProgramInfo info = new StudyProgramInfo(
-                getInfo.getBasicInformation("mting"),
-                54.4, true, 2, "Hybrida", studySpecialization, miljo);
-
-
-        //  infoRef.child(study).setValue(info);
+    public void setStudyInformation(StudyProgramInfo info, String study) {
+        //Reference to Firebase and the node Studies
+        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies/");
+        //Sets the StudyProgramInfo-object, info, as a value in the node study
+        infoRef.child(study).setValue(info);
     }
 
     private void addMessageToChatArray(String message) {
         chatArrayAdapter.add(new ChatMessage(true, message));
     }
 
-    public void listenButtonOnClick(View view) {
-        aiService.startListening();
-    }
 
+    // Not in use, kept only for later use
     public void onResult(final AIResponse response) {
         if (response.isError()) {
 
@@ -443,54 +433,15 @@ public class ChatBot extends AppCompatActivity {
                 "\nParameters: " + parameterString);
     }
 
-
-    //getters and setters
-    public int getBirthYear() {
-        return birthYear;
+    public void addStudyPrograms(String study, StudyProgramInfo info) {
+        this.studyPrograms.put(study, info);
     }
 
-    public void setBirthYear(int birthYear) {
-        this.birthYear = birthYear;
+    public void addUnions(Union union) {
+        this.unions.put(union.getName(), union);
     }
 
-    public double getCalculatedGrade() {
-        return calculatedGrade;
+    public void setUser(UserInfo user) {
+        this.user = user;
     }
-
-    public void setCalculatedGrade(double calculatedGrade) {
-        this.calculatedGrade = calculatedGrade;
-    }
-
-    public ArrayList<String> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(ArrayList<String> courses) {
-        this.courses = courses;
-    }
-
-    public ArrayList<String> getExtraEducation() {
-        return extraEducation;
-    }
-
-    public void setExtraEducation(ArrayList<String> extraEducation) {
-        this.extraEducation = extraEducation;
-    }
-
-    public char getGender() {
-        return gender;
-    }
-
-    public void setGender(char gender) {
-        this.gender = gender;
-    }
-
-    public int getR2Grade() {
-        return R2Grade;
-    }
-
-    public void setR2Grade(int r2Grade) {
-        R2Grade = r2Grade;
-    }
-
 }

@@ -43,12 +43,7 @@ public class Menu extends AppCompatActivity {
     private Button aboutUs;
     private ImageView cogwheel;
     private Firebase mRef;
-    private char gender;
-    private double calculatedGrade;
-    private int birthYear;
-    private ArrayList<String> courses;
-    private ArrayList<String> extraEducation;
-    private int R2Grade;
+    private UserInfo user;
 
 
     public void initButtons() {
@@ -116,11 +111,11 @@ public class Menu extends AppCompatActivity {
         //hvordan henter man info
         firebaseAuth = firebaseAuth.getInstance();
 
-        mRef = new Firebase("https://tdt4140project2.firebaseio.com/" +
+        mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
                 firebaseAuth.getCurrentUser().getUid());
 
 
-        getInfoDatabase();
+        getUserInfoDatabase();
         initButtons();
 
         //uncomment this when we want the alert just to appear the first time the app is started
@@ -142,48 +137,48 @@ public class Menu extends AppCompatActivity {
         TextView t7 = (TextView) d.findViewById(R.id.courses_havehad);
         TextView t8 = (TextView) d.findViewById(R.id.extra_havehad);
 
-        if (this.gender == 'M') {
+        if (this.user.getGender() == 'M') {
             img.setImageResource(R.drawable.man_selected);
 
-        } else if (this.gender == 'F') {
+        } else if (this.user.getGender() == 'F') {
             img.setImageResource(R.drawable.female_selected);
 
         } else {
             img.setVisibility(View.GONE);
         }
 
-        if (this.birthYear != 0) {
-            t2.setText("You are born in " + birthYear + ".");
+        if (this.user.getBirthYear() != 0) {
+            t2.setText("You are born in " + this.user.getBirthYear() + ".");
         } else {
             t2.setVisibility(View.GONE);
         }
 
-        if (this.courses != null) {
+        if (this.user.getCourses() != null) {
             t7.setText("You have had the following courses that gives extra points:");
-            String array = this.courses.toString();
-            array = array.substring(1, array.length()-1);
+            String array = this.user.getCourses().toString();
+            array = array.substring(1, array.length() - 1);
             t3.setText(array);
         } else {
             t3.setVisibility(View.GONE);
             t7.setVisibility(View.GONE);
         }
-        if (this.R2Grade != 0) {
-            t4.setText("You got an " + this.R2Grade + " in R2");
+        if (this.user.getR2Grade() != 0) {
+            t4.setText("You got an " + this.user.getR2Grade() + " in R2");
         } else {
             t4.setVisibility(View.GONE);
         }
-        if (this.extraEducation != null) {
+        if (this.user.getExtraEducation() != null) {
             t8.setText("You have also had:");
-            String array = this.extraEducation.toString();
-            array = array.substring(1, array.length()-1);
+            String array = this.user.getExtraEducation().toString();
+            array = array.substring(1, array.length() - 1);
             t5.setText(array);
         } else {
             t8.setVisibility(View.GONE);
             t5.setVisibility(View.GONE);
         }
 
-        if (calculatedGrade != 0.0) {
-            t6.setText("You score is  " + calculatedGrade + ".");
+        if (this.user.getCalculatedGrade() != 0.0) {
+            t6.setText("You score is  " + this.user.getCalculatedGrade() + ".");
 
         } else {
             t6.setVisibility(View.GONE);
@@ -235,67 +230,12 @@ public class Menu extends AppCompatActivity {
         e.show();
     }
 
-    public void getInfoDatabase() {
-        mRef.child("BirthYear").addValueEventListener(new ValueEventListener() {
+    public void getUserInfoDatabase() {
+
+        mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                setBirthYear(dataSnapshot.getValue(Integer.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                firebaseError.getMessage();
-            }
-        });
-
-        mRef.child("CalculatedGrade").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setCalculatedGrade(dataSnapshot.getValue(Double.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-        mRef.child("Courses").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setCourses(dataSnapshot.getValue(ArrayList.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-        mRef.child("Extra education").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setExtraEducation(dataSnapshot.getValue(ArrayList.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-        mRef.child("Gender").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setGender(dataSnapshot.getValue(Character.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-        mRef.child("R2Grade").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setR2Grade(dataSnapshot.getValue(Integer.class));
+                setUser(dataSnapshot.getValue(UserInfo.class));
             }
 
             @Override
@@ -304,54 +244,7 @@ public class Menu extends AppCompatActivity {
         });
     }
 
-
-    public int getBirthYear() {
-        return birthYear;
+    public void setUser(UserInfo user) {
+        this.user = user;
     }
-
-    public void setBirthYear(int birthYear) {
-        this.birthYear = birthYear;
-    }
-
-    public double getCalculatedGrade() {
-        return calculatedGrade;
-    }
-
-    public void setCalculatedGrade(double calculatedGrade) {
-        this.calculatedGrade = calculatedGrade;
-    }
-
-    public ArrayList<String> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(ArrayList<String> courses) {
-        this.courses = courses;
-    }
-
-    public ArrayList<String> getExtraEducation() {
-        return extraEducation;
-    }
-
-    public void setExtraEducation(ArrayList<String> extraEducation) {
-        this.extraEducation = extraEducation;
-    }
-
-    public char getGender() {
-        return gender;
-    }
-
-    public void setGender(char gender) {
-        this.gender = gender;
-    }
-
-    public int getR2Grade() {
-        return R2Grade;
-    }
-
-    public void setR2Grade(int r2Grade) {
-        R2Grade = r2Grade;
-    }
-
-
 }
