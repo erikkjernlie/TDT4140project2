@@ -26,7 +26,10 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.After;
@@ -130,6 +133,24 @@ public class Add_information extends AppCompatActivity {
         initFagbase();
         initButtons();
         numberPicker();
+        //retrieveInformationDatabase();
+    }
+
+    private void retrieveInformationDatabase() {
+        Firebase mRefUser = new Firebase("https://tdt4140project2.firebaseio.com/Users/"
+         + firebaseAuth.getCurrentUser().getUid());
+        mRefUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserInfo user = dataSnapshot.getValue(UserInfo.class);
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     private void initFagbase() {
@@ -170,6 +191,9 @@ public class Add_information extends AppCompatActivity {
                     gender = 'M';
                 } else if (isPressedFemale) {
                     gender = 'F';
+                } else {
+                    Toast.makeText(Add_information.this, "You need to pick a gender!", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 calculatedGrade = grade_calculation();

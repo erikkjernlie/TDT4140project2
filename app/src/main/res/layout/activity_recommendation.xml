@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical" android:layout_width="match_parent"
+android:layout_height="match_parent" android:layout_gravity="center"
+    android:gravity="center_horizontal" >
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="40dp" android:paddingRight="40dp">
+
+        <ImageView
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:src="@drawable/hybrida_logo"
+            android:id="@+id/linjeforening_rec"
+            android:paddingTop="40dp"
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You are recommended"
+                android:textSize="15dp"
+                android:paddingTop="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linje_rec"
+            android:textSize="30dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="Engineering and ICT"
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="because..."
+                android:textSize="15dp"
+                android:paddingBottom="10dp"
+                android:id="@+id/why_rec"/>
+
+            <View android:layout_height="2px"
+                android:layout_width="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="#000000"
+
+                />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22dp"
+            android:paddingTop="10dp"
+            android:text="About the study"
+            android:paddingBottom="3dp"
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About the study information here yes very nice heheheheh he he he he eh eh eh eh eh eh ehe"
+                android:id="@+id/about_study_rec"
+                android:paddingBottom="10dp"
+                android:gravity="center"
+
+                />
+
+            <View android:layout_height="2px"
+                android:layout_width="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="#000000"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22dp"
+                android:paddingBottom="3dp"
+                android:paddingTop="10dp"
+                android:text="Job opportunities"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About the study information here yes very nice heheheheh he he he he eh eh eh eh eh eh ehe"
+                android:id="@+id/job_opportunities_rec"
+                android:paddingBottom="10dp"
+                android:gravity="center"
+
+                />
+
+            <View android:layout_height="2px"
+                android:layout_width="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="#000000"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="3dp"
+                android:text="Social environment"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About the study information here yes very nice heheheheh he he he he eh eh eh eh eh eh ehe"
+                android:id="@+id/social_environment_rec"
+                android:paddingBottom="10dp"
+                android:gravity="center"
+
+                />
+
+
+            <View android:layout_height="2px"
+                android:layout_width="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="#000000"
+                />
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

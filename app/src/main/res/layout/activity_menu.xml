@@ -93,11 +93,13 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/register"
+            android:id="@+id/explore"
+
             android:background="@drawable/hover_button"
             android:textColor="#FFFFFF"
-            android:text="Add information" android:textSize="18dp"
             android:layout_weight="16.75"
+            android:text="Chat with unibot" android:textSize="18dp"
+            />
             />
 
         <View android:layout_height="2px"
@@ -108,12 +110,12 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/explore"
-            android:layout_below="@id/register"
+            android:id="@+id/recommendation"
+            android:layout_below="@id/explore"
             android:background="@drawable/hover_button"
             android:textColor="#FFFFFF"
             android:layout_weight="16.75"
-            android:text="Chat with unibot" android:textSize="18dp"
+            android:text="Recommendation" android:textSize="18dp"
 
             />
 
@@ -128,7 +130,7 @@
             android:id="@+id/aboutUnibot"
             android:layout_weight="16.75"
 
-            android:layout_below="@+id/explore"
+            android:layout_below="@+id/recommendation"
             android:background="@drawable/hover_button"
             android:textColor="#FFFFFF"
             android:text="About unibot" android:textSize="18dp"

@@ -33,7 +33,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Menu extends AppCompatActivity {
 
-    private Button register; //register button
+    private Button recommendation; //register button
     private Button explore; //explore button
     private Button aboutUnibot; //about button
     private FirebaseAuth firebaseAuth;
@@ -45,11 +45,11 @@ public class Menu extends AppCompatActivity {
 
 
     public void initButtons() {
-        register = (Button) findViewById(R.id.register);
-        register.setOnClickListener(new View.OnClickListener() {
+        recommendation = (Button) findViewById(R.id.recommendation);
+        recommendation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent b = new Intent(Menu.this, Add_information.class);
+                Intent b = new Intent(Menu.this, Recommendation.class);
                 startActivity(b);
             }
         });
@@ -182,6 +182,15 @@ public class Menu extends AppCompatActivity {
             t6.setVisibility(View.GONE);
         }
 
+
+        TextView info = (TextView) d.findViewById(R.id.info);
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Menu.this, Add_information.class);
+                startActivity(i);
+            }
+        });
         d.show();
         TextView change_password = (TextView) d.findViewById(R.id.change_password);
         change_password.setOnClickListener(new View.OnClickListener() {
