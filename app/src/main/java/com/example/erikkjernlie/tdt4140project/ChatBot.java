@@ -40,6 +40,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
@@ -74,6 +75,7 @@ public class ChatBot extends AppCompatActivity {
     private HashMap<String, StudyProgramInfo> studyPrograms;
     private HashMap<String, Union> unions;
     private ArrayList<String> usedInterests = new ArrayList<>();
+    private int interviewNumber = 0;
 
     // fields for the interview
     private boolean interview = false; // if the user is doing the interview
@@ -262,8 +264,11 @@ public class ChatBot extends AppCompatActivity {
                 Random rn = new Random();
                 int range = sentencesOutput.size();
 
-
-                randomNumber = rn.nextInt(range);
+                int newRandom = rn.nextInt(range);
+                while (randomNumber == newRandom) {
+                    newRandom = rn.nextInt(range);
+                }
+                randomNumber = newRandom;
                 addMessageToChatArray(sentencesOutput.get(randomNumber));
 
             }
@@ -293,7 +298,7 @@ public class ChatBot extends AppCompatActivity {
 
         if (interview) {
 
-            if (messageFromUser.toLowerCase().equals("quit")) {
+            if (messageFromUser.toLowerCase().equals("quit") || checkEnoughInterests() != null) {
                 interview = false;
                 chatText.setText("");
                 user.updateFirebase();
@@ -436,9 +441,6 @@ public class ChatBot extends AppCompatActivity {
                     if (!interests.contains(interest) && !usedInterests.contains(interest)) {
                         interests.add(interest);
                     }
-                    System.out.println("alkslkd");
-                    System.out.println(usedInterests);
-                    System.out.println(usedInterests.contains(interest));
                     if (usedInterests.contains(interest)) {
                         System.out.println(interest);
                     }
@@ -447,6 +449,10 @@ public class ChatBot extends AppCompatActivity {
             System.out.println();
 
             interest = interests.get(new Random().nextInt(interests.size())); // skal være random interest
+            interviewNumber = (interviewNumber + 1) % 3;
+            if (interviewNumber == 0) {
+                return prompts.get(new Random().nextInt(prompts.size())) + interest + "? Remember, you can press 'quit' to stop the interview.";
+            }
 
             return prompts.get(new Random().nextInt(prompts.size())) + interest + "?";
         } else {
@@ -484,6 +490,74 @@ public class ChatBot extends AppCompatActivity {
 
 
         return ut;
+
+
+    }
+
+    private String checkEnoughInterests() {
+        // Method will check if there is a study that has a lead with 3 interests. In that case
+        // we will stop the interview. In the other case the method will return null object
+
+        HashMap<String, Integer> pointMap = new HashMap<>(); // hashmap som skal inneholder alle studienavnene, og koble det opp mot antall keywordstreff
+
+        ArrayList<String> interests = user.getInterests(); // interessene til brukeren
+
+        Iterator<String> iterator = studyPrograms.keySet().iterator(); // iterator som går gjennom alle studienavnene
+
+        HashMap<String, ArrayList<String>> keyWords = new HashMap<>(); // hashmap som skal holde alle interessene til hvert studie
+
+        HashMap<String, ArrayList<String>> matchedInterests = new HashMap<>(); // hashmap som skal holde på alle interessene
+
+        //
+        while (iterator.hasNext()) {
+            String study = iterator.next();
+            keyWords.put(study, studyPrograms.get(study).getKeywords());
+            pointMap.put(study, 0);
+            matchedInterests.put(study, new ArrayList<String>());
+        }
+
+        // går gjennom alle studiene, legger til poeng på pointsMap, om interessen er en av keywordsa
+        for (String study : studyPrograms.keySet()) {
+            System.out.println(study);
+            for (String interest : interests) {
+                if (interest != null) {
+                    interest = interest.toLowerCase();
+                }
+
+                if (keyWords.get(study).contains(interest)) {
+                    pointMap.put(study, pointMap.get(study) + 1); // legger til 1 verdi på det gitte studiet
+                    matchedInterests.get(study).add(interest);  // legger til interessen til studiet
+                }
+            }
+        }
+
+        // finds out what study is the best one
+        Iterator<String> iterator1 = studyPrograms.keySet().iterator();
+        if (iterator1.hasNext()) {
+            String bestStudy = iterator1.next();
+
+            while (iterator1.hasNext()) {
+                String nextStudy = iterator1.next();
+                if (pointMap.get(bestStudy) < pointMap.get(nextStudy)) {
+                    bestStudy = nextStudy;
+                }
+            }
+
+            iterator1 = studyPrograms.keySet().iterator(); // resets the iterator
+
+            // while to check if the best study has at least 3 more points than all of the others
+            while (iterator1.hasNext()) {
+                String nexStudy = iterator1.next();
+                if (pointMap.get(bestStudy) - 3 < pointMap.get(nexStudy) && bestStudy != nexStudy) { // if beststudy don't have at least 3 more points than all of the other, don't stop the interview
+                    return null;
+                }
+            }
+
+
+            return bestStudy; // return the study name.
+        }
+
+        return null; // to continue the interview
 
 
     }

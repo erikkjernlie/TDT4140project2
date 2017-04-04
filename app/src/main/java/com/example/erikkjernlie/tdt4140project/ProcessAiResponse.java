@@ -94,6 +94,9 @@ public class ProcessAiResponse {
             case "startInterview":
                 ut = this.interview();
                 break;
+            case "help":
+                // Skal fylles ut av herman.
+                break;
         }
 
         return ut;
