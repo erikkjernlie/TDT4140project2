@@ -20,7 +20,7 @@ public class Recommendation extends AppCompatActivity {
     private HashMap<String, StudyProgramInfo> studyPrograms;
     private UserInfo userInfo;
     private String beststudy;
-    private ArrayList<String> interests;
+    private ArrayList<String> beststudy_interests;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,34 +51,35 @@ public class Recommendation extends AppCompatActivity {
 //            }
 //        });
 
-
-
         this.userInfo = UserInfo.userInfo;
         this.studyPrograms = UserInfo.studyPrograms;
         recommendStudy();
+
+        System.out.println(this.beststudy);
+        System.out.println(this.beststudy_interests);
+
         initialization();
         setContentView(R.layout.activity_recommendation);
 
     }
-
     private void initialization(){
+        // study, job_opportunities osv. blir alltid null....
         picture = (ImageView) findViewById(R.id.linjeforening_rec);
         study = (TextView) findViewById(R.id.linje_rec);
         job_opportunities = (TextView) findViewById(R.id.job_opportunities_rec);
         social_environement = (TextView) findViewById(R.id.social_environment_rec);
         because = (TextView) findViewById(R.id.why_rec);
 
-
-        if (beststudy != null && interests != null) {
-            study.setText(beststudy);
+        if (beststudy != null && beststudy_interests != null) {
             job_opportunities.setText(studyPrograms.get(beststudy).getCommonWorkFields().toString());
             social_environement.setText(studyPrograms.get(beststudy).getStudyEnvironment());
+            study.setText(beststudy);
             String b = "";
-            for (String interest : interests) {
+            for (String interest : beststudy_interests) {
                 b += interest + ", ";
             }
             b = b.substring(0, b.length() - 2) + ".";
-            because.setText("We think you would like " + beststudy + " because of your following interests:\n" + interests);
+            because.setText("We think you would like " + beststudy + " because of your following interests:\n" + beststudy_interests);
             if (beststudy.toLowerCase().equals("engineering and ict")) {
                 picture.setImageResource(R.drawable.hybrida_logo);
             } else if (beststudy.toLowerCase().equals("industrial economics and technology management and ict")) {
@@ -95,18 +96,18 @@ public class Recommendation extends AppCompatActivity {
     private void recommendStudy() {
         // Henter alle interessene til brukeren, og sammenligner med keywordene til alle studiene.
         // Legger til en int til hvert studie, det studiet med høyest ints, blir anbefalt.
-
+        
         HashMap<String, Integer> pointMap = new HashMap<>(); // hashmap som skal inneholder alle studienavnene, og koble det opp mot antall keywordstreff
 
-        ArrayList<String> interests = userInfo.getInterests(); // interessene til brukeren
+        ArrayList<String> interests = UserInfo.userInfo.getInterests(); // interessene til brukeren
 
-        Iterator<String> iterator = studyPrograms.keySet().iterator(); // iterator som går gjennom alle studienavnene
+        Iterator<String> iterator = UserInfo.studyPrograms.keySet().iterator(); // iterator som går gjennom alle studienavnene
 
         HashMap<String, ArrayList<String>> keyWords = new HashMap<>(); // hashmap som skal holde alle interessene til hvert studie
 
         HashMap<String, ArrayList<String>> matchedInterests = new HashMap<>(); // hashmap som skal holde på alle interessene
 
-        if (interests.size() == 1) {
+        if (interests == null || interests.size() == 1) {
             beststudy = null;
             interests = null;
         }
@@ -135,25 +136,25 @@ public class Recommendation extends AppCompatActivity {
 
         Iterator<String> iterator1 = studyPrograms.keySet().iterator();
         if (iterator1.hasNext()) {
-            String bestStudy = iterator1.next();
+            String bestStudy1 = iterator1.next();
 
             while (iterator1.hasNext()) {
                 String nextStudy = iterator1.next();
-                if (pointMap.get(bestStudy) < pointMap.get(nextStudy)) {
-                    bestStudy = nextStudy;
+                if (pointMap.get(bestStudy1) < pointMap.get(nextStudy)) {
+                    bestStudy1 = nextStudy;
                 }
             }
 
-            if (matchedInterests.get(bestStudy).size() == 0) {
+            if (matchedInterests.get(bestStudy1).size() == 0) {
                 beststudy = null;
-                interests = null;
+                beststudy_interests = null;
             }
-            interests = matchedInterests.get(bestStudy);
-            this.beststudy = beststudy;
+            beststudy_interests = matchedInterests.get(bestStudy1);
+            this.beststudy = bestStudy1;
 
         } else{
-            this.beststudy = null;
-            interests = null;
+            beststudy = null;
+            beststudy_interests = null;
         }
 
 

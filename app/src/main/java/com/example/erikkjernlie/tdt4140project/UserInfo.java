@@ -21,9 +21,8 @@ public class UserInfo {
     private ArrayList<String> interests;
     private Firebase mRef;
     private FirebaseAuth firebaseAuth;
-    public static UserInfo userInfo;
-    public static HashMap<String, StudyProgramInfo> studyPrograms;
-
+    public static UserInfo userInfo = new UserInfo();
+    public static HashMap<String, StudyProgramInfo> studyPrograms = new HashMap<>();
 
     public UserInfo(int birthYear, double calculatedGrade, ArrayList<String> courses,
                     ArrayList<String> extraEducation, char gender, int r2Grade,

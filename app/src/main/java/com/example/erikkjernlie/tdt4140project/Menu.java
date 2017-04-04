@@ -99,7 +99,6 @@ public class Menu extends AppCompatActivity {
                 alertSettings();
             }
         });
-
     }
 
     @Override
@@ -119,6 +118,7 @@ public class Menu extends AppCompatActivity {
 
 
         getUserInfoDatabase();
+        getStudyInfoDatabase();
         initButtons();
 
         //uncomment this when we want the alert just to appear the first time the app is started
@@ -273,7 +273,7 @@ public class Menu extends AppCompatActivity {
 
     public void addStudyPrograms(String study, StudyProgramInfo info) {
         this.studyPrograms.put(study, info);
-        UserInfo.studyPrograms.put(study, info);
+        UserInfo.userInfo.studyPrograms.put(study, info);
     }
 
     public void setUser(UserInfo user) {
