@@ -338,9 +338,14 @@ public class ProcessAiResponse {
         String ut = "";
         double grade = userInfo.getCalculatedGrade();
 
-        if (!studyProgram.equals("Informatics") && userInfo.getR2Grade() < 4) {
+        if (!userInfo.getCourses().contains("Fysikk 1") && !studyProgram.equals("Informatics")) {
+            ut += "\nYou need to take the course Fysikk 1. Therefore you need to take the exam to get into " + studyProgram + ". \n";
+        }
 
-            ut += "You need at least 4 at the course R2, you have " + userInfo.getR2Grade() + ".\nTherefore you need to retake the exam. ";
+        if (!studyProgram.equals("Informatics") && userInfo.getR2Grade() < 4 ) {
+
+            ut += "You need at least 4 at the course R2, you have " + userInfo.getR2Grade() + ".\nTherefore you need to retake the exam. \n";
+
 
             if (studyPrograms.get(studyProgram).isGirlPoints() && userInfo.getGender() == 'F') {
                 grade += 2;
@@ -353,6 +358,8 @@ public class ProcessAiResponse {
             return ut;
 
         }
+
+
 
         if (studyPrograms.get(studyProgram).isGirlPoints()) {
             grade += 2;
