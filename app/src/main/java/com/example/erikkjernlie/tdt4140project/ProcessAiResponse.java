@@ -21,7 +21,7 @@ public class ProcessAiResponse {
 
     private HashMap<String, StudyProgramInfo> studyPrograms;
     private UserInfo userInfo;
-    private HashMap<String, Union> unions;
+    private HashMap<String, Union> unions; // <studieprogram, union>
 
     public ProcessAiResponse(HashMap<String, StudyProgramInfo> studyPrograms, UserInfo userInfo, HashMap<String, Union> unions) {
         this.studyPrograms = studyPrograms;
@@ -57,7 +57,11 @@ public class ProcessAiResponse {
                 ut = this.getStudyEnvironment(aiResponse.getResult().getParameters().get("StudyProgram").toString());
                 break;
             case "getStudentUnion":
-                ut = this.getStudentUnion(aiResponse.getResult().getParameters().get("StudyProgram").toString());
+                if (aiResponse.getResult().getParameters().get("StudyProgram") == null) {
+                    ut = this.getInfoStudentUnion(aiResponse.getResult().getParameters().get("StudentUnion").toString());
+                } else {
+                    ut = this.getStudentUnion(aiResponse.getResult().getParameters().get("StudyProgram").toString());
+                }
                 break;
             case "getCourses":
                 ut = this.getCourses(aiResponse.getResult().getParameters().get("StudyProgram").toString());
@@ -143,6 +147,27 @@ public class ProcessAiResponse {
     private String getStudentUnion(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
         return "The student union at " + studyProgram + " is " + studyPrograms.get(studyProgram).getStudentUnion() + ".";
+
+    }
+
+    // Method for getting info about studentUnion
+    private String getInfoStudentUnion(String union) {
+        union = union.replace("\"", ""); // removes ""
+
+        Iterator<String> iterator = studyPrograms.keySet().iterator(); // itererer gjennom studienavnene
+
+        while (iterator.hasNext()) {
+            String study = iterator.next();
+            System.out.println(study);
+            System.out.println(studyPrograms.get(study).getStudentUnion());
+            studyPrograms.get(study).getStudentUnion().toString().equals(union);
+            if (studyPrograms.get(study).getStudentUnion().toString().equals(union)) {
+                return union + " is the student union at " + study + ".";
+            }
+        }
+
+
+        return "Sorry, we could not find any informations about " + union + ".";
     }
 
     // Method for getting courses
