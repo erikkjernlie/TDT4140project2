@@ -316,8 +316,6 @@ public class ProcessAiResponse {
     // Method for checking if user gets into
     private String getInto(String studyProgram) {
 
-        // Ta hensyn til r2
-
         studyProgram = studyProgram.replace("\"", ""); // removes ""
         String ut = "";
         double grade = userInfo.getCalculatedGrade();
@@ -326,11 +324,11 @@ public class ProcessAiResponse {
 
             ut += "You need at least 4 at the course R2, you have " + userInfo.getR2Grade() + ".\nTherefore you need to retake the exam. ";
 
-            if (studyPrograms.get(studyProgram).isGirlPoints()) {
+            if (studyPrograms.get(studyProgram).isGirlPoints() && userInfo.getGender() == 'F') {
                 grade += 2;
             }
             if (studyPrograms.get(studyProgram).getGrade() < grade) {
-                ut += "Your grade of " + grade + " is highter than last years grade of " + studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
+                ut += "Your grade of " + grade + " is higher than last years grade of " + studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
             } else {
                 ut += "Your grade of " + grade + " is lower than last year grade of " + studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
             }
