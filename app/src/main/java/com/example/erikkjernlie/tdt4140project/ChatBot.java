@@ -280,7 +280,7 @@ public class ChatBot extends AppCompatActivity {
     private boolean sendChatMessage() {
         String messageFromUser = chatText.getText().toString();
 
-        ArrayList<String> positiveResponse = new ArrayList<>(Arrays.asList(new String[] {"yes", "mhm", "jepp", "yeh", "yes please", "please", "definitely", "absolutely"}));
+        ArrayList<String> positiveResponse = new ArrayList<>(Arrays.asList(new String[]{"yes", "mhm", "jepp", "yeh", "yes please", "please", "definitely", "absolutely"}));
 
         //For displayUserInformation:
         if (messageFromUser.isEmpty()) {
@@ -300,9 +300,11 @@ public class ChatBot extends AppCompatActivity {
                 addMessageToChatArray("Thank you for the interview. We will now try to find you a suitable study.");
                 getAiResponse("Can you recommend me a study?");
                 return true;
-            } else if (positiveResponse.contains(messageFromUser.toLowerCase())){
+            } else if (positiveResponse.contains(messageFromUser.toLowerCase())) {
                 handleInterview();
             }
+            usedInterests.add(interest);
+
         }
 
         chatText.setText(""); //resets the chatbox
@@ -326,7 +328,6 @@ public class ChatBot extends AppCompatActivity {
 
     private void handleInterview() {
         if (!user.getInterests().contains(interest)) {
-            usedInterests.add(interest);
             user.addInterests(interest);
             user.updateFirebase();
         }
@@ -432,14 +433,22 @@ public class ChatBot extends AppCompatActivity {
 
             for (String study : studyPrograms.keySet()) {
                 for (String interest : studyPrograms.get(study).getKeywords()) {
-                    if (!interests.contains(interest)) {
+                    if (!interests.contains(interest) && !usedInterests.contains(interest)) {
                         interests.add(interest);
+                    }
+                    System.out.println("alkslkd");
+                    System.out.println(usedInterests);
+                    System.out.println(usedInterests.contains(interest));
+                    if (usedInterests.contains(interest)) {
+                        System.out.println(interest);
                     }
                 }
             }
+            System.out.println();
+
             interest = interests.get(new Random().nextInt(interests.size())); // skal være random interest
 
-            return prompts.get(new Random().nextInt(prompts.size())) + interest + "?"; // '0' må byttes ut med random tall
+            return prompts.get(new Random().nextInt(prompts.size())) + interest + "?";
         } else {
             if (response.getResult().getFulfillment().getSpeech().equals("")) {
                 ut = processAiResponse.processAiRespons(response);
