@@ -22,6 +22,7 @@ public class StudyProgramInfo {
     private String studentUnion;
     private ArrayList<String> courses;
 
+
     public StudyProgramInfo(double grade, boolean girlPoints, ArrayList<String> keywords,
                             ArrayList<String> commonWorkFields, String info,
                             String studyEnvironment, String studentUnion,

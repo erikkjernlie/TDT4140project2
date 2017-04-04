@@ -31,6 +31,8 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.HashMap;
+
 public class Menu extends AppCompatActivity {
 
     private Button recommendation; //register button
@@ -42,6 +44,7 @@ public class Menu extends AppCompatActivity {
     private ImageView cogwheel;
     private Firebase mRef;
     private UserInfo user;
+    private HashMap<String, StudyProgramInfo> studyPrograms;
 
 
     public void initButtons() {
@@ -105,6 +108,8 @@ public class Menu extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
         //initButtons();
         Firebase.setAndroidContext(Menu.this);
+
+        studyPrograms = new HashMap<>();
 
         //hvordan henter man info
         firebaseAuth = firebaseAuth.getInstance();
@@ -230,8 +235,6 @@ public class Menu extends AppCompatActivity {
                 } else {
                     Toast.makeText(Menu.this, "Type in your e-mail!", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
         });
         e.show();
@@ -251,8 +254,31 @@ public class Menu extends AppCompatActivity {
         });
     }
 
+    private void getStudyInfoDatabase() {
+        //Sends a StudyProgramInfo-object to the database (TEST)
+        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies/");
+        infoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    addStudyPrograms(snapshot.getKey(), snapshot.getValue(StudyProgramInfo.class));
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+    }
+
+
+    public void addStudyPrograms(String study, StudyProgramInfo info) {
+        this.studyPrograms.put(study, info);
+        UserInfo.studyPrograms.put(study, info);
+    }
+
     public void setUser(UserInfo user) {
         this.user = user;
+        UserInfo.userInfo = user;
     }
 
     public UserInfo getUser(){

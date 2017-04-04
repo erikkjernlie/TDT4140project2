@@ -5,6 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
 public class Recommendation extends AppCompatActivity {
 
     private TextView study;
@@ -13,37 +17,147 @@ public class Recommendation extends AppCompatActivity {
     private TextView social_environement;
     private TextView because;
     private ImageView picture;
+    private HashMap<String, StudyProgramInfo> studyPrograms;
+    private UserInfo userInfo;
+    private String beststudy;
+    private ArrayList<String> interests;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        Firebase fb = new Firebase("https://tdt4140project2.firebaseio.com/");
+//        fb.child("StudyProgram").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    studyPrograms.put(snapshot.getKey(), snapshot.getValue(StudyProgramInfo.class));
+//                }
+//            }
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) {
+//
+//            }
+//        });
+//        fb.child("Users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                userInfo = dataSnapshot.getValue(UserInfo.class);
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) {
+//
+//            }
+//        });
 
-        String st = "informatics";
+
+
+        this.userInfo = UserInfo.userInfo;
+        this.studyPrograms = UserInfo.studyPrograms;
+        recommendStudy();
+        initialization();
         setContentView(R.layout.activity_recommendation);
+
+    }
+
+    private void initialization(){
         picture = (ImageView) findViewById(R.id.linjeforening_rec);
         study = (TextView) findViewById(R.id.linje_rec);
         job_opportunities = (TextView) findViewById(R.id.job_opportunities_rec);
         social_environement = (TextView) findViewById(R.id.social_environment_rec);
         because = (TextView) findViewById(R.id.why_rec);
 
-        if (st.equals("engineering and ict")) {
-            picture.setImageResource(R.drawable.hybrida_logo);
-            study.setText("Engineering and ICT");
-            job_opportunities.setText("This is very interesting");
-        } else if (st.equals("indok")){
-            picture.setImageResource(R.drawable.janus);
-            study.setText("Industrial Economics");
-        } else if (st.equals("data")){
-            picture.setImageResource(R.drawable.abakus);
-            study.setText("DATA Technology");
-        } else if (st.equals("informatics")){
-            picture.setImageResource(R.drawable.onlinelogo);
-            study.setText("Informatics");
+
+        if (beststudy != null && interests != null) {
+            study.setText(beststudy);
+            job_opportunities.setText(studyPrograms.get(beststudy).getCommonWorkFields().toString());
+            social_environement.setText(studyPrograms.get(beststudy).getStudyEnvironment());
+            String b = "";
+            for (String interest : interests) {
+                b += interest + ", ";
+            }
+            b = b.substring(0, b.length() - 2) + ".";
+            because.setText("We think you would like " + beststudy + " because of your following interests:\n" + interests);
+            if (beststudy.toLowerCase().equals("engineering and ict")) {
+                picture.setImageResource(R.drawable.hybrida_logo);
+            } else if (beststudy.toLowerCase().equals("industrial economics and technology management and ict")) {
+                picture.setImageResource(R.drawable.janus);
+            } else if (beststudy.toLowerCase().equals("computer science")) {
+                picture.setImageResource(R.drawable.abakus);
+            } else if (beststudy.toLowerCase().equals("informatics")) {
+                picture.setImageResource(R.drawable.onlinelogo);
+            }
         } else {
             setContentView(R.layout.no_recommendation);
+        }
+    }
+    private void recommendStudy() {
+        // Henter alle interessene til brukeren, og sammenligner med keywordene til alle studiene.
+        // Legger til en int til hvert studie, det studiet med høyest ints, blir anbefalt.
+
+        HashMap<String, Integer> pointMap = new HashMap<>(); // hashmap som skal inneholder alle studienavnene, og koble det opp mot antall keywordstreff
+
+        ArrayList<String> interests = userInfo.getInterests(); // interessene til brukeren
+
+        Iterator<String> iterator = studyPrograms.keySet().iterator(); // iterator som går gjennom alle studienavnene
+
+        HashMap<String, ArrayList<String>> keyWords = new HashMap<>(); // hashmap som skal holde alle interessene til hvert studie
+
+        HashMap<String, ArrayList<String>> matchedInterests = new HashMap<>(); // hashmap som skal holde på alle interessene
+
+        if (interests.size() == 1) {
+            beststudy = null;
+            interests = null;
+        }
+
+        while (iterator.hasNext()) {
+            String study = iterator.next();
+            keyWords.put(study, studyPrograms.get(study).getKeywords());
+            pointMap.put(study, 0);
+            matchedInterests.put(study, new ArrayList<String>());
+        }
+
+        // går gjennom alle studiene, legger til poeng på pointsMap, om interessen er en av keywordsa
+        for (String study : studyPrograms.keySet()) {
+            System.out.println(study);
+            for (String interest : interests) {
+                if (interest != null) {
+                    interest = interest.toLowerCase();
+                }
+
+                if (keyWords.get(study).contains(interest)) {
+                    pointMap.put(study, pointMap.get(study) + 1); // legger til 1 verdi på det gitte studiet
+                    matchedInterests.get(study).add(interest);  // legger til interessen til studiet
+                }
+            }
+        }
+
+        Iterator<String> iterator1 = studyPrograms.keySet().iterator();
+        if (iterator1.hasNext()) {
+            String bestStudy = iterator1.next();
+
+            while (iterator1.hasNext()) {
+                String nextStudy = iterator1.next();
+                if (pointMap.get(bestStudy) < pointMap.get(nextStudy)) {
+                    bestStudy = nextStudy;
+                }
+            }
+
+            if (matchedInterests.get(bestStudy).size() == 0) {
+                beststudy = null;
+                interests = null;
+            }
+            interests = matchedInterests.get(bestStudy);
+            this.beststudy = beststudy;
+
+        } else{
+            this.beststudy = null;
+            interests = null;
         }
 
 
 
-
     }
+
 }
