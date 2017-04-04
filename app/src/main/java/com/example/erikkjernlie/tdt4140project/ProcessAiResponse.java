@@ -275,42 +275,57 @@ public class ProcessAiResponse {
     // Method for adding an interest to the user
     private String addInterest(ArrayList<String> interests) {
         ArrayList<String> existingInterest = userInfo.getInterests();
-        // Removes ""
 
-        for (String i : interests) {
-            interests.set(interests.indexOf(i), i.replace("\"", ""));
+        // Removes "" from all interests
+        for (String interest : interests) {
+            interests.set(interests.indexOf(interest), interest.replace("\"", ""));
             //interests.set(interests.indexOf(i), i.replace("[", ""));
             // interests.set(interests.indexOf(i), i.replace("]", ""));
         }
 
-        ArrayList<String> indexList = new ArrayList<>();
+        ArrayList<String> alreadyAddedList = new ArrayList<>();
 
         int size = interests.size();
-        System.out.println(userInfo.getInterests());
         for (int i = 0; i < size; i++) {
             if (existingInterest.contains(interests.get(i))) {
-                indexList.add(interests.get(i));
+                alreadyAddedList.add(interests.get(i));
             }
         }
 
-        for (String i : indexList) {
+        for (String i : alreadyAddedList) {
             interests.remove(i);
         }
 
-        String ut = "We've just added ";
+        String ut = "";
 
-        for (String i : interests) {
-            userInfo.addInterests(i);
-            ut += i + ", ";
+        if (interests.size() > 0) {
+            ut = "We've just added ";
+            for (String i : interests) {
+                userInfo.addInterests(i);
+                ut += i + ", ";
+            }
+
+            userInfo.updateFirebase();
+
+            ut = ut.substring(0, ut.length() - 2) + " to your interests. ";
+
+            if (alreadyAddedList.size() > 0 ) {
+                ut += "We did not add ";
+                for (String interest : alreadyAddedList) {
+                    ut += interest + ", ";
+                }
+                ut = ut.substring(0, ut.length()-2) + ", because it was already added as your interests. ";
+            }
+            return ut;
         }
 
-        System.out.println(userInfo.getInterests());
-        userInfo.updateFirebase();
 
-        ut = ut.substring(0, ut.length() - 2) + " to your interests";
-
-        if (interests.isEmpty()) {
-            ut = "We could not match your interests";
+        if (alreadyAddedList.size() > 0) {
+            ut += "We have already added: ";
+            for (String interest : alreadyAddedList) {
+                ut += interest + ", ";
+            }
+            ut = ut.substring(0, ut.length()-2 ) + ".";
         }
 
         return ut;
