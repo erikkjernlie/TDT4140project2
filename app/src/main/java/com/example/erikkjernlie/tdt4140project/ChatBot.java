@@ -220,9 +220,10 @@ public class ChatBot extends AppCompatActivity {
                 // set dialog message
                 alertDialogBuilder
                         .setMessage("uniBOT can help you with\n- Information about a specific study" +
-                                "\n- Compare different studies\n- Give you information about a study's union\n- Print available studies\nand lots of other random things.\n"
-                                + "\nDo you need more help or information about how to ask questions? Type help in the chat."
-                                + "\n\nYou can also press the uniBOT button at the top for random questions.")
+                                "\n- Compare different studies\n- Give you information about a study's union\n- Print available studies\n- Study Recommendations\nand lots of other random things.\n"
+                                + "\nWe recommend that you communicate with the bot using simple language and short sentences."
+                                + "\n\nDo you need more help or information about how to ask questions? Type help in the chat."
+                                + "\n\nYou can also press the uniBOT button at the top for random questions.\n")
                         .setCancelable(false)
                         .setPositiveButton("I don't need any more help", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {

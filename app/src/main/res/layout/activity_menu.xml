@@ -53,7 +53,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Do you want to be part of the 20% who spend time at the wrong study before settling for what they really want? No?"
+            android:text="Use the chat option to explore opportunities and submit your interests Based on what you submit, UNIBOT is able to recommend you a study"
             android:gravity="center"
             android:textSize="16dp"
             android:layout_gravity="center"
@@ -65,7 +65,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Luckily, uniBOT can help you regarding technical studies at NTNU Trondheim."
+            android:text="To edit your account information, open the settings meny for the top right corner"
             android:gravity="center"
             android:textSize="16dp"
             android:layout_gravity="center"
