@@ -29,6 +29,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Menu extends AppCompatActivity {
@@ -42,7 +43,6 @@ public class Menu extends AppCompatActivity {
     private ImageView cogwheel;
     private Firebase mRef;
     private UserInfo user;
-
 
     public void initButtons() {
         register = (Button) findViewById(R.id.register);
@@ -104,7 +104,9 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         //initButtons();
+        FirebaseApp.initializeApp(this);
         Firebase.setAndroidContext(Menu.this);
+
 
         //hvordan henter man info
         firebaseAuth = firebaseAuth.getInstance();
