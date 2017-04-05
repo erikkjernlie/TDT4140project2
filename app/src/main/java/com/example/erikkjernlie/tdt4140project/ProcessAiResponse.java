@@ -110,6 +110,9 @@ public class ProcessAiResponse {
             case "getInfoTrondheim":
                 ut = this.getInfoTrondheim();
                 break;
+            case "getInfoUnibot":
+                ut = this.getInfoUnibot();
+                break;
         }
 
         return ut;
@@ -533,5 +536,13 @@ public class ProcessAiResponse {
                 "Research Center and the St. Olavs University Hospital. \nTrondheim has several times been voted Norway’s best city for " +
                 "students, with good reason. Social happenings such as ISFiT, UKA and many others make sure there’s always something new " +
                 "to explore, in addition to other cultural meeting points like Trøndelag Teater and cinemas.";
+    }
+
+    private String getInfoUnibot(){
+        return "I can help you with almost everything that has to do with studies at NTNU Gløshaugen, as well as various other student activities " +
+                "like different unions and life in Trondheim. \n\nTry ask me anything, or check out the “HELP”-menu for tips. Perhaps you’d even want " +
+                "to sit back and let me interview you and recommend a study? If so, just let me know! \n\nThe application was made by four students at " +
+                "the Engineering and ICT program, with the goal of assisting possible applicants choose the right study based on their individual " +
+                "preferences. You can read about them at the “About us”-page.";
     }
 }
