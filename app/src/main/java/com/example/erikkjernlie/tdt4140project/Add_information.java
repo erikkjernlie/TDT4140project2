@@ -120,12 +120,12 @@ public class Add_information extends AppCompatActivity {
         setContentView(R.layout.activity_add_information);
 
 
-        Firebase.setAndroidContext(Add_information.this);
+        //Firebase.setAndroidContext(Add_information.this);
 
-        firebaseAuth = firebaseAuth.getInstance();
+        //firebaseAuth = firebaseAuth.getInstance();
 
-        mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
-                firebaseAuth.getCurrentUser().getUid());
+       // mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
+         //       firebaseAuth.getCurrentUser().getUid());
 
         LinearLayout l = (LinearLayout) findViewById(R.id.linear_add_information);
         l.requestFocus();
@@ -246,6 +246,7 @@ public class Add_information extends AppCompatActivity {
         } else if (isPressedFemale) {
             this.gender = 'F';
         } //the user can select none of them, but then it will be an error at the end
+
 
         dropdownCourses = (Button) findViewById(R.id.dropdownCourses);
         dropdownCourses.setOnClickListener(new View.OnClickListener() {
@@ -450,6 +451,17 @@ public class Add_information extends AppCompatActivity {
 
     //alertDialog for selecting courses
     private void alertCourses() {
+        ArrayList<String> h = new ArrayList<String>();
+        h.add("Matematikk S2");
+        //h equals the arrat with the courses the user has had
+        for (int j = 0; j < h.size(); j++) {
+
+            for (int i = 0; i < courses.length; i++) {
+                if (courses[i].equals(h.get(j))){
+                    checkedStateCourses[i] = true;
+                }
+            }
+        }
         AlertDialog.Builder builder1 = new AlertDialog.Builder(Add_information.this)
                 .setTitle("Choose courses")
                 .setMultiChoiceItems(courses, checkedStateCourses, new DialogInterface.OnMultiChoiceClickListener() {
@@ -486,6 +498,17 @@ public class Add_information extends AppCompatActivity {
 
     //alertDialog for selecting extra education
     private void alertExtraEducation() {
+        ArrayList<String> h = new ArrayList<String>();
+        h.add("Matematikk S2");
+        //h equals the arrat with the courses the user has had
+        for (int j = 0; j < h.size(); j++) {
+
+            for (int i = 0; i < courses.length; i++) {
+                if (courses[i].equals(h.get(j))){
+                    checkedStateCourses[i] = true;
+                }
+            }
+        }
         AlertDialog.Builder builder2 = new AlertDialog.Builder(Add_information.this)
                 .setTitle("Choose education")
                 .setMultiChoiceItems(extraEducation, checkedStateEducation, new DialogInterface.OnMultiChoiceClickListener() {
