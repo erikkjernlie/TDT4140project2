@@ -289,7 +289,7 @@ public class ProcessAiResponse {
             ut += interest + ", ";
         }
 
-        return ut.substring(0,ut.length()-2) + ".";
+        return ut.substring(0, ut.length() - 2) + ".";
     }
 
     // Method for adding an interest to the user
@@ -329,12 +329,12 @@ public class ProcessAiResponse {
 
             ut = ut.substring(0, ut.length() - 2) + " to your interests. ";
 
-            if (alreadyAddedList.size() > 0 ) {
+            if (alreadyAddedList.size() > 0) {
                 ut += "We did not add ";
                 for (String interest : alreadyAddedList) {
                     ut += interest + ", ";
                 }
-                ut = ut.substring(0, ut.length()-2) + ", because it was already added as your interests. ";
+                ut = ut.substring(0, ut.length() - 2) + ", because it was already added as your interests. ";
             }
             return ut;
         }
@@ -345,7 +345,7 @@ public class ProcessAiResponse {
             for (String interest : alreadyAddedList) {
                 ut += interest + ", ";
             }
-            ut = ut.substring(0, ut.length()-2 ) + ".";
+            ut = ut.substring(0, ut.length() - 2) + ".";
         }
 
         return ut;
@@ -362,7 +362,7 @@ public class ProcessAiResponse {
             ut += "\nYou need to take the course Fysikk 1. Therefore you need to take the exam to get into " + studyProgram + ". \n";
         }
 
-        if (!studyProgram.equals("Informatics") && userInfo.getR2Grade() < 4 ) {
+        if (!studyProgram.equals("Informatics") && userInfo.getR2Grade() < 4) {
 
             ut += "You need at least 4 at the course R2, you have " + userInfo.getR2Grade() + ".\nTherefore you need to retake the exam. \n";
 
@@ -378,7 +378,6 @@ public class ProcessAiResponse {
             return ut;
 
         }
-
 
 
         if (studyPrograms.get(studyProgram).isGirlPoints()) {
@@ -502,7 +501,7 @@ public class ProcessAiResponse {
                     "The student union Abakus is very popular among students and arrange many different activities for all students at Computer Science.",
                     "Abakus", new ArrayList<String>(Arrays.asList("EXPH0004", "TDT4110", "TMA4100"))));
             UserInfo user = new UserInfo(1996, 53.6, new ArrayList<>(Arrays.asList("Matematikk R1",
-                    "Matematikk R2")),new ArrayList<>(Arrays.asList("Folkehøgskole")), 'M', 5,
+                    "Matematikk R2")), new ArrayList<>(Arrays.asList("Folkehøgskole")), 'M', 5,
                     new ArrayList<>(Arrays.asList("Studies", "web development")));
             aiResponse = new ProcessAiResponse(studyProgramInfoMap, user, null);
         }
@@ -510,7 +509,7 @@ public class ProcessAiResponse {
         @Test
         public void testConstructor() throws Exception {
             ProcessAiResponse res = new ProcessAiResponse(
-                    aiResponse.studyPrograms, aiResponse.userInfo ,null);
+                    aiResponse.studyPrograms, aiResponse.userInfo, null);
             assertEquals(res.studyPrograms, aiResponse.studyPrograms);
             assertEquals(res.userInfo, aiResponse.userInfo);
             assertTrue(res.userInfo.getInterests().contains("Studies"));
@@ -587,17 +586,17 @@ public class ProcessAiResponse {
                     aiResponse.userInfo.getCalculatedGrade() + ""));
         }
 
-        @Test(expected=NullPointerException.class)
+        @Test(expected = NullPointerException.class)
         public void testGetUnion() throws Exception {
             fail(aiResponse.getUnion(null));
         }
 
-        @Test(expected=NullPointerException.class)
-        public void testProcessAiResponse() throws Exception{
+        @Test(expected = NullPointerException.class)
+        public void testProcessAiResponse() throws Exception {
             fail(aiResponse.processAiRespons(null));
         }
 
-        @Test(expected =IllegalStateException.class)
+        @Test(expected = IllegalStateException.class)
         public void testAddInterest() throws Exception {
             fail(aiResponse.addInterest(new ArrayList<String>(
                     Arrays.asList("Computers", "Machines"))));
@@ -621,8 +620,9 @@ public class ProcessAiResponse {
         }
 
         @After
-        public void tearDown() throws Exception{
+        public void tearDown() throws Exception {
             aiResponse = null;
         }
 
+    }
 }
