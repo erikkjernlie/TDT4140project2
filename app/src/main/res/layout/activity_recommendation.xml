@@ -37,6 +37,7 @@ android:layout_height="match_parent" android:layout_gravity="center"
             android:id="@+id/linje_rec"
             android:textSize="30dp"
             android:paddingTop="10dp"
+            android:gravity="center"
             android:paddingBottom="10dp"
             android:text="Engineering and ICT"
             />
@@ -46,6 +47,7 @@ android:layout_height="match_parent" android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:text="because..."
                 android:textSize="15dp"
+                android:gravity="center"
                 android:paddingBottom="10dp"
                 android:id="@+id/why_rec"/>
 
@@ -63,6 +65,7 @@ android:layout_height="match_parent" android:layout_gravity="center"
             android:textSize="22dp"
             android:paddingTop="10dp"
             android:text="About the study"
+            android:gravity="center"
             android:paddingBottom="3dp"
             />
 
@@ -90,6 +93,7 @@ android:layout_height="match_parent" android:layout_gravity="center"
                 android:textSize="22dp"
                 android:paddingBottom="3dp"
                 android:paddingTop="10dp"
+                android:gravity="center"
                 android:text="Job opportunities"
                 />
 
@@ -117,6 +121,7 @@ android:layout_height="match_parent" android:layout_gravity="center"
                 android:textSize="22dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="3dp"
+                android:gravity="center"
                 android:text="Social environment"
                 />
 
@@ -127,6 +132,7 @@ android:layout_height="match_parent" android:layout_gravity="center"
                 android:id="@+id/social_environment_rec"
                 android:paddingBottom="10dp"
                 android:gravity="center"
+
 
                 />
 

@@ -51,15 +51,14 @@ public class Recommendation extends AppCompatActivity {
 //            }
 //        });
 
+
         this.userInfo = UserInfo.userInfo;
         this.studyPrograms = UserInfo.studyPrograms;
         recommendStudy();
 
-        System.out.println(this.beststudy);
-        System.out.println(this.beststudy_interests);
-
-        initialization();
         setContentView(R.layout.activity_recommendation);
+        initialization();
+
 
     }
     private void initialization(){
@@ -69,21 +68,26 @@ public class Recommendation extends AppCompatActivity {
         job_opportunities = (TextView) findViewById(R.id.job_opportunities_rec);
         social_environement = (TextView) findViewById(R.id.social_environment_rec);
         because = (TextView) findViewById(R.id.why_rec);
+        about_study = (TextView) findViewById(R.id.about_study_rec);
 
         if (beststudy != null && beststudy_interests != null) {
             job_opportunities.setText(studyPrograms.get(beststudy).getCommonWorkFields().toString());
-            social_environement.setText(studyPrograms.get(beststudy).getStudyEnvironment());
+            social_environement.setText(studyPrograms.get(beststudy).getStudyEnvironment() + "\n");
             study.setText(beststudy);
+            about_study.setText(studyPrograms.get(beststudy).getInfo());
             String b = "";
             for (String interest : beststudy_interests) {
                 b += interest + ", ";
             }
+
             b = b.substring(0, b.length() - 2) + ".";
+
             because.setText("We think you would like " + beststudy + " because of your following interests:\n" + beststudy_interests);
             if (beststudy.toLowerCase().equals("engineering and ict")) {
                 picture.setImageResource(R.drawable.hybrida_logo);
             } else if (beststudy.toLowerCase().equals("industrial economics and technology management and ict")) {
                 picture.setImageResource(R.drawable.janus);
+                study.setText("Industrial Economics");
             } else if (beststudy.toLowerCase().equals("computer science")) {
                 picture.setImageResource(R.drawable.abakus);
             } else if (beststudy.toLowerCase().equals("informatics")) {
@@ -121,7 +125,6 @@ public class Recommendation extends AppCompatActivity {
 
         // går gjennom alle studiene, legger til poeng på pointsMap, om interessen er en av keywordsa
         for (String study : studyPrograms.keySet()) {
-            System.out.println(study);
             for (String interest : interests) {
                 if (interest != null) {
                     interest = interest.toLowerCase();
