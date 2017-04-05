@@ -37,7 +37,7 @@ public class Menu extends AppCompatActivity {
     private Button register; //register button
     private Button explore; //explore button
     private Button aboutUnibot; //about button
-    private FirebaseAuth firebaseAuth;
+    FirebaseAuth firebaseAuth;
     private Button signOut;
     private Button aboutUs;
     private ImageView cogwheel;
@@ -103,17 +103,12 @@ public class Menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        //initButtons();
         FirebaseApp.initializeApp(this);
+        initButtons();
         Firebase.setAndroidContext(Menu.this);
 
 
         //hvordan henter man info
-        firebaseAuth = firebaseAuth.getInstance();
-
-        mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
-                firebaseAuth.getCurrentUser().getUid());
-
 
         getUserInfoDatabase();
         initButtons();
@@ -231,7 +226,10 @@ public class Menu extends AppCompatActivity {
     }
 
     public void getUserInfoDatabase() {
+        firebaseAuth = firebaseAuth.getInstance();
 
+        mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
+                firebaseAuth.getCurrentUser().getUid());
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

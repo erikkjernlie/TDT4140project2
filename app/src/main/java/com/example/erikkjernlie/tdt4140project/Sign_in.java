@@ -73,9 +73,6 @@ public class Sign_in extends AppCompatActivity {
         });
 
 
-
-        firebaseAuth = firebaseAuth.getInstance();
-
         ProgressDialog progressDialog = new ProgressDialog(this);
 
         initButtons();
@@ -114,6 +111,8 @@ public class Sign_in extends AppCompatActivity {
 
     //logging in the user
     public void logInUser() {
+        firebaseAuth = firebaseAuth.getInstance();
+
         String email = logInEmail.getText().toString().trim();
         String password = logInPassword.getText().toString().trim();
 

@@ -27,41 +27,30 @@ import static junit.framework.Assert.assertTrue;
  */
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class Sign_inBtnTest {
+public class Register_userBtnTest {
 
-    Sign_in in;
+    Register_user reg;
 
     @Before
     public void setUp() throws Exception {
-        in = Robolectric.setupActivity(Sign_in.class);
+        reg = Robolectric.setupActivity(Register_user.class);
     }
 
     @Test
     public void switchToRegisterBtnTest() throws Exception {
-        in.findViewById(R.id.switchLoginToRegister).performClick();
+        reg.findViewById(R.id.switchRegisterToLogin).performClick();
 
-        Intent expectedIntent = new Intent(in, Register_user.class);
+        Intent expectedIntent = new Intent(reg, Sign_in.class);
 
-        ShadowActivity shadowActivity = Shadows.shadowOf(in);
+        ShadowActivity shadowActivity = Shadows.shadowOf(reg);
         Intent actualIntent = shadowActivity.getNextStartedActivity();
 
         assertTrue(actualIntent.filterEquals(expectedIntent));
     }
 
-    @Test
-    public void forgotPasswordBtnTest() throws Exception {
-        View v = in.findViewById(R.id.forgotPassword);
-        v.performClick();
-
-        Dialog alert = ShadowDialog.getLatestDialog();
-
-        assertNotNull(alert);
-
-    }
-
     @After
     public void tearDown() throws Exception {
-        in = null;
+        reg = null;
     }
 
 }
