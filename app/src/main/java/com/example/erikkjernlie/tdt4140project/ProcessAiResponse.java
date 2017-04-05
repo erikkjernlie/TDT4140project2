@@ -97,6 +97,15 @@ public class ProcessAiResponse {
             case "help":
                 ut = this.help();
                 break;
+            case "getStudiesFromInterest":
+                ut = this.getStudiesFromInterest(aiResponse.getResult().getParameters().get("Interests").toString());
+                break;
+            case "getStudyHasInterest":
+                ut = this.getStudyHasInterest(aiResponse.getResult().getParameters().get("StudyProgram").toString(), aiResponse.getResult().getParameters().get("Interests").toString());
+                break;
+            case "getInfoNTNU":
+                ut = this.getInfoNtnu();
+                break;
         }
 
         return ut;
@@ -468,5 +477,49 @@ public class ProcessAiResponse {
                 "- Get familiar with common work fields\n" +
                 "- Explore unions and student unions";
         return ut;
+    }
+
+    // Method for getting all studies which has that interest
+    private String getStudiesFromInterest(String interest) {
+        interest = interest.replace("\"", ""); // removes ""
+        ArrayList<String> studiesWhichHasInterest = new ArrayList<>();
+
+        for(String study : studyPrograms.keySet()) {
+            if (studyPrograms.get(study).getKeywords().contains(interest)) {
+                studiesWhichHasInterest.add(study);
+            }
+        }
+
+        // Different answer for different amount of studies
+        if (studiesWhichHasInterest.size() == 1) {
+            return studiesWhichHasInterest.get(0) + " have the keyword " + interest + ".";
+        } else if (studiesWhichHasInterest.size() == 0) {
+            return "There is no study which has " + interest + " as a keyword.";
+        } else {
+            String ut = "The studies ";
+            for (String study : studiesWhichHasInterest) {
+                ut += study + ", ";
+            }
+            return ut.substring(0, ut.length()-2) + " has " + interest + " as keyword.";
+        }
+
+
+    }
+
+    private String getStudyHasInterest(String studyProgram, String interest) {
+        studyProgram = studyProgram.replace("\"", ""); // removes ""
+        interest = interest.replace("\"", ""); // removes ""
+        System.out.println(studyPrograms);
+        if (studyPrograms.get(studyProgram).getKeywords().contains(interest)) {
+            return studyProgram + " has the interest " + interest + ".";
+        }
+        return studyProgram + " don't have the interest " + interest + ".";
+    }
+
+    private String getInfoNtnu() {
+        return "The Norwegian University of Science and Technology is a public research university with campuses in the cities of Trondheim, Gjøvik and Ålesund. " +
+                "\nNTNU has the main national responsibility for higher education in engineering and technology, and gather more than 30.000 students in Trondheim " +
+                "alone, about half of which are connected to the technical subjects. \nSince its formation in 1996, the university has grown to become nationally and " +
+                "internationally recognized, both within education and research. \nYou can read more about NTNU at www.ntnu.no";
     }
 }
