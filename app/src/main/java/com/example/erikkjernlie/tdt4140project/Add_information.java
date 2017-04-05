@@ -119,7 +119,6 @@ public class Add_information extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_information);
 
-
         Firebase.setAndroidContext(Add_information.this);
 
         firebaseAuth = firebaseAuth.getInstance();
@@ -450,6 +449,19 @@ public class Add_information extends AppCompatActivity {
 
     //alertDialog for selecting courses
     private void alertCourses() {
+        ArrayList<String> chosen_courses = new ArrayList<String>();
+        chosen_courses = UserInfo.userInfo.getCourses();
+        if ((chosen_courses != null)) {
+            for (int i = 0; i < chosen_courses.size(); i++) {
+                for (int k = 0; k < courses.length; k++) {
+                    if (chosen_courses.get(i).equals(courses[k])) {
+                        checkedStateCourses[k] = true;
+                    }
+                }
+            }
+        }
+
+
         AlertDialog.Builder builder1 = new AlertDialog.Builder(Add_information.this)
                 .setTitle("Choose courses")
                 .setMultiChoiceItems(courses, checkedStateCourses, new DialogInterface.OnMultiChoiceClickListener() {
@@ -486,6 +498,21 @@ public class Add_information extends AppCompatActivity {
 
     //alertDialog for selecting extra education
     private void alertExtraEducation() {
+        ArrayList<String> chosen_education = new ArrayList<String>();
+        chosen_education = UserInfo.userInfo.getExtraEducation();
+
+        if ((chosen_education != null)) {
+
+            for (int i = 0; i < chosen_education.size(); i++) {
+                for (int k = 0; k < extraEducation.length; k++) {
+                    if (chosen_education.get(i).equals(extraEducation[k])) {
+                        checkedStateEducation[k] = true;
+                    }
+                }
+            }
+
+        }
+
         AlertDialog.Builder builder2 = new AlertDialog.Builder(Add_information.this)
                 .setTitle("Choose education")
                 .setMultiChoiceItems(extraEducation, checkedStateEducation, new DialogInterface.OnMultiChoiceClickListener() {
