@@ -1,6 +1,7 @@
 package com.example.erikkjernlie.tdt4140project;
 
 
+import com.google.android.gms.wearable.CapabilityApi;
 import com.google.android.gms.wearable.internal.StorageInfoResponse;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -112,6 +113,9 @@ public class ProcessAiResponse {
                 break;
             case "getInfoUnibot":
                 ut = this.getInfoUnibot();
+                break;
+            case "getSalary":
+                ut = this.getSalary();
                 break;
         }
 
@@ -544,5 +548,9 @@ public class ProcessAiResponse {
                 "to sit back and let me interview you and recommend a study? If so, just let me know! \n\nThe application was made by four students at " +
                 "the Engineering and ICT program, with the goal of assisting possible applicants choose the right study based on their individual " +
                 "preferences. You can read about them at the “About us”-page.";
+    }
+
+    private String getSalary() {
+        return "Newly educated sivil engineers earn approximately 500 000 NOK.";
     }
 }
