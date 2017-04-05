@@ -150,7 +150,7 @@ public class Register_user extends AppCompatActivity {
                     //Successfull user registration
                     Toast.makeText(Register_user.this, "User was successfully registered", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
-                    Intent intent = new Intent(Register_user.this, Menu.class);
+                    Intent intent = new Intent(Register_user.this, Add_information.class);
                     Firebase.setAndroidContext(Register_user.this);
 
                     firebaseAuth = firebaseAuth.getInstance();
@@ -162,7 +162,8 @@ public class Register_user extends AppCompatActivity {
 
                 } else {
                     //Must try again
-                    Toast.makeText(Register_user.this, "Registering user failed. Please try again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register_user.this,"The user already exists or the password does not contain at "
+                            + "least 6 characters", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                 }
             }

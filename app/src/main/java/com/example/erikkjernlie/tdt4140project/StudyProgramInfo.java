@@ -11,7 +11,6 @@ package com.example.erikkjernlie.tdt4140project;
 import java.util.ArrayList;
 
 
-
 public class StudyProgramInfo {
 
     private double grade;
@@ -22,6 +21,7 @@ public class StudyProgramInfo {
     private String studyEnvironment;
     private String studentUnion;
     private ArrayList<String> courses;
+
 
     public StudyProgramInfo(double grade, boolean girlPoints, ArrayList<String> keywords,
                             ArrayList<String> commonWorkFields, String info,
@@ -37,7 +37,8 @@ public class StudyProgramInfo {
         this.courses = courses;
     }
 
-    public StudyProgramInfo() {}
+    public StudyProgramInfo() {
+    }
 
     public double getGrade() {
         return grade;
@@ -102,9 +103,6 @@ public class StudyProgramInfo {
     public void setCourses(ArrayList<String> courses) {
         this.courses = courses;
     }
-
-
-
 
 
     @Override

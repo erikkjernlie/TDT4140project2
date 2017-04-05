@@ -31,11 +31,11 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Menu extends AppCompatActivity {
 
-    private Button register; //register button
+    private Button recommendation; //register button
     private Button explore; //explore button
     private Button aboutUnibot; //about button
     private FirebaseAuth firebaseAuth;
@@ -44,14 +44,15 @@ public class Menu extends AppCompatActivity {
     private ImageView cogwheel;
     private Firebase mRef;
     private UserInfo user;
+    private HashMap<String, StudyProgramInfo> studyPrograms;
 
 
     public void initButtons() {
-        register = (Button) findViewById(R.id.register);
-        register.setOnClickListener(new View.OnClickListener() {
+        recommendation = (Button) findViewById(R.id.recommendation);
+        recommendation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent b = new Intent(Menu.this, Add_information.class);
+                Intent b = new Intent(Menu.this, Recommendation.class);
                 startActivity(b);
             }
         });
@@ -98,7 +99,6 @@ public class Menu extends AppCompatActivity {
                 alertSettings();
             }
         });
-
     }
 
     @Override
@@ -108,6 +108,8 @@ public class Menu extends AppCompatActivity {
         //initButtons();
         Firebase.setAndroidContext(Menu.this);
 
+        studyPrograms = new HashMap<>();
+
         //hvordan henter man info
         firebaseAuth = firebaseAuth.getInstance();
 
@@ -116,6 +118,7 @@ public class Menu extends AppCompatActivity {
 
 
         getUserInfoDatabase();
+        getStudyInfoDatabase();
         initButtons();
 
         //uncomment this when we want the alert just to appear the first time the app is started
@@ -184,6 +187,15 @@ public class Menu extends AppCompatActivity {
             t6.setVisibility(View.GONE);
         }
 
+
+        TextView info = (TextView) d.findViewById(R.id.info);
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Menu.this, Add_information.class);
+                startActivity(i);
+            }
+        });
         d.show();
         TextView change_password = (TextView) d.findViewById(R.id.change_password);
         change_password.setOnClickListener(new View.OnClickListener() {
@@ -223,8 +235,6 @@ public class Menu extends AppCompatActivity {
                 } else {
                     Toast.makeText(Menu.this, "Type in your e-mail!", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
         });
         e.show();
@@ -244,7 +254,34 @@ public class Menu extends AppCompatActivity {
         });
     }
 
+    private void getStudyInfoDatabase() {
+        //Sends a StudyProgramInfo-object to the database (TEST)
+        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies/");
+        infoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    addStudyPrograms(snapshot.getKey(), snapshot.getValue(StudyProgramInfo.class));
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+    }
+
+
+    public void addStudyPrograms(String study, StudyProgramInfo info) {
+        this.studyPrograms.put(study, info);
+        UserInfo.userInfo.studyPrograms.put(study, info);
+    }
+
     public void setUser(UserInfo user) {
         this.user = user;
+        UserInfo.userInfo = user;
+    }
+
+    public UserInfo getUser(){
+        return this.user;
     }
 }

@@ -26,10 +26,18 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.sql.Array;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.runners.Enclosed;
+import org.junit.runner.RunWith;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -38,7 +46,12 @@ import java.util.List;
 
 import static com.example.erikkjernlie.tdt4140project.R.id.confirmr2;
 import static com.example.erikkjernlie.tdt4140project.R.id.dropdownExtrapoints;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+
+@RunWith(Enclosed.class)
 public class Add_information extends AppCompatActivity {
 
     private ImageButton female;
@@ -50,6 +63,7 @@ public class Add_information extends AppCompatActivity {
     private char gender;
     private int minimum_born_year = 1950; //makes sure that the user has a birthdate, if the user does not spin the numberspinner
     private int year = 1995;
+    private NumberPicker np;
     private Button dropdownCourses;
     private Button dropdownExtraPoints;
     private Button submit;
@@ -100,7 +114,6 @@ public class Add_information extends AppCompatActivity {
     private final boolean checkedStateEducation[] = {false, false, false, false};
     private HashMap<String, Double> fagbase = new HashMap<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +133,24 @@ public class Add_information extends AppCompatActivity {
         initFagbase();
         initButtons();
         numberPicker();
+        //retrieveInformationDatabase();
+    }
+
+    private void retrieveInformationDatabase() {
+        Firebase mRefUser = new Firebase("https://tdt4140project2.firebaseio.com/Users/"
+         + firebaseAuth.getCurrentUser().getUid());
+        mRefUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserInfo user = dataSnapshot.getValue(UserInfo.class);
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     private void initFagbase() {
@@ -160,6 +191,9 @@ public class Add_information extends AppCompatActivity {
                     gender = 'M';
                 } else if (isPressedFemale) {
                     gender = 'F';
+                } else {
+                    Toast.makeText(Add_information.this, "You need to pick a gender!", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 calculatedGrade = grade_calculation();
@@ -249,7 +283,7 @@ public class Add_information extends AppCompatActivity {
 
 
     private void numberPicker() {
-        NumberPicker np = (NumberPicker) findViewById(R.id.np);
+        np = (NumberPicker) findViewById(R.id.np);
         //Sets the minimum value of NumberPicker
         np.setMinValue(minimum_born_year);
         //Sets the maximum value of NumberPicker
@@ -296,9 +330,97 @@ public class Add_information extends AppCompatActivity {
         return (double) tmp / factor;
     }
 
+    public static class Add_informationTest{
+        private Add_information add_information;
+        @Before
+        public void setUp(){
+            add_information = new Add_information();
+        }
+
+        @Test
+        public void testRound(){
+            assertTrue(143.46 == add_information.round(143.45912,2));
+
+        }
+        @Test
+        public void constructor_test() throws Exception{
+            assertEquals(true, add_information.getCalculatedGrade() == 0);
+            assertEquals(true, add_information.getGender() ==  '\u0000');
+            assertEquals(true, add_information.getR2Grade() == 0);
+            assertEquals(true, add_information.getExtraPoints() == 0);
+            assertEquals(true, add_information.getExtraEducationArray().isEmpty());
+            assertEquals(true, add_information.getCoursesArray().isEmpty());
+        }
+
+        @Test
+        public void testCalculation() throws Exception{
+
+            ArrayList<String> c = new ArrayList<>(Arrays.asList("Kjemi 1"));
+            add_information.setYear(2002);
+            add_information.setCourses_array(c);
+
+            assertEquals(true, add_information.getCalculatedGrade() == 0.5);
+            c.add("Matematikk R2");
+            add_information.setCourses_array(c);
+            assertEquals(true, add_information.getCalculatedGrade() == 1.5);
+
+        }
+
+        @Test
+        public void agePoints_test() throws Exception {
+            assertEquals(true, add_information.agePoints(1985) == 8);
+            assertEquals(true, add_information.agePoints(1994) == 8);
+            assertEquals(true, add_information.agePoints(1995) == 6);
+            assertEquals(true, add_information.agePoints(1996) == 4);
+            assertEquals(true, add_information.agePoints(1997) == 2);
+            assertEquals(true, add_information.agePoints(1998) == 0);
+            assertEquals(true, add_information.agePoints(2016) == 0);
+        }
+
+        @Test
+        public void testGetGender(){
+            add_information.setGender('F');
+            assertTrue(add_information.getGender() == 'F');
+            assertFalse(add_information.getGender() == 'M');
+        }
+
+
+
+        @Test
+        public void testGetCalculatedGrade(){
+            add_information.setCalculatedGrade(5.0);
+            assertTrue(add_information.getCalculatedGrade() == 5.0);
+            assertFalse(add_information.getCalculatedGrade() == 4.9);
+        }
+
+
+        @Test
+        public void testGetExtraPoints(){
+            add_information.setExtraPoints(2);
+            assertTrue(add_information.getExtraPoints() == 2);
+            assertFalse(add_information.getExtraPoints() == 3);
+
+        }
+
+        @Test
+        public void testGetExtraEducation(){
+            ArrayList<String> c = new ArrayList<>();
+            c.add("IKT");
+            add_information.setExtra_education_array(c);
+            assertTrue(add_information.getExtraEducationArray().equals(c));
+        }
+
+        @After
+        public void tearDown(){
+            add_information = null;
+        }
+
+
+    }
 
     //calculates the enitre grade
     public double grade_calculation() {
+        initFagbase();
         double grade_calculated = 0;
         double realFagPoints = 0;
 
@@ -313,10 +435,14 @@ public class Add_information extends AppCompatActivity {
             realFagPoints += fagbase.get(course);
         }
 
+
         if (realFagPoints > 4) {
             realFagPoints = 4;
         }
         grade_calculated += (agePoints(year) + extraPoints + realFagPoints);
+        calculatedGrade = grade_calculated;
+
+
         return grade_calculated;
 
 
@@ -685,4 +811,38 @@ public class Add_information extends AppCompatActivity {
     public List<String> getCoursesArray() {
         return coursesArray;
     }
+
+    public void setCalculatedGrade(double calculatedGrade) {
+        this.calculatedGrade = calculatedGrade;
+    }
+
+    public void setGender(char gender) {
+        this.gender = gender;
+    }
+
+
+
+    public void setR2Grade(int r2Grade) {
+        R2Grade = r2Grade;
+    }
+
+    public void setExtraPoints(int extraPoints) {
+        this.extraPoints = extraPoints;
+    }
+
+    public void setCourses_array(ArrayList<String> courses_array) {
+        this.coursesArray = courses_array;
+        grade_calculation();
+    }
+
+    public void setExtra_education_array(ArrayList<String> extra_education_array) {
+        this.extraEducationArray = extra_education_array;
+        grade_calculation();
+    }
+
+    public void setYear(int year){
+        this.year = year;
+    }
 }
+
+

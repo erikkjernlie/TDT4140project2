@@ -4,6 +4,7 @@ import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Jørgen on 01.04.2017.
@@ -20,6 +21,8 @@ public class UserInfo {
     private ArrayList<String> interests;
     private Firebase mRef;
     private FirebaseAuth firebaseAuth;
+    public static UserInfo userInfo = new UserInfo();
+    public static HashMap<String, StudyProgramInfo> studyPrograms = new HashMap<>();
 
     public UserInfo(int birthYear, double calculatedGrade, ArrayList<String> courses,
                     ArrayList<String> extraEducation, char gender, int r2Grade,
