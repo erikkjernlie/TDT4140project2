@@ -250,7 +250,7 @@ public class ProcessAiResponse {
             ut += iterator.next() + ", ";
         }
         ut = ut.substring(0, ut.length() - 2) + ".";
-        return ut + ".";
+        return ut;
     }
 
     // Method for telling the user about himself
