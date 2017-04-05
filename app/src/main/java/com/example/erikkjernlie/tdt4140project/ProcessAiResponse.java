@@ -110,7 +110,7 @@ public class ProcessAiResponse {
                 ut = this.interview();
                 break;
             case "help":
-                // Skal fylles ut av herman.
+                ut = this.help();
                 break;
         }
 
@@ -265,7 +265,7 @@ public class ProcessAiResponse {
             ut += iterator.next() + ", ";
         }
         ut = ut.substring(0, ut.length() - 2) + ".";
-        return ut + ".";
+        return ut;
     }
 
     // Method for telling the user about himself
@@ -280,11 +280,16 @@ public class ProcessAiResponse {
         if (ut.equals("")) {
 
         }
-        ut += ", and born in " + userInfo.getBirthYear();
+        ut += " born in " + userInfo.getBirthYear() + " and";
 
-        ut += "\n you have " + userInfo.getCalculatedGrade() + " points to apply with.";
+        ut += " you have " + userInfo.getCalculatedGrade() + " points to apply with.\nYour interests are: ";
 
-        return ut;
+        // interests har alltid 'studies' så trenger ikke sjekke
+        for (String interest : userInfo.getInterests()) {
+            ut += interest + ", ";
+        }
+
+        return ut.substring(0,ut.length()-2) + ".";
     }
 
     // Method for adding an interest to the user
@@ -463,6 +468,21 @@ public class ProcessAiResponse {
         return "startInterview";
     }
 
+    private String help() {
+
+        String ut = "Here are some of the things I can help you with:\n" +
+                "- Get a list of all studies\n" +
+                "- Explore a specific study\n" +
+                "- Learn grade requirements\n" +
+                "- Submit interests\n" +
+                "- Get study recommendations\n" +
+                "- Compare studies to each other\n" +
+                "- Know about study environments\n" +
+                "- Learn about Trondheim or NTNU\n" +
+                "- Get familiar with common work fields\n" +
+                "- Explore unions and student unions";
+        return ut;
+    }
 
     public static class ProcessAiResponseTest {
         ProcessAiResponse aiResponse;
@@ -604,5 +624,5 @@ public class ProcessAiResponse {
         public void tearDown() throws Exception{
             aiResponse = null;
         }
-    }
+
 }
