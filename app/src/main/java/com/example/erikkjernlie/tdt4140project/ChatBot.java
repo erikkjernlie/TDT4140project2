@@ -57,7 +57,6 @@ public class ChatBot extends AppCompatActivity {
     private static final String TAG = "ChatActivity";
 
     private UserInfo user;
-
     private ChatArrayAdapter chatArrayAdapter;
     private ListView listView;
     private EditText chatText;
@@ -72,17 +71,12 @@ public class ChatBot extends AppCompatActivity {
     private int randomNumber = -1;
     private ArrayList<String> sentencesToUnibot;
     private ArrayList<String> sentencesOutput;
-    private HashMap<String, StudyProgramInfo> studyPrograms;
-    private HashMap<String, Union> unions;
     private ArrayList<String> usedInterests = new ArrayList<>();
     private int interviewNumber = 0;
 
     // fields for the interview
     private boolean interview = false; // if the user is doing the interview
     private String interest;
-
-    FirebaseAuth firebaseAuth;
-    Firebase mRefUsers;
 
     //gets the required access from API.AI a
     @Override
@@ -91,16 +85,6 @@ public class ChatBot extends AppCompatActivity {
         // requestPermissions(new String[]{"android.permission.RECORD_AUDIO"}, 2); // not in use
 
         setContentView(R.layout.chatbot);
-
-        Firebase.setAndroidContext(ChatBot.this);
-
-        firebaseAuth = firebaseAuth.getInstance();
-
-        mRefUsers = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
-                firebaseAuth.getCurrentUser().getUid());
-
-        studyPrograms = new HashMap<>();
-        unions = new HashMap<>();
 
         buttonSend = (Button) findViewById(R.id.send);
 
@@ -149,61 +133,9 @@ public class ChatBot extends AppCompatActivity {
 
         aiDataService = new AIDataService(this, config);
 
-        getUserInfoDatabase();
         initTextButtons();
-        getStudyInfoDatabase();
-        getUnionInfoDatabase();
         addMessageToChatArray("Hey! My name is uniBOT, and I'm here to help you with study- and student opportunities at NTNU Trondheim. \nYou can ask me almost anything related to our data-orientated studies. Perhaps you'd like to compare a couple studies? Or submit some interests and let me make a study recommendation?\n" +
                 "\nIf you wish to see more examples, click the 'HELP'-button in the top right corner. You can also press 'UNIBOT' in the header to let me prompt you with some questions. I look forward to assisting you!");
-    }
-
-    //Retrieving information from the spezified fields from the firebase-database
-    public void getUserInfoDatabase() {
-        mRefUsers.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setUser(dataSnapshot.getValue(UserInfo.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-    }
-
-    //Retrieving information about the unions at NTNU
-    public void getUnionInfoDatabase() {
-        Firebase unionRef = new Firebase("https://tdt4140project2.firebaseio.com/Unions/");
-        unionRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    addUnions(snapshot.getValue(Union.class));
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-    }
-
-    //This method retrieves information about the study the user wants to know more about
-    private void getStudyInfoDatabase() {
-        //Sends a StudyProgramInfo-object to the database (TEST)
-        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies/");
-        infoRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    addStudyPrograms(snapshot.getKey(), snapshot.getValue(StudyProgramInfo.class));
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
     }
 
     public void hideKeyboard(View view) {
@@ -378,14 +310,14 @@ public class ChatBot extends AppCompatActivity {
         String ut = null;
 
 
-        ProcessAiResponse processAiResponse = new ProcessAiResponse(studyPrograms, user, unions);
+        ProcessAiResponse processAiResponse = new ProcessAiResponse(StudyProgramInfo.studyPrograms, UserInfo.userInfo, Union.unions);
 
         if (interview) {
             ArrayList<String> prompts = new ArrayList<>(Arrays.asList(new String[]{"Are you interested in ", "Do you like ", "Do you enjoy ", "Would you like to work with "})); // Denne kan gjerne økes.
             ArrayList<String> interests = new ArrayList<>();
 
-            for (String study : studyPrograms.keySet()) {
-                for (String interest : studyPrograms.get(study).getKeywords()) {
+            for (String study : StudyProgramInfo.studyPrograms.keySet()) {
+                for (String interest : StudyProgramInfo.studyPrograms.get(study).getKeywords()) {
                     if (!interests.contains(interest) && !usedInterests.contains(interest)) {
                         interests.add(interest);
                     }
@@ -416,8 +348,8 @@ public class ChatBot extends AppCompatActivity {
                 ArrayList<String> prompts = new ArrayList<>(Arrays.asList(new String[]{"Are you interested in ", "Do you like ", "Do you enjoy ", "Would you like to work with "})); // Denne kan gjerne økes.
                 ArrayList<String> interests = new ArrayList<>();
 
-                for (String study : studyPrograms.keySet()) {
-                    for (String interest : studyPrograms.get(study).getKeywords()) {
+                for (String study : StudyProgramInfo.studyPrograms.keySet()) {
+                    for (String interest : StudyProgramInfo.studyPrograms.get(study).getKeywords()) {
                         if (!interests.contains(interest)) {
                             interests.add(interest);
                         }
@@ -450,7 +382,7 @@ public class ChatBot extends AppCompatActivity {
 
         ArrayList<String> interests = user.getInterests(); // interessene til brukeren
 
-        Iterator<String> iterator = studyPrograms.keySet().iterator(); // iterator som går gjennom alle studienavnene
+        Iterator<String> iterator = StudyProgramInfo.studyPrograms.keySet().iterator(); // iterator som går gjennom alle studienavnene
 
         HashMap<String, ArrayList<String>> keyWords = new HashMap<>(); // hashmap som skal holde alle interessene til hvert studie
 
@@ -459,13 +391,13 @@ public class ChatBot extends AppCompatActivity {
         //
         while (iterator.hasNext()) {
             String study = iterator.next();
-            keyWords.put(study, studyPrograms.get(study).getKeywords());
+            keyWords.put(study, StudyProgramInfo.studyPrograms.get(study).getKeywords());
             pointMap.put(study, 0);
             matchedInterests.put(study, new ArrayList<String>());
         }
 
         // går gjennom alle studiene, legger til poeng på pointsMap, om interessen er en av keywordsa
-        for (String study : studyPrograms.keySet()) {
+        for (String study : StudyProgramInfo.studyPrograms.keySet()) {
             System.out.println(study);
             for (String interest : interests) {
                 if (interest != null) {
@@ -480,7 +412,7 @@ public class ChatBot extends AppCompatActivity {
         }
 
         // finds out what study is the best one
-        Iterator<String> iterator1 = studyPrograms.keySet().iterator();
+        Iterator<String> iterator1 = StudyProgramInfo.studyPrograms.keySet().iterator();
         if (iterator1.hasNext()) {
             String bestStudy = iterator1.next();
 
@@ -491,7 +423,7 @@ public class ChatBot extends AppCompatActivity {
                 }
             }
 
-            iterator1 = studyPrograms.keySet().iterator(); // resets the iterator
+            iterator1 = StudyProgramInfo.studyPrograms.keySet().iterator(); // resets the iterator
 
             // while to check if the best study has at least 3 more points than all of the others
             while (iterator1.hasNext()) {
@@ -538,15 +470,4 @@ public class ChatBot extends AppCompatActivity {
 
     }
 
-    public void addStudyPrograms(String study, StudyProgramInfo info) {
-        this.studyPrograms.put(study, info);
-    }
-
-    public void addUnions(Union union) {
-        this.unions.put(union.getName(), union);
-    }
-
-    public void setUser(UserInfo user) {
-        this.user = user;
-    }
 }

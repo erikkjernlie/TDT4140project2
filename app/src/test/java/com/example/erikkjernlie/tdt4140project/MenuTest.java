@@ -19,13 +19,6 @@ public class MenuTest {
         ui = new UserInfo();
     }
 
-    @Test
-    public void testGetUser() throws Exception {
-        ss.setUser(ui);
-        assertTrue(ss.getUser().equals(ui));
-    }
-
-
     @After
     public void tearDown() throws Exception {
         ss = null;

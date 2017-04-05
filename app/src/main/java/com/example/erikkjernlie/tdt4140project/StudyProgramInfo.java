@@ -9,6 +9,7 @@
 package com.example.erikkjernlie.tdt4140project;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class StudyProgramInfo {
@@ -21,6 +22,7 @@ public class StudyProgramInfo {
     private String studyEnvironment;
     private String studentUnion;
     private ArrayList<String> courses;
+    public static HashMap<String, StudyProgramInfo> studyPrograms = new HashMap<>();
 
 
     public StudyProgramInfo(double grade, boolean girlPoints, ArrayList<String> keywords,
