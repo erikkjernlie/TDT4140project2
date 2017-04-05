@@ -57,16 +57,19 @@ public class Interview {
             UserInfo.userInfo.updateFirebase(); // do only the last time? If you do it everytime, you make sure that if they leave the chat, the interests gets saved
         }
 
-        if (isFinished()) {
+        if (isFinished(message)) {
+            this.active = false;
             return "We feel like we have enough information about you. We will now try to recommend you a study";
         }
+        questionCounter++;
         return getQuestion();
     }
 
-    private boolean isFinished() {
+    private boolean isFinished(String message) {
+        message = message.replace("\"", ""); // removes ""
         // checks if the user wants to stop the interview
         // if 'quit', or the user have said enough;
-        if ((questionCounter > 5 && checkEnoughInfo()) || questionCounter > 15) {
+        if ((questionCounter > 5 && checkEnoughInfo()) || questionCounter > 15 || message.toLowerCase().equals("quit")) {
             return true;
         }
         return false;
@@ -97,7 +100,7 @@ public class Interview {
         for (String study : UserInfo.studyPrograms.keySet()) {
             pointMap.put(study, 0); // instansiate the pointMap. This could have been done in the constructor
             for (String interest : UserInfo.userInfo.getInterests()) {
-                if (UserInfo.studyPrograms.get(pointMap.get(study)).getKeywords().contains(interest)) {
+                if (UserInfo.studyPrograms.get(study).getKeywords().contains(interest)) {
                     pointMap.put(study, pointMap.get(study) + 1);
                 }
             }
