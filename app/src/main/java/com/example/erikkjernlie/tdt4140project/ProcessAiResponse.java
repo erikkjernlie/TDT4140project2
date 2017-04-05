@@ -1,6 +1,7 @@
 package com.example.erikkjernlie.tdt4140project;
 
 
+import com.google.android.gms.wearable.internal.StorageInfoResponse;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
@@ -105,6 +106,9 @@ public class ProcessAiResponse {
                 break;
             case "getInfoNTNU":
                 ut = this.getInfoNtnu();
+                break;
+            case "getInfoTrondheim":
+                ut = this.getInfoTrondheim();
                 break;
         }
 
@@ -521,5 +525,13 @@ public class ProcessAiResponse {
                 "\nNTNU has the main national responsibility for higher education in engineering and technology, and gather more than 30.000 students in Trondheim " +
                 "alone, about half of which are connected to the technical subjects. \nSince its formation in 1996, the university has grown to become nationally and " +
                 "internationally recognized, both within education and research. \nYou can read more about NTNU at www.ntnu.no";
+    }
+
+    private String getInfoTrondheim() {
+        return "With about 170.000 inhabitants, of which over 40.000 are students, Trondheim is the third largest city in Norway. " +
+                "\nThe city is dominated by its large institutions such as the Norwegian University of Science and Technology, SINTEF " +
+                "Research Center and the St. Olavs University Hospital. \nTrondheim has several times been voted Norway’s best city for " +
+                "students, with good reason. Social happenings such as ISFiT, UKA and many others make sure there’s always something new " +
+                "to explore, in addition to other cultural meeting points like Trøndelag Teater and cinemas.";
     }
 }
