@@ -4,6 +4,7 @@ package com.example.erikkjernlie.tdt4140project;
 import com.google.android.gms.wearable.CapabilityApi;
 import com.google.android.gms.wearable.internal.StorageInfoResponse;
 import com.google.gson.JsonArray;
+
 import android.test.suitebuilder.annotation.Suppress;
 
 import com.google.gson.JsonElement;
@@ -184,7 +185,7 @@ public class ProcessAiResponse {
         ut = ut.substring(0, ut.length() - 2);
         String s1 = "At " + studyProgram + " you can work with: " + ut + ".";
         String s2 = ut + " are some common work fields for " + studyProgram + ".";
-        String s3 = "Some of the common worlds fields for " + studyProgram + " er " + ut +".";
+        String s3 = "Some of the common worlds fields for " + studyProgram + " er " + ut + ".";
         Random random = new Random();
         List<String> arr = Arrays.asList(s1, s2, s3);
         int index = random.nextInt(arr.size());
@@ -411,25 +412,32 @@ public class ProcessAiResponse {
         String ut = "";
         double grade = userInfo.getCalculatedGrade();
 
-        if (!userInfo.getCourses().contains("Fysikk 1") && !studyProgram.equals("Informatics")) {
-            ut += "\nYou need to pass the course Fysikk 1 in order to to get into " + studyProgram + ". \n";
-        }
+        try {
 
-        if (!studyProgram.equals("Informatics") && userInfo.getR2Grade() < 4) {
-
-            ut += "You need a grade of 4 or higher at the course R2, while you have " + userInfo.getR2Grade() + ". Therefore, you need to retake the exam in order to apply. \n";
-
-
-            if (studyPrograms.get(studyProgram).isGirlPoints() && userInfo.getGender() == 'F') {
-                grade += 2;
+            if (!userInfo.getCourses().contains("Fysikk 1") && !studyProgram.equals("Informatics")) {
+                ut += "\nYou need to pass the course Fysikk 1 in order to to get into " + studyProgram + ". \n";
             }
-            if (studyPrograms.get(studyProgram).getGrade() < grade) {
-                ut += "Your grade of " + grade + " is higher than last years grade of " + studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
-            } else {
-                ut += "Your grade of " + grade + " is lower than last year grade of " + studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
-            }
-            return ut;
 
+            if (!studyProgram.equals("Informatics") && userInfo.getR2Grade() < 4) {
+
+                ut += "You need a grade of 4 or higher at the course R2, while you have " + userInfo.getR2Grade() + ". Therefore, you need to retake the exam in order to apply. \n";
+
+
+                if (studyPrograms.get(studyProgram).isGirlPoints() && userInfo.getGender() == 'F') {
+                    grade += 2;
+                }
+                if (studyPrograms.get(studyProgram).getGrade() < grade) {
+                    ut += "Your grade of " + grade + " is higher than last years grade of " + studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
+                } else {
+                    ut += "Your grade of " + grade + " is lower than last year grade of " + studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
+                }
+                return ut;
+
+            }
+        } catch (NullPointerException e) {
+            e.getMessage();
+            e.printStackTrace();
+        } finally {
         }
 
 
@@ -683,7 +691,7 @@ public class ProcessAiResponse {
         interest = interest.replace("\"", ""); // removes ""
         ArrayList<String> studiesWhichHasInterest = new ArrayList<>();
 
-        for(String study : studyPrograms.keySet()) {
+        for (String study : studyPrograms.keySet()) {
             if (studyPrograms.get(study).getKeywords().contains(interest)) {
                 studiesWhichHasInterest.add(study);
             }
@@ -699,7 +707,7 @@ public class ProcessAiResponse {
             for (String study : studiesWhichHasInterest) {
                 ut += study + ", ";
             }
-            return ut.substring(0, ut.length()-2) + " has " + interest + " as keyword.";
+            return ut.substring(0, ut.length() - 2) + " has " + interest + " as keyword.";
         }
 
 
@@ -730,7 +738,7 @@ public class ProcessAiResponse {
                 "to explore, in addition to other cultural meeting points like Trøndelag Teater and cinemas.";
     }
 
-    private String getInfoUnibot(){
+    private String getInfoUnibot() {
         return "I can help you with almost everything that has to do with studies at NTNU Gløshaugen, as well as various other student activities " +
                 "like different unions and life in Trondheim. \n\nTry ask me anything, or check out the “HELP”-menu for tips. Perhaps you’d even want " +
                 "to sit back and let me interview you and recommend a study? If so, just let me know! \n\nThe application was made by four students at " +
