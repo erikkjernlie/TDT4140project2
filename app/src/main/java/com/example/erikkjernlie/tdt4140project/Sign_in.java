@@ -62,36 +62,41 @@ public class Sign_in extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         Firebase.setAndroidContext(this);
-        studyPrograms = new HashMap<>();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            getUserInfoDatabase();
+            getStudyInfoDatabase();
+            getUnionInfoDatabase();
+            startActivity(new Intent(Sign_in.this, Menu.class));
+        } else {
+            studyPrograms = new HashMap<>();
 
-        logInEmail = (EditText) findViewById(R.id.enterEmailAddress);
-        logInPassword = (EditText) findViewById(R.id.enterPassword);
+            logInEmail = (EditText) findViewById(R.id.enterEmailAddress);
+            logInPassword = (EditText) findViewById(R.id.enterPassword);
 
-        logInEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus && !logInPassword.hasFocus()) {
-                    hideKeyboard(v);
+            logInEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus && !logInPassword.hasFocus()) {
+                        hideKeyboard(v);
+                    }
                 }
-            }
-        });
-        logInPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus && !logInEmail.hasFocus()) {
-                    hideKeyboard(v);
+            });
+            logInPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus && !logInEmail.hasFocus()) {
+                        hideKeyboard(v);
+                    }
                 }
-            }
-        });
+            });
 
 
+            firebaseAuth = firebaseAuth.getInstance();
 
-        firebaseAuth = firebaseAuth.getInstance();
+            ProgressDialog progressDialog = new ProgressDialog(this);
 
-        ProgressDialog progressDialog = new ProgressDialog(this);
-
-        initButtons();
-
+            initButtons();
+        }
     }
 
     private void initButtons(){
