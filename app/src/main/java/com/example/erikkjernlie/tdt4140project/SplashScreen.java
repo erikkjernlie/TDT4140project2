@@ -30,15 +30,9 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void run() {
                 //sender deg videre til homescreen
-                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    Intent homeIntent = new Intent(SplashScreen.this, Menu.class);
-                    startActivity(homeIntent);
-                    finish();
-                } else {
-                    Intent homeIntent = new Intent(SplashScreen.this, Sign_in.class);
-                    startActivity(homeIntent);
-                    finish();
-                }
+                Intent homeIntent = new Intent(SplashScreen.this, Sign_in.class);
+                startActivity(homeIntent);
+                finish();
             }
         }, SPLASH_TIME_OUT);
 
