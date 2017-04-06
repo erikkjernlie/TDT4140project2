@@ -26,10 +26,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.After;
@@ -128,28 +125,9 @@ public class Add_information extends AppCompatActivity {
 
         LinearLayout l = (LinearLayout) findViewById(R.id.linear_add_information);
         l.requestFocus();
-
         initFagbase();
         initButtons();
         numberPicker();
-        //retrieveInformationDatabase();
-    }
-
-    private void retrieveInformationDatabase() {
-        Firebase mRefUser = new Firebase("https://tdt4140project2.firebaseio.com/Users/"
-         + firebaseAuth.getCurrentUser().getUid());
-        mRefUser.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                UserInfo user = dataSnapshot.getValue(UserInfo.class);
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
     }
 
     private void initFagbase() {
@@ -250,7 +228,6 @@ public class Add_information extends AppCompatActivity {
         dropdownCourses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                coursesArray = new ArrayList<String>();
                 //resets if the user goes in and out
                 alertCourses();
             }
@@ -289,6 +266,10 @@ public class Add_information extends AppCompatActivity {
         np.setMaxValue(2017);
         //Sets the start value of Numberpicker
         np.setValue(1995);
+        int b = UserInfo.userInfo.getBirthYear();
+        if (b != 0){
+            np.setValue(b);
+        }
         np.setWrapSelectorWheel(true);
         //Set a value change listener for NumberPicker
         np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
