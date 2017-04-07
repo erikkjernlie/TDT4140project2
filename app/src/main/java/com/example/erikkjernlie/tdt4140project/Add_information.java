@@ -128,6 +128,13 @@ public class Add_information extends AppCompatActivity {
         initFagbase();
         initButtons();
         numberPicker();
+        if (UserInfo.userInfo.getGender() == 'F'){
+            female.setImageResource(R.drawable.female_selected);
+            isPressedFemale = true;
+        } else if (UserInfo.userInfo.getGender() == 'M'){
+            man.setImageResource(R.drawable.man_selected);
+            isPressedMan = true;
+        }
     }
 
     private void initFagbase() {
@@ -172,6 +179,53 @@ public class Add_information extends AppCompatActivity {
                     Toast.makeText(Add_information.this, "You need to pick a gender!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+
+                if (UserInfo.userInfo.getR2Grade() != 0){
+                    R2Grade = UserInfo.userInfo.getR2Grade();
+                }
+
+                ArrayList<String> chosen_courses = new ArrayList<String>();
+                chosen_courses = UserInfo.userInfo.getCourses();
+                if ((chosen_courses != null)) {
+                    for (int i = 0; i < chosen_courses.size(); i++) {
+                        for (int k = 0; k < courses.length; k++) {
+                            if (chosen_courses.get(i).equals(courses[k])) {
+                                checkedStateCourses[k] = true;
+                            }
+                        }
+                    }
+                }
+
+                ArrayList<String> chosen_education = new ArrayList<String>();
+                chosen_education = UserInfo.userInfo.getExtraEducation();
+
+                if ((chosen_education != null)) {
+
+                    for (int i = 0; i < chosen_education.size(); i++) {
+                        for (int k = 0; k < extraEducation.length; k++) {
+                            if (chosen_education.get(i).equals(extraEducation[k])) {
+                                checkedStateEducation[k] = true;
+                            }
+                        }
+                    }
+
+                }
+
+                for (int i = 0; i < (courses.length); i++) {
+                    if (checkedStateCourses[i] == true && !coursesArray.contains(courses[i].toString())) {
+                        coursesArray.add(courses[i].toString());
+                    }
+                }
+
+
+
+                for (int i = 0; i < (extraEducation.length); i++) {
+                    if (checkedStateEducation[i] == true && !extraEducationArray.contains(extraEducation[i].toString())) {
+                        extraEducationArray.add(extraEducation[i].toString());
+                    }
+                }
+
 
                 calculatedGrade = grade_calculation();
                 storeVariables();
@@ -269,6 +323,7 @@ public class Add_information extends AppCompatActivity {
         int b = UserInfo.userInfo.getBirthYear();
         if (b != 0){
             np.setValue(b);
+            year = b;
         }
         np.setWrapSelectorWheel(true);
         //Set a value change listener for NumberPicker
@@ -432,11 +487,16 @@ public class Add_information extends AppCompatActivity {
     private void alertCourses() {
         ArrayList<String> chosen_courses = new ArrayList<String>();
         chosen_courses = UserInfo.userInfo.getCourses();
+        for (int j = 0; j < checkedStateCourses.length;j++){
+            checkedStateCourses[j] = false;
+        }
         if ((chosen_courses != null)) {
             for (int i = 0; i < chosen_courses.size(); i++) {
                 for (int k = 0; k < courses.length; k++) {
-                    if (chosen_courses.get(i).equals(courses[k])) {
+                    if (chosen_courses.get(i).equals(courses[k]) || (checkedStateCourses[k] == true)) {
                         checkedStateCourses[k] = true;
+                    } else {
+                        checkedStateCourses[k] = false;
                     }
                 }
             }
@@ -459,8 +519,15 @@ public class Add_information extends AppCompatActivity {
                         for (int i = 0; i < (courses.length); i++) {
                             if (checkedStateCourses[i] == true) {
                                 coursesArray.add(courses[i].toString());
+                            } else {
+                                coursesArray.remove(courses[i].toString());
                             }
                         }
+                        UserInfo.userInfo.setCourses(coursesArray);
+
+
+
+
 
                         Toast.makeText(getApplicationContext(), "Selected courses: "
                                 + coursesArray.toString(), Toast.LENGTH_SHORT).show();
@@ -468,6 +535,9 @@ public class Add_information extends AppCompatActivity {
 
                         if (coursesArray.contains("Matematikk R2")) {
                             alertR2Grade();
+                        } else {
+                            R2Grade = 0;
+                            UserInfo.userInfo.setR2Grade(0);
                         }
 
                         //alertdialog_r2grade.dismiss(); if we want it to be able to close the window if the user presses outside the alert
@@ -482,14 +552,20 @@ public class Add_information extends AppCompatActivity {
         ArrayList<String> chosen_education = new ArrayList<String>();
         chosen_education = UserInfo.userInfo.getExtraEducation();
 
+        for (int j = 0; j < checkedStateEducation.length;j++){
+            checkedStateEducation[j] = false;
+        }
         if ((chosen_education != null)) {
 
             for (int i = 0; i < chosen_education.size(); i++) {
                 for (int k = 0; k < extraEducation.length; k++) {
-                    if (chosen_education.get(i).equals(extraEducation[k])) {
+                    if (chosen_education.get(i).equals(extraEducation[k]) || (checkedStateEducation[k] == true)) {
                         checkedStateEducation[k] = true;
+                    } else {
+                        checkedStateEducation[k] = false;
                     }
                 }
+
             }
 
         }
@@ -499,7 +575,6 @@ public class Add_information extends AppCompatActivity {
                 .setMultiChoiceItems(extraEducation, checkedStateEducation, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-
                         checkedStateEducation[which] = isChecked;
                     }
                 }).setPositiveButton("I have selected all my education", new DialogInterface.OnClickListener() {
@@ -510,8 +585,13 @@ public class Add_information extends AppCompatActivity {
                         for (int i = 0; i < (extraEducation.length); i++) {
                             if (checkedStateEducation[i] == true) {
                                 extraEducationArray.add(extraEducation[i].toString());
+                            } else {
+                                extraEducationArray.remove(extraEducation[i].toString());
                             }
                         }
+                        UserInfo.userInfo.setExtraEducation(extraEducationArray);
+
+
 
                         Toast.makeText(getApplicationContext(), "Selected education: "
                                 + extraEducationArray.toString(), Toast.LENGTH_SHORT).show();
@@ -535,6 +615,7 @@ public class Add_information extends AppCompatActivity {
         final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
         np.setMaxValue(6); // max value 6
         np.setMinValue(1);   // min value 1
+        np.setValue(3);
         np.setWrapSelectorWheel(false);
         np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -545,6 +626,10 @@ public class Add_information extends AppCompatActivity {
         r2grade_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                UserInfo.userInfo.setR2Grade(R2Grade);
+                if (R2Grade == 0){
+                    R2Grade = 3;
+                }
                 Toast.makeText(getApplicationContext(), "Grade " + R2Grade + " registered", Toast.LENGTH_SHORT).show();
                 d.dismiss(); // dismiss the alertdialog_r2grade
             }

@@ -13,6 +13,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -139,21 +140,34 @@ public class Sign_in extends AppCompatActivity {
             Toast.makeText(Sign_in.this, "Please enter password", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        Toast.makeText(Sign_in.this, "Trying to connect...", Toast.LENGTH_SHORT).show();
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+
                 if (!task.isSuccessful()) {
                     Toast.makeText(Sign_in.this, "Login unsuccessful, please try again", Toast.LENGTH_SHORT).show();
                 } else {
+                    Toast.makeText(Sign_in.this, "Logging in...", Toast.LENGTH_LONG).show();
                     getUserInfoDatabase();
                     getStudyInfoDatabase();
                     getUnionInfoDatabase();
-                    startActivity(new Intent(Sign_in.this, Menu.class));
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //sender deg videre til homescreen
+                            Intent homeIntent = new Intent(Sign_in.this, Menu.class);
+                            startActivity(homeIntent);
+                            Toast.makeText(Sign_in.this, "Successfully logged in!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }, 5000);
 
 
 
-                    finish();
+
+
                 }
             }
         });
