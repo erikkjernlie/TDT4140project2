@@ -14,6 +14,12 @@ public class UserInfo {
 
     private int birthYear;
     private double calculatedGrade;
+    private int number1grade;
+    private int number2grade;
+    private int number3grade;
+    private int number4grade;
+    private int number5grade;
+    private int number6grade;
     private ArrayList<String> courses;
     private ArrayList<String> extraEducation;
     private char gender;
@@ -24,11 +30,19 @@ public class UserInfo {
     public static UserInfo userInfo = new UserInfo();
     public static HashMap<String, StudyProgramInfo> studyPrograms = new HashMap<>();
 
-    public UserInfo(int birthYear, double calculatedGrade, ArrayList<String> courses,
+    public UserInfo(int birthYear, double calculatedGrade, int number1grade,
+                    int number2grade, int number3grade, int number4grade,
+                    int number5grade, int number6grade, ArrayList<String> courses,
                     ArrayList<String> extraEducation, char gender, int r2Grade,
                     ArrayList<String> interests) {
         this.birthYear = birthYear;
         this.calculatedGrade = calculatedGrade;
+        this.number1grade = number1grade;
+        this.number2grade = number2grade;
+        this.number3grade = number3grade;
+        this.number4grade = number4grade;
+        this.number5grade = number5grade;
+        this.number6grade = number6grade;
         this.courses = courses;
         this.extraEducation = extraEducation;
         this.gender = gender;
@@ -52,6 +66,54 @@ public class UserInfo {
 
     public void setCalculatedGrade(double calculatedGrade) {
         this.calculatedGrade = calculatedGrade;
+    }
+
+    public int getNumber1grade() {
+        return number1grade;
+    }
+
+    public void setNumber1grade(int number1grade) {
+        this.number1grade = number1grade;
+    }
+
+    public int getNumber2grade() {
+        return number2grade;
+    }
+
+    public void setNumber2grade(int number2grade) {
+        this.number2grade = number2grade;
+    }
+
+    public int getNumber3grade() {
+        return number3grade;
+    }
+
+    public void setNumber3grade(int number3grade) {
+        this.number3grade = number3grade;
+    }
+
+    public int getNumber4grade() {
+        return number4grade;
+    }
+
+    public void setNumber4grade(int number4grade) {
+        this.number4grade = number4grade;
+    }
+
+    public int getNumber5grade() {
+        return number5grade;
+    }
+
+    public void setNumber5grade(int number5grade) {
+        this.number5grade = number5grade;
+    }
+
+    public int getNumber6grade() {
+        return number6grade;
+    }
+
+    public void setNumber6grade(int number6grade) {
+        this.number6grade = number6grade;
     }
 
     public ArrayList<String> getCourses() {

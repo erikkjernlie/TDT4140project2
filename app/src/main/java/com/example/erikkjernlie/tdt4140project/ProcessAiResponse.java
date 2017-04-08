@@ -498,7 +498,7 @@ public class ProcessAiResponse {
                     new ArrayList<String>(Arrays.asList("Data", "Consultant", "Programmer")), "The Computer Science programme of study is a 5 years Master of Science (sivilingeniør) programme. Computer Science is not only about excellent computer skills - it also deals with contributing to the social development. How can we improve existing systems? What could be useful in the future? With computer engineering skills you can create computer systems which people need, want, or not yet know that they need.",
                     "The student union Abakus is very popular among students and arrange many different activities for all students at Computer Science.",
                     "Abakus", new ArrayList<String>(Arrays.asList("EXPH0004", "TDT4110", "TMA4100"))));
-            UserInfo user = new UserInfo(1996, 53.6, new ArrayList<>(Arrays.asList("Matematikk R1",
+            UserInfo user = new UserInfo(1996, 53.6, 0, 0, 0, 0, 0, 0, new ArrayList<>(Arrays.asList("Matematikk R1",
                     "Matematikk R2")), new ArrayList<>(Arrays.asList("Folkehøgskole")), 'M', 5,
                     new ArrayList<>(Arrays.asList("Studies", "web development")));
             aiResponse = new ProcessAiResponse(studyProgramInfoMap, user, null);

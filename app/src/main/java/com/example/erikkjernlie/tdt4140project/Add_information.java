@@ -114,6 +114,7 @@ public class Add_information extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println(UserInfo.userInfo.getNumber5grade() + "   asdfghjk");
         setContentView(R.layout.activity_add_information);
 
         Firebase.setAndroidContext(Add_information.this);
@@ -159,7 +160,9 @@ public class Add_information extends AppCompatActivity {
     }
 
     private void storeVariables() {
-        UserInfo user = new UserInfo(this.year, this.calculatedGrade, this.coursesArray,
+        UserInfo user = new UserInfo(this.year, this.calculatedGrade, this.number1grade,
+                this.number2grade, this.number3grade, this.number4grade,
+                this.number5grade, this.number6grade, this.coursesArray,
                 this.extraEducationArray, this.gender, this.R2Grade,
                 new ArrayList<>(Arrays.asList("Studies")));
         mRef.setValue(user);
