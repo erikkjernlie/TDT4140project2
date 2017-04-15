@@ -65,6 +65,7 @@ public class Sign_in extends AppCompatActivity {
         firebaseAuth = firebaseAuth.getInstance();
         ProgressDialog progressDialog = new ProgressDialog(this);
         if (firebaseAuth.getCurrentUser() != null) {
+            setContentView(R.layout.activity_splashscreen);
             Toast.makeText(Sign_in.this, "Logging in...", Toast.LENGTH_LONG).show();
             getUserInfoDatabase();
             getStudyInfoDatabase();
