@@ -1,5 +1,7 @@
 package com.example.erikkjernlie.tdt4140project;
 
+import java.util.HashMap;
+
 /**
  * Created by Jørgen on 01.04.2017.
  */
@@ -9,6 +11,7 @@ public class Union {
     private String name;
     private String info;
     private int members;
+    public static HashMap<String, Union> unions = new HashMap<>();
 
 
     public Union(String name, String info, int members) {

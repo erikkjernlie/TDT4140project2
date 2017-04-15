@@ -78,9 +78,11 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_height="wrap_content"
-        android:id="@+id/r2grade_settings"/>
+        android:id="@+id/r2grade_settings"
+        />
 
     <View android:layout_height="2px"
+        android:paddingTop="10dp"
         android:layout_width="fill_parent"
         android:background="#000000"
         />

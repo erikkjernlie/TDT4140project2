@@ -42,9 +42,6 @@ public class Menu extends AppCompatActivity {
     private Button signOut;
     private Button aboutUs;
     private ImageView cogwheel;
-    private Firebase mRef;
-    private UserInfo user;
-    private HashMap<String, StudyProgramInfo> studyPrograms;
 
 
     public void initButtons() {
@@ -105,20 +102,11 @@ public class Menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        Firebase.setAndroidContext(this);
         //initButtons();
-        Firebase.setAndroidContext(Menu.this);
-
-        studyPrograms = new HashMap<>();
 
         //hvordan henter man info
-        firebaseAuth = firebaseAuth.getInstance();
 
-        mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
-                firebaseAuth.getCurrentUser().getUid());
-
-
-        getUserInfoDatabase();
-        getStudyInfoDatabase();
         initButtons();
 
         //uncomment this when we want the alert just to appear the first time the app is started
@@ -140,39 +128,39 @@ public class Menu extends AppCompatActivity {
         TextView t7 = (TextView) d.findViewById(R.id.courses_havehad);
         TextView t8 = (TextView) d.findViewById(R.id.extra_havehad);
 
-        if (this.user.getGender() == 'M') {
+        if (UserInfo.userInfo.getGender() == 'M') {
             img.setImageResource(R.drawable.man_selected);
 
-        } else if (this.user.getGender() == 'F') {
+        } else if (UserInfo.userInfo.getGender() == 'F') {
             img.setImageResource(R.drawable.female_selected);
 
         } else {
             img.setVisibility(View.GONE);
         }
 
-        if (this.user.getBirthYear() != 0) {
-            t2.setText("You are born in " + this.user.getBirthYear() + ".");
+        if (UserInfo.userInfo.getBirthYear() != 0) {
+            t2.setText("You are born in " + UserInfo.userInfo.getBirthYear() + ".");
         } else {
             t2.setVisibility(View.GONE);
         }
 
-        if (this.user.getCourses() != null) {
+        if (UserInfo.userInfo.getCourses() != null) {
             t7.setText("You have had the following courses that gives extra points:");
-            String array = this.user.getCourses().toString();
+            String array = UserInfo.userInfo.getCourses().toString();
             array = array.substring(1, array.length() - 1);
             t3.setText(array);
         } else {
             t3.setVisibility(View.GONE);
             t7.setVisibility(View.GONE);
         }
-        if (this.user.getR2Grade() != 0) {
-            t4.setText("You got an " + this.user.getR2Grade() + " in R2");
+        if (UserInfo.userInfo.getR2Grade() != 0) {
+            t4.setText("You got an " + UserInfo.userInfo.getR2Grade() + " in R2");
         } else {
             t4.setVisibility(View.GONE);
         }
-        if (this.user.getExtraEducation() != null) {
+        if (UserInfo.userInfo.getExtraEducation() != null) {
             t8.setText("You have also had:");
-            String array = this.user.getExtraEducation().toString();
+            String array = UserInfo.userInfo.getExtraEducation().toString();
             array = array.substring(1, array.length() - 1);
             t5.setText(array);
         } else {
@@ -180,8 +168,8 @@ public class Menu extends AppCompatActivity {
             t5.setVisibility(View.GONE);
         }
 
-        if (this.user.getCalculatedGrade() != 0.0) {
-            t6.setText("You score is  " + this.user.getCalculatedGrade() + ".");
+        if (UserInfo.userInfo.getCalculatedGrade() != 0.0) {
+            t6.setText("You score is  " + UserInfo.userInfo.getCalculatedGrade() + ".");
 
         } else {
             t6.setVisibility(View.GONE);
@@ -240,48 +228,5 @@ public class Menu extends AppCompatActivity {
         e.show();
     }
 
-    public void getUserInfoDatabase() {
 
-        mRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setUser(dataSnapshot.getValue(UserInfo.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-    }
-
-    private void getStudyInfoDatabase() {
-        //Sends a StudyProgramInfo-object to the database (TEST)
-        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies/");
-        infoRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    addStudyPrograms(snapshot.getKey(), snapshot.getValue(StudyProgramInfo.class));
-                }
-            }
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-    }
-
-
-    public void addStudyPrograms(String study, StudyProgramInfo info) {
-        this.studyPrograms.put(study, info);
-        UserInfo.userInfo.studyPrograms.put(study, info);
-    }
-
-    public void setUser(UserInfo user) {
-        this.user = user;
-        UserInfo.userInfo = user;
-    }
-
-    public UserInfo getUser(){
-        return this.user;
-    }
 }

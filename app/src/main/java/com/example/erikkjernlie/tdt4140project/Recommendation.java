@@ -51,9 +51,6 @@ public class Recommendation extends AppCompatActivity {
 //            }
 //        });
 
-
-        this.userInfo = UserInfo.userInfo;
-        this.studyPrograms = UserInfo.studyPrograms;
         recommendStudy();
 
         setContentView(R.layout.activity_recommendation);
@@ -71,10 +68,10 @@ public class Recommendation extends AppCompatActivity {
         about_study = (TextView) findViewById(R.id.about_study_rec);
 
         if (beststudy != null && beststudy_interests != null) {
-            job_opportunities.setText(studyPrograms.get(beststudy).getCommonWorkFields().toString());
-            social_environement.setText(studyPrograms.get(beststudy).getStudyEnvironment() + "\n");
+            job_opportunities.setText(StudyProgramInfo.studyPrograms.get(beststudy).getCommonWorkFields().toString());
+            social_environement.setText(StudyProgramInfo.studyPrograms.get(beststudy).getStudyEnvironment() + "\n");
             study.setText(beststudy);
-            about_study.setText(studyPrograms.get(beststudy).getInfo());
+            about_study.setText(StudyProgramInfo.studyPrograms.get(beststudy).getInfo());
             String b = "";
             for (String interest : beststudy_interests) {
                 b += interest + ", ";
@@ -118,13 +115,13 @@ public class Recommendation extends AppCompatActivity {
 
         while (iterator.hasNext()) {
             String study = iterator.next();
-            keyWords.put(study, studyPrograms.get(study).getKeywords());
+            keyWords.put(study, StudyProgramInfo.studyPrograms.get(study).getKeywords());
             pointMap.put(study, 0);
             matchedInterests.put(study, new ArrayList<String>());
         }
 
         // går gjennom alle studiene, legger til poeng på pointsMap, om interessen er en av keywordsa
-        for (String study : studyPrograms.keySet()) {
+        for (String study : StudyProgramInfo.studyPrograms.keySet()) {
             for (String interest : interests) {
                 if (interest != null) {
                     interest = interest.toLowerCase();
@@ -137,7 +134,7 @@ public class Recommendation extends AppCompatActivity {
             }
         }
 
-        Iterator<String> iterator1 = studyPrograms.keySet().iterator();
+        Iterator<String> iterator1 = StudyProgramInfo.studyPrograms.keySet().iterator();
         if (iterator1.hasNext()) {
             String bestStudy1 = iterator1.next();
 

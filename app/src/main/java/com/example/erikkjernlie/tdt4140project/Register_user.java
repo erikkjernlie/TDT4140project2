@@ -175,7 +175,7 @@ public class Register_user extends AppCompatActivity {
 
     //creates initiated information to make sure the
     private void storeVariables() {
-        UserInfo user = new UserInfo(0, 0.0, null,
+        UserInfo user = new UserInfo(0, 0.0, 0, 0, 0, 0, 0, 0, null,
                 null, '\u0000', 0, new ArrayList<>(Arrays.asList("Studies")));
         mRef.setValue(user);
     }

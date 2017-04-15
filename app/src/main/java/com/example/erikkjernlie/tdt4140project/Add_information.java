@@ -26,10 +26,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.After;
@@ -49,6 +46,9 @@ import static com.example.erikkjernlie.tdt4140project.R.id.dropdownExtrapoints;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+
+
 
 
 @RunWith(Enclosed.class)
@@ -93,12 +93,12 @@ public class Add_information extends AppCompatActivity {
     private TextView number4grade_textview;
     private TextView number5grade_textview;
     private TextView number6grade_textview;
-    private int number1grade = 0;
-    private int number2grade = 0;
-    private int number3grade = 0;
-    private int number4grade = 0;
-    private int number5grade = 0;
-    private int number6grade = 0;
+    private int number1grade = UserInfo.userInfo.getNumber1grade();
+    private int number2grade = UserInfo.userInfo.getNumber2grade();
+    private int number3grade = UserInfo.userInfo.getNumber3grade();
+    private int number4grade = UserInfo.userInfo.getNumber4grade();
+    private int number5grade = UserInfo.userInfo.getNumber5grade();
+    private int number6grade = UserInfo.userInfo.getNumber6grade();
     private TextView cancel;
     private TextView add_grades;
     private EditText add_grades_text;
@@ -117,8 +117,8 @@ public class Add_information extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println(UserInfo.userInfo.getNumber5grade() + "   asdfghjk");
         setContentView(R.layout.activity_add_information);
-
 
         Firebase.setAndroidContext(Add_information.this);
 
@@ -129,28 +129,16 @@ public class Add_information extends AppCompatActivity {
 
         LinearLayout l = (LinearLayout) findViewById(R.id.linear_add_information);
         l.requestFocus();
-
         initFagbase();
         initButtons();
         numberPicker();
-        //retrieveInformationDatabase();
-    }
-
-    private void retrieveInformationDatabase() {
-        Firebase mRefUser = new Firebase("https://tdt4140project2.firebaseio.com/Users/"
-         + firebaseAuth.getCurrentUser().getUid());
-        mRefUser.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                UserInfo user = dataSnapshot.getValue(UserInfo.class);
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
+        if (UserInfo.userInfo.getGender() == 'F'){
+            female.setImageResource(R.drawable.female_selected);
+            isPressedFemale = true;
+        } else if (UserInfo.userInfo.getGender() == 'M'){
+            man.setImageResource(R.drawable.man_selected);
+            isPressedMan = true;
+        }
     }
 
     private void initFagbase() {
@@ -175,7 +163,9 @@ public class Add_information extends AppCompatActivity {
     }
 
     private void storeVariables() {
-        UserInfo user = new UserInfo(this.year, this.calculatedGrade, this.coursesArray,
+        UserInfo user = new UserInfo(this.year, this.calculatedGrade, this.number1grade,
+                this.number2grade, this.number3grade, this.number4grade,
+                this.number5grade, this.number6grade, this.coursesArray,
                 this.extraEducationArray, this.gender, this.R2Grade,
                 new ArrayList<>(Arrays.asList("Studies")));
         mRef.setValue(user);
@@ -189,14 +179,67 @@ public class Add_information extends AppCompatActivity {
             public void onClick(View v) {
                 if (isPressedMan) {
                     gender = 'M';
+                    UserInfo.userInfo.setGender('M');
                 } else if (isPressedFemale) {
                     gender = 'F';
+                    UserInfo.userInfo.setGender('F');
                 } else {
                     Toast.makeText(Add_information.this, "You need to pick a gender!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+
+                if (UserInfo.userInfo.getR2Grade() != 0){
+                    R2Grade = UserInfo.userInfo.getR2Grade();
+                }
+
+                ArrayList<String> chosen_courses = new ArrayList<String>();
+                chosen_courses = UserInfo.userInfo.getCourses();
+                if ((chosen_courses != null)) {
+                    for (int i = 0; i < chosen_courses.size(); i++) {
+                        for (int k = 0; k < courses.length; k++) {
+                            if (chosen_courses.get(i).equals(courses[k])) {
+                                checkedStateCourses[k] = true;
+                            }
+                        }
+                    }
+                }
+
+                ArrayList<String> chosen_education = new ArrayList<String>();
+                chosen_education = UserInfo.userInfo.getExtraEducation();
+
+                if ((chosen_education != null)) {
+
+                    for (int i = 0; i < chosen_education.size(); i++) {
+                        for (int k = 0; k < extraEducation.length; k++) {
+                            if (chosen_education.get(i).equals(extraEducation[k])) {
+                                checkedStateEducation[k] = true;
+                            }
+                        }
+                    }
+
+                }
+
+                for (int i = 0; i < (courses.length); i++) {
+                    if (checkedStateCourses[i] == true && !coursesArray.contains(courses[i].toString())) {
+                        coursesArray.add(courses[i].toString());
+                    }
+                }
+
+
+
+                for (int i = 0; i < (extraEducation.length); i++) {
+                    if (checkedStateEducation[i] == true && !extraEducationArray.contains(extraEducation[i].toString())) {
+                        extraEducationArray.add(extraEducation[i].toString());
+                    }
+                }
+
+
                 calculatedGrade = grade_calculation();
+                if (calculatedGrade == 0){
+                    Toast.makeText(Add_information.this, "Please type in your score.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 storeVariables();
                 Toast.makeText(Add_information.this, "Your average grade is: " + calculatedGrade, Toast.LENGTH_LONG).show();
                 Intent i = new Intent(Add_information.this, Menu.class);
@@ -251,7 +294,6 @@ public class Add_information extends AppCompatActivity {
         dropdownCourses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                coursesArray = new ArrayList<String>();
                 //resets if the user goes in and out
                 alertCourses();
             }
@@ -290,6 +332,11 @@ public class Add_information extends AppCompatActivity {
         np.setMaxValue(2017);
         //Sets the start value of Numberpicker
         np.setValue(1995);
+        int b = UserInfo.userInfo.getBirthYear();
+        if (b != 0){
+            np.setValue(b);
+            year = b;
+        }
         np.setWrapSelectorWheel(true);
         //Set a value change listener for NumberPicker
         np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -423,9 +470,11 @@ public class Add_information extends AppCompatActivity {
         initFagbase();
         double grade_calculated = 0;
         double realFagPoints = 0;
-
-        grade_calculated = (temporaryGrade) * 10;
-        grade_calculated = round(grade_calculated, 2);
+        this.extraPoints = 0;
+        grade_calculated = round(temporaryGrade, 2);
+        if (grade_calculated == 0){
+            return 0;
+        }
 
         if (extraEducationArray.size() > 0) {
             this.extraPoints = 2;
@@ -439,17 +488,37 @@ public class Add_information extends AppCompatActivity {
         if (realFagPoints > 4) {
             realFagPoints = 4;
         }
-        grade_calculated += (agePoints(year) + extraPoints + realFagPoints);
-        calculatedGrade = grade_calculated;
 
 
-        return grade_calculated;
+        calculatedGrade = (agePoints(year) + extraPoints + realFagPoints) + grade_calculated;
+        UserInfo.userInfo.setCalculatedGrade(calculatedGrade);
+
+        return calculatedGrade;
 
 
     }
 
     //alertDialog for selecting courses
     private void alertCourses() {
+        ArrayList<String> chosen_courses = new ArrayList<String>();
+        coursesArray = new ArrayList<String>();
+        chosen_courses = UserInfo.userInfo.getCourses();
+        for (int j = 0; j < checkedStateCourses.length;j++){
+            checkedStateCourses[j] = false;
+        }
+        if ((chosen_courses != null)) {
+            for (int i = 0; i < chosen_courses.size(); i++) {
+                for (int k = 0; k < courses.length; k++) {
+                    if (chosen_courses.get(i).equals(courses[k]) || (checkedStateCourses[k] == true)) {
+                        checkedStateCourses[k] = true;
+                    } else {
+                        checkedStateCourses[k] = false;
+                    }
+                }
+            }
+        }
+
+
         AlertDialog.Builder builder1 = new AlertDialog.Builder(Add_information.this)
                 .setTitle("Choose courses")
                 .setMultiChoiceItems(courses, checkedStateCourses, new DialogInterface.OnMultiChoiceClickListener() {
@@ -464,10 +533,14 @@ public class Add_information extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         for (int i = 0; i < (courses.length); i++) {
-                            if (checkedStateCourses[i] == true) {
+                            if (checkedStateCourses[i] == true && (!coursesArray.contains(courses[i]))) {
                                 coursesArray.add(courses[i].toString());
+                            } else {
+                                coursesArray.remove(courses[i].toString());
                             }
                         }
+
+                        UserInfo.userInfo.setCourses(coursesArray);
 
                         Toast.makeText(getApplicationContext(), "Selected courses: "
                                 + coursesArray.toString(), Toast.LENGTH_SHORT).show();
@@ -475,6 +548,9 @@ public class Add_information extends AppCompatActivity {
 
                         if (coursesArray.contains("Matematikk R2")) {
                             alertR2Grade();
+                        } else {
+                            R2Grade = 0;
+                            UserInfo.userInfo.setR2Grade(0);
                         }
 
                         //alertdialog_r2grade.dismiss(); if we want it to be able to close the window if the user presses outside the alert
@@ -486,12 +562,33 @@ public class Add_information extends AppCompatActivity {
 
     //alertDialog for selecting extra education
     private void alertExtraEducation() {
+        ArrayList<String> chosen_education = new ArrayList<String>();
+        extraEducationArray = new ArrayList<String>();
+        chosen_education = UserInfo.userInfo.getExtraEducation();
+
+        for (int j = 0; j < checkedStateEducation.length;j++){
+            checkedStateEducation[j] = false;
+        }
+        if ((chosen_education != null)) {
+
+            for (int i = 0; i < chosen_education.size(); i++) {
+                for (int k = 0; k < extraEducation.length; k++) {
+                    if (chosen_education.get(i).equals(extraEducation[k]) || (checkedStateEducation[k] == true)) {
+                        checkedStateEducation[k] = true;
+                    } else {
+                        checkedStateEducation[k] = false;
+                    }
+                }
+
+            }
+
+        }
+
         AlertDialog.Builder builder2 = new AlertDialog.Builder(Add_information.this)
                 .setTitle("Choose education")
                 .setMultiChoiceItems(extraEducation, checkedStateEducation, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-
                         checkedStateEducation[which] = isChecked;
                     }
                 }).setPositiveButton("I have selected all my education", new DialogInterface.OnClickListener() {
@@ -500,10 +597,15 @@ public class Add_information extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         for (int i = 0; i < (extraEducation.length); i++) {
-                            if (checkedStateEducation[i] == true) {
+                            if (checkedStateEducation[i] == true &&(!extraEducationArray.contains(extraEducation[i]))) {
                                 extraEducationArray.add(extraEducation[i].toString());
+                            } else {
+                                extraEducationArray.remove(extraEducation[i].toString());
                             }
                         }
+                        UserInfo.userInfo.setExtraEducation(extraEducationArray);
+
+
 
                         Toast.makeText(getApplicationContext(), "Selected education: "
                                 + extraEducationArray.toString(), Toast.LENGTH_SHORT).show();
@@ -527,6 +629,7 @@ public class Add_information extends AppCompatActivity {
         final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
         np.setMaxValue(6); // max value 6
         np.setMinValue(1);   // min value 1
+        np.setValue(3);
         np.setWrapSelectorWheel(false);
         np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -537,6 +640,10 @@ public class Add_information extends AppCompatActivity {
         r2grade_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                UserInfo.userInfo.setR2Grade(R2Grade);
+                if (R2Grade == 0){
+                    R2Grade = 3;
+                }
                 Toast.makeText(getApplicationContext(), "Grade " + R2Grade + " registered", Toast.LENGTH_SHORT).show();
                 d.dismiss(); // dismiss the alertdialog_r2grade
             }
@@ -562,10 +669,11 @@ public class Add_information extends AppCompatActivity {
 
                 if ((totalGrades) == 0) {
                     temporaryGrade = 0;
+
                 } else {
                     double totalScore = (1 * number1grade + 2 * number2grade + 3 * number3grade + 4 * number4grade + 5 * number5grade + 6 * number6grade);
                     Toast.makeText(getApplicationContext(), "Grades saved.", Toast.LENGTH_SHORT).show();
-                    temporaryGrade = (totalScore / (totalGrades));
+                    temporaryGrade = (totalScore / (totalGrades))*10;
 
                 }
                 d.dismiss();
@@ -615,6 +723,7 @@ public class Add_information extends AppCompatActivity {
                 if (number1grade < 0) {
                     number1grade = 0;
                 }
+                UserInfo.userInfo.setNumber1grade(number1grade);
                 number1grade_textview.setText(Integer.toString(number1grade));
             }
         });
@@ -624,6 +733,7 @@ public class Add_information extends AppCompatActivity {
             public void onClick(View v) {
                 number1grade++;
                 number1grade_textview.setText(Integer.toString(number1grade));
+                UserInfo.userInfo.setNumber1grade(number1grade);
             }
         });
 
@@ -634,6 +744,7 @@ public class Add_information extends AppCompatActivity {
                 if (number2grade < 0) {
                     number2grade = 0;
                 }
+                UserInfo.userInfo.setNumber2grade(number2grade);
                 number2grade_textview.setText(Integer.toString(number2grade));
             }
         });
@@ -643,6 +754,7 @@ public class Add_information extends AppCompatActivity {
             public void onClick(View v) {
                 number2grade++;
                 number2grade_textview.setText(Integer.toString(number2grade));
+                UserInfo.userInfo.setNumber2grade(number2grade);
             }
         });
 
@@ -653,6 +765,7 @@ public class Add_information extends AppCompatActivity {
                 if (number3grade < 0) {
                     number3grade = 0;
                 }
+                UserInfo.userInfo.setNumber3grade(number3grade);
                 number3grade_textview.setText(Integer.toString(number3grade));
             }
         });
@@ -661,6 +774,7 @@ public class Add_information extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 number3grade++;
+                UserInfo.userInfo.setNumber3grade(number3grade);
                 number3grade_textview.setText(Integer.toString(number3grade));
             }
         });
@@ -672,6 +786,7 @@ public class Add_information extends AppCompatActivity {
                 if (number4grade < 0) {
                     number4grade = 0;
                 }
+                UserInfo.userInfo.setNumber4grade(number4grade);
                 number4grade_textview.setText(Integer.toString(number4grade));
             }
         });
@@ -680,6 +795,7 @@ public class Add_information extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 number4grade++;
+                UserInfo.userInfo.setNumber4grade(number4grade);
                 number4grade_textview.setText(Integer.toString(number4grade));
             }
         });
@@ -691,6 +807,7 @@ public class Add_information extends AppCompatActivity {
                 if (number5grade < 0) {
                     number5grade = 0;
                 }
+                UserInfo.userInfo.setNumber5grade(number5grade);
                 number5grade_textview.setText(Integer.toString(number5grade));
             }
         });
@@ -699,6 +816,7 @@ public class Add_information extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 number5grade++;
+                UserInfo.userInfo.setNumber5grade(number5grade);
                 number5grade_textview.setText(Integer.toString(number5grade));
             }
         });
@@ -709,6 +827,7 @@ public class Add_information extends AppCompatActivity {
                 number6grade--;
                 if (number6grade < 0) {
                     number6grade = 0;
+                    UserInfo.userInfo.setNumber6grade(number6grade);
                 }
                 number6grade_textview.setText(Integer.toString(number6grade));
             }
@@ -718,6 +837,7 @@ public class Add_information extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 number6grade++;
+                UserInfo.userInfo.setNumber6grade(number6grade);
                 number6grade_textview.setText(Integer.toString(number6grade));
             }
         });
@@ -768,8 +888,20 @@ public class Add_information extends AppCompatActivity {
                     }
                     double num = Double.parseDouble(grade);
                     if (num > 0 && num <= 6.00) {
-                        temporaryGrade = num;
+                        temporaryGrade = num*10;
                         Toast.makeText(getApplicationContext(), "Grades saved.", Toast.LENGTH_SHORT).show();
+                        number1grade = 0;
+                        number2grade = 0;
+                        number3grade = 0;
+                        number4grade = 0;
+                        number5grade = 0;
+                        number6grade = 0;
+                        UserInfo.userInfo.setNumber1grade(0);
+                        UserInfo.userInfo.setNumber2grade(0);
+                        UserInfo.userInfo.setNumber3grade(0);
+                        UserInfo.userInfo.setNumber4grade(0);
+                        UserInfo.userInfo.setNumber5grade(0);
+                        UserInfo.userInfo.setNumber6grade(0);
                         d.dismiss();
                     } else {
                         Toast.makeText(Add_information.this, "Type a number between 1 and 6", Toast.LENGTH_SHORT).show();
