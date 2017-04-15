@@ -48,7 +48,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
-//hvis man trykker submit uten å åpne "add grades" så vil ikke det bli lagt til pga. temporarygrade
+
 
 
 @RunWith(Enclosed.class)
@@ -236,6 +236,10 @@ public class Add_information extends AppCompatActivity {
 
 
                 calculatedGrade = grade_calculation();
+                if (calculatedGrade == 0){
+                    Toast.makeText(Add_information.this, "Please type in your score.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 storeVariables();
                 Toast.makeText(Add_information.this, "Your average grade is: " + calculatedGrade, Toast.LENGTH_LONG).show();
                 Intent i = new Intent(Add_information.this, Menu.class);
@@ -468,6 +472,9 @@ public class Add_information extends AppCompatActivity {
         double realFagPoints = 0;
         this.extraPoints = 0;
         grade_calculated = round(temporaryGrade, 2);
+        if (grade_calculated == 0){
+            return 0;
+        }
 
         if (extraEducationArray.size() > 0) {
             this.extraPoints = 2;
@@ -883,6 +890,18 @@ public class Add_information extends AppCompatActivity {
                     if (num > 0 && num <= 6.00) {
                         temporaryGrade = num*10;
                         Toast.makeText(getApplicationContext(), "Grades saved.", Toast.LENGTH_SHORT).show();
+                        number1grade = 0;
+                        number2grade = 0;
+                        number3grade = 0;
+                        number4grade = 0;
+                        number5grade = 0;
+                        number6grade = 0;
+                        UserInfo.userInfo.setNumber1grade(0);
+                        UserInfo.userInfo.setNumber2grade(0);
+                        UserInfo.userInfo.setNumber3grade(0);
+                        UserInfo.userInfo.setNumber4grade(0);
+                        UserInfo.userInfo.setNumber5grade(0);
+                        UserInfo.userInfo.setNumber6grade(0);
                         d.dismiss();
                     } else {
                         Toast.makeText(Add_information.this, "Type a number between 1 and 6", Toast.LENGTH_SHORT).show();
