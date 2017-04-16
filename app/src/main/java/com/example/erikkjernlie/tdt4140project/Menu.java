@@ -16,8 +16,11 @@ package com.example.erikkjernlie.tdt4140project;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -139,13 +142,21 @@ public class Menu extends AppCompatActivity {
         }
 
         if (UserInfo.userInfo.getBirthYear() != 0) {
-            t2.setText("You are born in " + UserInfo.userInfo.getBirthYear() + ".");
+            String tempString = "Birthyear: ";
+            int str_length = tempString.length();
+            tempString = tempString + UserInfo.userInfo.getBirthYear();
+            SpannableString spanString = new SpannableString(tempString);
+            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, str_length, 0);
+            t2.setText(spanString);
         } else {
             t2.setVisibility(View.GONE);
         }
 
         if (UserInfo.userInfo.getCourses() != null) {
-            t7.setText("You have had the following courses that gives extra points:");
+            String tempString = "Courses that award extra points:";
+            SpannableString spanString = new SpannableString(tempString);
+            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, tempString.length(), 0);
+            t7.setText(spanString);
             String array = UserInfo.userInfo.getCourses().toString();
             array = array.substring(1, array.length() - 1);
             t3.setText(array);
@@ -154,12 +165,20 @@ public class Menu extends AppCompatActivity {
             t7.setVisibility(View.GONE);
         }
         if (UserInfo.userInfo.getR2Grade() != 0) {
-            t4.setText("You got an " + UserInfo.userInfo.getR2Grade() + " in R2");
+            String tempString = "Matematikk R2 grade: ";
+            int str_length = tempString.length();
+            tempString = tempString + UserInfo.userInfo.getR2Grade() + "\n";
+            SpannableString spanString = new SpannableString(tempString);
+            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, str_length, 0);
+            t4.setText(spanString);
         } else {
-            t4.setVisibility(View.GONE);
+            t4.setText("\n");
         }
         if (UserInfo.userInfo.getExtraEducation() != null) {
-            t8.setText("You have also had:");
+            String tempString = "Experience that awads extra points:";
+            SpannableString spanString = new SpannableString(tempString);
+            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, tempString.length(), 0);
+            t8.setText(spanString);
             String array = UserInfo.userInfo.getExtraEducation().toString();
             array = array.substring(1, array.length() - 1);
             t5.setText(array);
@@ -169,8 +188,12 @@ public class Menu extends AppCompatActivity {
         }
 
         if (UserInfo.userInfo.getCalculatedGrade() != 0.0) {
-            t6.setText("You score is  " + UserInfo.userInfo.getCalculatedGrade() + ".");
-
+            String tempString = "Grade score: ";
+            int str_length = tempString.length();
+            tempString = tempString + UserInfo.userInfo.getCalculatedGrade();
+            SpannableString spanString = new SpannableString(tempString);
+            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, str_length, 0);
+            t6.setText(spanString);
         } else {
             t6.setVisibility(View.GONE);
         }

@@ -96,7 +96,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:clickable="true"
-        android:text="Change information about myself"/>
+        android:text="Change user information"/>
 
     <View android:layout_height="2px"
         android:layout_width="fill_parent"
@@ -113,7 +113,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:clickable="true"
-        android:text="Change password via e-mail"/>
+        android:text="Change user password"/>
     <View android:layout_height="2px"
         android:layout_width="fill_parent"
         android:background="#000000"

@@ -2,6 +2,7 @@ package com.example.erikkjernlie.tdt4140project;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -78,8 +79,9 @@ public class Recommendation extends AppCompatActivity {
             }
 
             b = b.substring(0, b.length() - 2) + ".";
-
-            because.setText("We think you would like " + beststudy + " because of your following interests:\n" + beststudy_interests);
+            String beststudyinterests = beststudy_interests.toString();
+            beststudyinterests = beststudyinterests.substring(1, beststudyinterests.length()-1);
+           because.setText("because of your following interests:\n" + beststudyinterests);
             if (beststudy.toLowerCase().equals("engineering and ict")) {
                 picture.setImageResource(R.drawable.hybrida_logo);
             } else if (beststudy.toLowerCase().equals("industrial economics and technology management and ict")) {
