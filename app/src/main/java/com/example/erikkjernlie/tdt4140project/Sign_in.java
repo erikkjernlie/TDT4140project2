@@ -61,38 +61,52 @@ public class Sign_in extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
         Firebase.setAndroidContext(this);
-        studyPrograms = new HashMap<>();
-
-        logInEmail = (EditText) findViewById(R.id.enterEmailAddress);
-        logInPassword = (EditText) findViewById(R.id.enterPassword);
-
-        logInEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus && !logInPassword.hasFocus()) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-        logInPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus && !logInEmail.hasFocus()) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-
-
-
         firebaseAuth = firebaseAuth.getInstance();
-
         ProgressDialog progressDialog = new ProgressDialog(this);
+        if (firebaseAuth.getCurrentUser() != null) {
+            setContentView(R.layout.activity_splashscreen);
+            Toast.makeText(Sign_in.this, "Logging in...", Toast.LENGTH_LONG).show();
+            getUserInfoDatabase();
+            getStudyInfoDatabase();
+            getUnionInfoDatabase();
 
-        initButtons();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //sender deg videre til homescreen
+                    Intent homeIntent = new Intent(Sign_in.this, Menu.class);
+                    startActivity(homeIntent);
+                    Toast.makeText(Sign_in.this, "Successfully logged in!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }, 3000);
+        } else {
+            setContentView(R.layout.activity_sign_in);
+            studyPrograms = new HashMap<>();
 
+            logInEmail = (EditText) findViewById(R.id.enterEmailAddress);
+            logInPassword = (EditText) findViewById(R.id.enterPassword);
+
+            logInEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus && !logInPassword.hasFocus()) {
+                        hideKeyboard(v);
+                    }
+                }
+            });
+            logInPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus && !logInEmail.hasFocus()) {
+                        hideKeyboard(v);
+                    }
+                }
+            });
+
+            initButtons();
+            }
     }
 
     private void initButtons(){

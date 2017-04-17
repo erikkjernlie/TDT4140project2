@@ -27,7 +27,7 @@ android:layout_height="match_parent" android:layout_gravity="center"
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="You are recommended"
+                android:text="We think you might be interested in"
                 android:textSize="15dp"
                 android:paddingTop="10dp"/>
 
