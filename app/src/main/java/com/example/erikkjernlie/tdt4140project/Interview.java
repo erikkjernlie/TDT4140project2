@@ -75,7 +75,6 @@ public class Interview {
         return false;
     }
 
-
     public String getQuestion() {
         Random random = new Random();
 
@@ -87,7 +86,6 @@ public class Interview {
         lastInterest = interest;
         return prompt + interest + "?";
     }
-
 
     private boolean checkEnoughInfo() {
         // Method to check if we have enough info to recommend a suitable study
