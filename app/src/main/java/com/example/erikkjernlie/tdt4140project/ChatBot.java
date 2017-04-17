@@ -78,6 +78,7 @@ public class ChatBot extends AppCompatActivity {
 
     private Interview interview = new Interview();
 
+        // comment added to create mergeconflict
 
     FirebaseAuth firebaseAuth; // should be private? JØRGEN
     Firebase mRefUsers; // should be private? JØRGEN
