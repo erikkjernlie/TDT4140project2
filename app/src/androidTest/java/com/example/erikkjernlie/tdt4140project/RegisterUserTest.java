@@ -1,6 +1,7 @@
 /** RegisterUserTest
  *
- * GUI test for the specific user on the register-activity.
+ * GUI test for the Register-function
+ * For more details see the README in the test below
  *
  * Created by Herman Horn
  * Copyright © uniBOT
@@ -34,9 +35,12 @@ import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -47,15 +51,38 @@ public class RegisterUserTest {
 
     @Test
     public void registerUserTest() {
+        /*
+            ---- README -----
+
+            Deletes the testregister-user if already exists
+            Registers the user and makes sure the user registration process is completed
+            with all relevant information in the addInfo-window being entered correctly
+
+            NOTE: REQUIRES THAT THERE IS NO ACTIVE USER ALREADT LOGGED IN BEFORE RUNNING THE TEST
+                  If the test moves straight to the menu and fails, you are not propperly logged out
+
+            ---- END OF README ---
+         */
 
         try {
-            FirebaseAuth.getInstance().signInWithEmailAndPassword("test@user.com", "testuser");
+            FirebaseAuth.getInstance().signInWithEmailAndPassword("testregister@user.com", "test1234");
             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
             user.delete();
         } catch (Exception e) {
-
         }
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(R.id.switchLoginToRegister), isDisplayed()));
+        appCompatButton.perform(click());
+
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
@@ -65,38 +92,20 @@ public class RegisterUserTest {
             e.printStackTrace();
         }
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.switchLoginToRegister), withText("Register"), isDisplayed()));
-        appCompatButton.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.enterEmailAddress), isDisplayed()));
-        appCompatEditText.perform(click());
+        appCompatEditText.perform(replaceText("testregister@user.com"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.enterEmailAddress), isDisplayed()));
-        appCompatEditText2.perform(replaceText("test@user.com"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText3 = onView(
+        ViewInteraction appCompatEditText5 = onView(
                 allOf(withId(R.id.enterPassword1), isDisplayed()));
-        appCompatEditText3.perform(replaceText("testuser"), closeSoftKeyboard());
+        appCompatEditText5.perform(replaceText("test1234"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText4 = onView(
+        ViewInteraction appCompatEditText6 = onView(
                 allOf(withId(R.id.enterPassword2), isDisplayed()));
-        appCompatEditText4.perform(replaceText("testuser"), closeSoftKeyboard());
-
+        appCompatEditText6.perform(replaceText("test1234"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.registerBtn), withText("Register"), isDisplayed()));
+                allOf(withId(R.id.registerBtn), isDisplayed()));
         appCompatButton2.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
@@ -108,15 +117,166 @@ public class RegisterUserTest {
             e.printStackTrace();
         }
 
+        ViewInteraction imageButton = onView(
+                allOf(withId(R.id.man), isDisplayed()));
+        imageButton.perform(click());
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.cbPicView),
+                        isDisplayed()));
+        textView.check(matches(isDisplayed()));
+
+        ViewInteraction imageButton2 = onView(
+                allOf(withId(R.id.man),
+                        isDisplayed()));
+        imageButton2.check(matches(isDisplayed()));
+
+        ViewInteraction imageButton3 = onView(
+                allOf(withId(R.id.female),
+                        isDisplayed()));
+        imageButton3.check(matches(isDisplayed()));
+
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.birthYear),
+                        isDisplayed()));
+        textView2.check(matches(isDisplayed()));
+
+        ViewInteraction editText = onView(
+                allOf(IsInstanceOf.<View>instanceOf(android.widget.EditText.class),
+                        isDisplayed()));
+        editText.check(matches(isDisplayed()));
+
+
         ViewInteraction button = onView(
-                allOf(withId(R.id.signOut),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        1),
-                                9),
+                allOf(withId(R.id.gradeBtn),
                         isDisplayed()));
         button.check(matches(isDisplayed()));
+
+        ViewInteraction button2 = onView(
+                allOf(withId(R.id.averageBtn),
+                        isDisplayed()));
+        button2.check(matches(isDisplayed()));
+
+        ViewInteraction button3 = onView(
+                allOf(withId(R.id.dropdownCourses),
+                        isDisplayed()));
+        button3.check(matches(isDisplayed()));
+
+        ViewInteraction button4 = onView(
+                allOf(withId(R.id.dropdownExtrapoints),
+                        isDisplayed()));
+        button4.check(matches(isDisplayed()));
+
+        ViewInteraction button5 = onView(
+                allOf(withId(R.id.submit),
+                        isDisplayed()));
+        button5.check(matches(isDisplayed()));
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep(6000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction appCompatButton3 = onView(
+                allOf(withId(R.id.gradeBtn), isDisplayed()));
+        appCompatButton3.perform(click());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction textView3 = onView(
+                allOf(withId(R.id.add_grades),
+                        isDisplayed()));
+        textView3.check(matches(isDisplayed()));
+
+        ViewInteraction appCompatButton4 = onView(
+                allOf(withId(R.id.plus6), isDisplayed()));
+        appCompatButton4.perform(click());
+
+        ViewInteraction appCompatTextView = onView(
+                allOf(withId(R.id.add_grades), isDisplayed()));
+        appCompatTextView.perform(click());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction appCompatButton5 = onView(
+                allOf(withId(R.id.dropdownCourses), isDisplayed()));
+        appCompatButton5.perform(click());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction button6 = onView(
+                allOf(withId(android.R.id.button1),
+                        isDisplayed()));
+        button6.check(matches(isDisplayed()));
+
+        ViewInteraction appCompatButton6 = onView(
+                allOf(withId(android.R.id.button1),
+                        isDisplayed()));
+        appCompatButton6.perform(click());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction appCompatButton7 = onView(
+                allOf(withId(R.id.dropdownExtrapoints), isDisplayed()));
+        appCompatButton7.perform(click());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction button7 = onView(
+                allOf(withId(android.R.id.button1),
+                        isDisplayed()));
+        button7.check(matches(isDisplayed()));
+
+        ViewInteraction appCompatButton8 = onView(
+                allOf(withId(android.R.id.button1),
+                        isDisplayed()));
+        appCompatButton8.perform(click());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction appCompatButton9 = onView(
+                allOf(withId(R.id.submit), isDisplayed()));
+        appCompatButton9.perform(click());
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction button10 = onView(
+                allOf(withId(R.id.signOut),
+                        isDisplayed()));
+        button10.check(matches(isDisplayed()));
+
+        ViewInteraction appCompatButton20 = onView(
+                allOf(withId(R.id.signOut), withText("Sign out"), isDisplayed()));
+        appCompatButton20.perform(click());
     }
 
     private static Matcher<View> childAtPosition(

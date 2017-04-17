@@ -37,9 +37,17 @@ public class InitialTest extends ActivityInstrumentationTestCase2<Menu> {
 
     @Test
     public void testLogoIsDisplayed() {
+        assertTrue(activity.findViewById(R.id.aboutUnibot).isClickable());
+        assertTrue(activity.findViewById(R.id.aboutUs).isClickable());
+        assertTrue(activity.findViewById(R.id.signOut).isClickable());
+        assertTrue(activity.findViewById(R.id.cogwheel).isClickable());
+        assertTrue(activity.findViewById(R.id.explore).isClickable());
+        assertTrue(activity.findViewById(R.id.recommendation).isClickable());
 
 
-        assertTrue(activity.findViewById(R.id.register).isClickable());
+
+
+
     }
 
 }

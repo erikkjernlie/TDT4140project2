@@ -1,6 +1,7 @@
-/** LogInTextTest
+/** SignInUserTest
  *
- * GUI test for the specific user on the login-activity.
+ * GUI test for the sign in function.
+ * For more detailed information, go to the README below
  *
  * Created by Herman Horn
  * Copyright © uniBOT
@@ -17,6 +18,8 @@ import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -37,40 +40,57 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class LogInUserTest {
+public class SignInUserTest {
 
     @Rule
     public ActivityTestRule<SplashScreen> mActivityTestRule = new ActivityTestRule<>(SplashScreen.class);
 
     @Test
     public void logInUserTest() {
+        /*
+             ---- README -----
+
+             If a user is already signed in, this test will open the app, wait 10 seconds and see if
+             the sign out button is displayed to the user and working
+
+             If no user is signed in, this test will open the app, wait 10 seconds,
+             check that the user login elements exist, enter login details for the test-user
+             into these elements and press the "log in"-button. After 10 seconds, it will check
+             if the sign out button is displayed to the user and working
+
+             This accounts for all possible login-scenarios
+
+             ---- END OF README -----
+        */
+
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(6000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() == null) {
+            ViewInteraction appCompatEditText4 = onView(
+                    allOf(withId(R.id.enterEmailAddress), isDisplayed()));
+            appCompatEditText4.perform(replaceText("test@user.com"), closeSoftKeyboard());
 
+            ViewInteraction appCompatEditText5 = onView(
+                    allOf(withId(R.id.enterPassword), isDisplayed()));
+            appCompatEditText5.perform(replaceText("testuser"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.enterEmailAddress), isDisplayed()));
-        appCompatEditText4.perform(replaceText("test@user.com"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText5 = onView(
-                allOf(withId(R.id.enterPassword), isDisplayed()));
-        appCompatEditText5.perform(replaceText("testuser"), closeSoftKeyboard());
-
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.logInBtn), isDisplayed()));
-        appCompatButton.perform(click());
+            ViewInteraction appCompatButton = onView(
+                    allOf(withId(R.id.logInBtn), isDisplayed()));
+            appCompatButton.perform(click());
+        }
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(6000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

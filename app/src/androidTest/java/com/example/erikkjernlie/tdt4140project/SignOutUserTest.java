@@ -1,6 +1,7 @@
-/** SignOutTest
+/** SignOutUserTest
  *
  * GUI test for the sign-out-function
+ * For more details see the README in the test below
  *
  * Created by Herman Horn
  * Copyright © uniBOT
@@ -16,6 +17,8 @@ import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -37,50 +40,56 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class SignOutTest {
+public class SignOutUserTest {
 
     @Rule
     public ActivityTestRule<SplashScreen> mActivityTestRule = new ActivityTestRule<>(SplashScreen.class);
 
     @Test
     public void signOutTest() {
+        /*
+            If no user is logged in, logs in with the test user and checks if the sign out button is visible
+            Clicks the sign out button and checks that the log in button is visible
+
+            If a user is already logged in, directly looks for the sign out button, presses it and
+            checks that the log in button is visible
+
+         */
+
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(6000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.enterEmailAddress), isDisplayed()));
-        appCompatEditText4.perform(replaceText("test@user.com"), closeSoftKeyboard());
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() == null) {
+            ViewInteraction appCompatEditText4 = onView(
+                    allOf(withId(R.id.enterEmailAddress), isDisplayed()));
+            appCompatEditText4.perform(replaceText("test@user.com"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText5 = onView(
-                allOf(withId(R.id.enterPassword), isDisplayed()));
-        appCompatEditText5.perform(replaceText("testuser"), closeSoftKeyboard());
+            ViewInteraction appCompatEditText5 = onView(
+                    allOf(withId(R.id.enterPassword), isDisplayed()));
+            appCompatEditText5.perform(replaceText("testuser"), closeSoftKeyboard());
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.logInBtn), withText("Log in"), isDisplayed()));
-        appCompatButton.perform(click());
-
+            ViewInteraction appCompatButton = onView(
+                    allOf(withId(R.id.logInBtn), withText("Log in"), isDisplayed()));
+            appCompatButton.perform(click());
+        }
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(6000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         ViewInteraction button = onView(
                 allOf(withId(R.id.signOut),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        1),
-                                9),
                         isDisplayed()));
         button.check(matches(isDisplayed()));
 
@@ -99,11 +108,6 @@ public class SignOutTest {
 
         ViewInteraction button2 = onView(
                 allOf(withId(R.id.logInBtn),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        3),
-                                1),
                         isDisplayed()));
         button2.check(matches(isDisplayed()));
 

@@ -1,6 +1,7 @@
-/** AboutUnibotTest
+/** MenuRecommendationTest
  *
- * GUI test for the AboutUnibot-activity
+ * GUI test for the Recommendation function on the main menu
+ * For more details see the README in the test below
  *
  * Created by Herman Horn
  * Copyright © uniBOT
@@ -16,6 +17,8 @@ import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -37,45 +40,57 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AboutUnibotTest {
+public class MenuRecommendationTest {
 
     @Rule
     public ActivityTestRule<SplashScreen> mActivityTestRule = new ActivityTestRule<>(SplashScreen.class);
 
     @Test
-    public void aboutUnibotTest() {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(6000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void recommendationTest() {
 
-        ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.enterEmailAddress), isDisplayed()));
-        appCompatEditText4.perform(replaceText("test@user.com"), closeSoftKeyboard());
+        /*
+            ---- README ----
 
-        ViewInteraction appCompatEditText5 = onView(
-                allOf(withId(R.id.enterPassword), isDisplayed()));
-        appCompatEditText5.perform(replaceText("testuser"), closeSoftKeyboard());
+            Navigates to the main screen (either directly or by logging in...)
+            Clicks "Recommendation"
+            Makes sure the recommendation-page opens correctly
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.logInBtn), withText("Log in"), isDisplayed()));
-        appCompatButton.perform(click());
+            ---- END OF README ----
+         */
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(6000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() == null) {
+            ViewInteraction appCompatEditText4 = onView(
+                    allOf(withId(R.id.enterEmailAddress), isDisplayed()));
+            appCompatEditText4.perform(replaceText("test@user.com"), closeSoftKeyboard());
 
+            ViewInteraction appCompatEditText5 = onView(
+                    allOf(withId(R.id.enterPassword), isDisplayed()));
+            appCompatEditText5.perform(replaceText("testuser"), closeSoftKeyboard());
+
+            ViewInteraction appCompatButton = onView(
+                    allOf(withId(R.id.logInBtn), isDisplayed()));
+            appCompatButton.perform(click());
+        }
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.aboutUnibot), withText("About unibot"), isDisplayed()));
+                allOf(withId(R.id.recommendation), isDisplayed()));
         appCompatButton2.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
@@ -86,52 +101,32 @@ public class AboutUnibotTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        if (UserInfo.userInfo.getInterests().size() > 1) {
+            ViewInteraction imageView = onView(
+                    allOf(withId(R.id.linjeforening_rec),
+                            isDisplayed()));
+            imageView.check(matches(isDisplayed()));
 
-        ViewInteraction button = onView(
-                allOf(withId(R.id.btn_back),
-                        isDisplayed()));
-        button.check(matches(isDisplayed()));
+            ViewInteraction textView = onView(
+                    allOf(withId(R.id.linje_rec),
+                            isDisplayed()));
+            textView.check(matches(isDisplayed()));
 
-        ViewInteraction button2 = onView(
-                allOf(withId(R.id.btn_next),
-                        isDisplayed()));
-        button2.check(matches(isDisplayed()));
+            ViewInteraction textView2 = onView(
+                    allOf(withId(R.id.why_rec),
+                            isDisplayed()));
+            textView2.check(matches(isDisplayed()));
 
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.btn_next), withText("NEXT"), isDisplayed()));
-        appCompatButton3.perform(click());
-
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.btn_next), withText("NEXT"), isDisplayed()));
-        appCompatButton4.perform(click());
-
-        ViewInteraction appCompatButton5 = onView(
-                allOf(withId(R.id.btn_next), withText("NEXT"), isDisplayed()));
-        appCompatButton5.perform(click());
-
-        ViewInteraction appCompatButton6 = onView(
-                allOf(withId(R.id.btn_next), withText("GOT IT"), isDisplayed()));
-        appCompatButton6.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(6000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            ViewInteraction textView3 = onView(
+                    allOf(withId(R.id.about_study_rec),
+                            isDisplayed()));
+            textView3.check(matches(isDisplayed()));
+        } else {
+            ViewInteraction textView3 = onView(
+                    allOf(withId(R.id.norec_text),
+                            isDisplayed()));
+            textView3.check(matches(isDisplayed()));
         }
-
-        ViewInteraction button3 = onView(
-                allOf(withId(R.id.signOut),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        1),
-                                9),
-                        isDisplayed()));
-        button3.check(matches(isDisplayed()));
-
     }
 
     private static Matcher<View> childAtPosition(
