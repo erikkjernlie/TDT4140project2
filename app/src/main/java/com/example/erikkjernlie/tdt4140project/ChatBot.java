@@ -78,6 +78,9 @@ public class ChatBot extends AppCompatActivity {
     private boolean interview = false; // if the user is doing the interview
     private String interest;
 
+
+    // comment added to create mergeconflict
+
     //gets the required access from API.AI a
     @Override
     public void onCreate(Bundle savedInstanceState) {
