@@ -1,5 +1,6 @@
 package com.example.erikkjernlie.tdt4140project;
 
+import android.app.Dialog;
 import android.content.Intent;
 
 import org.junit.After;
@@ -11,44 +12,56 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.shadows.ShadowDialog;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
 /**
- * Created by Jørgen on 05.04.2017.
+ * Created by Jørgen on 17.04.2017.
  */
+
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class Slideshow_about_unibotBtnTest {
+public class ChatBotBtnTest {
 
-    Slideshow_about_unibot sau;
+    ChatBot chat;
 
     @Before
     public void setUp() throws Exception {
-        sau = Robolectric.setupActivity(Slideshow_about_unibot.class);
+        chat = Robolectric.setupActivity(ChatBot.class);
     }
 
     @Test
     public void stateNotNullTest() throws Exception {
-        assertNotNull(sau);
+        assertNotNull(chat);
     }
 
     @Test
-    public void switchToMenuBtnTest() throws Exception {
-        sau.findViewById(R.id.btn_back).performClick();
+    public void backBtnTest() throws Exception {
+        chat.findViewById(R.id.back).performClick();
+        Intent expectedIntent = new Intent(chat, Menu.class);
 
-        Intent expectedIntent = new Intent(sau, Menu.class);
-
-        ShadowActivity shadowActivity = Shadows.shadowOf(sau);
+        ShadowActivity shadowActivity = Shadows.shadowOf(chat);
         Intent actualIntent = shadowActivity.getNextStartedActivity();
 
         assertTrue(actualIntent.filterEquals(expectedIntent));
     }
 
-    @After
-    public void tearDown () throws Exception {
-        sau = null;
+    @Test
+    public void helpBtnNotNullTest() throws Exception {
+        chat.findViewById(R.id.help).performClick();
+
+        Dialog alert = ShadowDialog.getLatestDialog();
+
+        assertNotNull(alert);
+
     }
+
+    @After
+    public void tearDown() throws Exception {
+        chat = null;
+    }
+
 }

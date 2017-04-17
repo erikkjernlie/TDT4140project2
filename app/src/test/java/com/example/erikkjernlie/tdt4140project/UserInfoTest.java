@@ -9,6 +9,8 @@
 package com.example.erikkjernlie.tdt4140project;
 
 
+import com.thoughtworks.xstream.mapper.Mapper;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class UserInfoTest  {
@@ -31,12 +34,17 @@ public class UserInfoTest  {
     }
 
     @Test
+    public void stateNotNullTest() throws Exception {
+        assertNotNull(u);
+    }
+
+    @Test
     public void testUserInfo() throws Exception {
         assertEquals(0,u.getBirthYear());
         ArrayList<String> c = new ArrayList<String>();
         c.add("IKT");
 
-        u = new UserInfo(1995, 5.6,c,c,'F',6,c);
+        u = new UserInfo(1995, 5.6, 0, 0, 0, 0, 0, 0, c, c,'F',6,c);
         System.out.println(u.toString());
         assertEquals("UserInfo{birthYear=1995, calculatedGrade=5.6, courses=[IKT], "+
                 "extraEducation=[IKT], gender=F, interests=[IKT], R2Grade=6}", u.toString());
@@ -87,20 +95,23 @@ public class UserInfoTest  {
     }
 
     @Test
-    public void getR2Grade() throws Exception {
+    public void getR2GradeTest() throws Exception {
         u.setR2Grade(6);
         assertEquals(6, u.getR2Grade());
         assertNotEquals(5, u.getR2Grade());
     }
 
     @Test
-    public void getGender() throws Exception {
+    public void getGenderTest() throws Exception {
         u.setGender('F');
         assertEquals('F', u.getGender());
         assertNotEquals('M', u.getGender());
     }
 
-
+    @Test(expected = IllegalStateException.class)
+    public void updateFirebaseFailTest() throws Exception {
+        u.updateFirebase();
+    }
 
     @After
     public void tearDown() throws Exception {

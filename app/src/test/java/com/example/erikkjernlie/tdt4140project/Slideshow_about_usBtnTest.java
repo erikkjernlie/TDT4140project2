@@ -12,6 +12,7 @@ import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
 /**
@@ -27,6 +28,11 @@ public class Slideshow_about_usBtnTest {
     @Before
     public void setUp() throws Exception {
         sau = Robolectric.setupActivity(Slideshow_about_us.class);
+    }
+
+    @Test
+    public void stateNotNullTest() throws Exception {
+        assertNotNull(sau);
     }
 
     @Test

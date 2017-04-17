@@ -29,27 +29,26 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.HashMap;
 
 public class Menu extends AppCompatActivity {
 
-    private Button register; //register button
+    private Button recommendation; //register button
     private Button explore; //explore button
     private Button aboutUnibot; //about button
-    FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth;
     private Button signOut;
     private Button aboutUs;
     private ImageView cogwheel;
-    private Firebase mRef;
-    private UserInfo user;
 
     public void initButtons() {
-        register = (Button) findViewById(R.id.register);
-        register.setOnClickListener(new View.OnClickListener() {
+        recommendation = (Button) findViewById(R.id.recommendation);
+        recommendation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent b = new Intent(Menu.this, Add_information.class);
+                Intent b = new Intent(Menu.this, Recommendation.class);
                 startActivity(b);
             }
         });
@@ -96,27 +95,18 @@ public class Menu extends AppCompatActivity {
                 alertSettings();
             }
         });
-
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        FirebaseApp.initializeApp(this);
-        initButtons();
-        Firebase.setAndroidContext(Menu.this);
 
-
-        //hvordan henter man info
-
-        getUserInfoDatabase();
         initButtons();
 
         //uncomment this when we want the alert just to appear the first time the app is started
 
     }
-
 
     public void alertSettings() {
         final Dialog d = new Dialog(Menu.this);
@@ -132,39 +122,39 @@ public class Menu extends AppCompatActivity {
         TextView t7 = (TextView) d.findViewById(R.id.courses_havehad);
         TextView t8 = (TextView) d.findViewById(R.id.extra_havehad);
 
-        if (this.user.getGender() == 'M') {
+        if (UserInfo.userInfo.getGender() == 'M') {
             img.setImageResource(R.drawable.man_selected);
 
-        } else if (this.user.getGender() == 'F') {
+        } else if (UserInfo.userInfo.getGender() == 'F') {
             img.setImageResource(R.drawable.female_selected);
 
         } else {
             img.setVisibility(View.GONE);
         }
 
-        if (this.user.getBirthYear() != 0) {
-            t2.setText("You are born in " + this.user.getBirthYear() + ".");
+        if (UserInfo.userInfo.getBirthYear() != 0) {
+            t2.setText("You are born in " + UserInfo.userInfo.getBirthYear() + ".");
         } else {
             t2.setVisibility(View.GONE);
         }
 
-        if (this.user.getCourses() != null) {
+        if (UserInfo.userInfo.getCourses() != null) {
             t7.setText("You have had the following courses that gives extra points:");
-            String array = this.user.getCourses().toString();
+            String array = UserInfo.userInfo.getCourses().toString();
             array = array.substring(1, array.length() - 1);
             t3.setText(array);
         } else {
             t3.setVisibility(View.GONE);
             t7.setVisibility(View.GONE);
         }
-        if (this.user.getR2Grade() != 0) {
-            t4.setText("You got an " + this.user.getR2Grade() + " in R2");
+        if (UserInfo.userInfo.getR2Grade() != 0) {
+            t4.setText("You got an " + UserInfo.userInfo.getR2Grade() + " in R2");
         } else {
             t4.setVisibility(View.GONE);
         }
-        if (this.user.getExtraEducation() != null) {
+        if (UserInfo.userInfo.getExtraEducation() != null) {
             t8.setText("You have also had:");
-            String array = this.user.getExtraEducation().toString();
+            String array = UserInfo.userInfo.getExtraEducation().toString();
             array = array.substring(1, array.length() - 1);
             t5.setText(array);
         } else {
@@ -172,13 +162,22 @@ public class Menu extends AppCompatActivity {
             t5.setVisibility(View.GONE);
         }
 
-        if (this.user.getCalculatedGrade() != 0.0) {
-            t6.setText("You score is  " + this.user.getCalculatedGrade() + ".");
+        if (UserInfo.userInfo.getCalculatedGrade() != 0.0) {
+            t6.setText("You score is  " + UserInfo.userInfo.getCalculatedGrade() + ".");
 
         } else {
             t6.setVisibility(View.GONE);
         }
 
+
+        TextView info = (TextView) d.findViewById(R.id.info);
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Menu.this, Add_information.class);
+                startActivity(i);
+            }
+        });
         d.show();
         TextView change_password = (TextView) d.findViewById(R.id.change_password);
         change_password.setOnClickListener(new View.OnClickListener() {
@@ -218,35 +217,10 @@ public class Menu extends AppCompatActivity {
                 } else {
                     Toast.makeText(Menu.this, "Type in your e-mail!", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
         });
         e.show();
     }
 
-    public void getUserInfoDatabase() {
-        firebaseAuth = firebaseAuth.getInstance();
 
-        mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
-                firebaseAuth.getCurrentUser().getUid());
-        mRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                setUser(dataSnapshot.getValue(UserInfo.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-    }
-
-    public void setUser(UserInfo user) {
-        this.user = user;
-    }
-
-    public UserInfo getUser(){
-        return this.user;
-    }
 }

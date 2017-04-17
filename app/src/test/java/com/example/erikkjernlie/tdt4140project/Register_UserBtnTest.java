@@ -19,6 +19,7 @@ import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowDialog;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
@@ -27,13 +28,25 @@ import static junit.framework.Assert.assertTrue;
  */
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class Register_userBtnTest {
+public class Register_UserBtnTest {
 
     Register_user reg;
 
     @Before
     public void setUp() throws Exception {
         reg = Robolectric.setupActivity(Register_user.class);
+    }
+
+    @Test
+    public void stateNotNullTest() throws Exception {
+        assertNotNull(reg);
+    }
+
+    @Test
+    public void registerUserNothingHappensTest() throws Exception {
+        Register_user reg2 = reg;
+        reg.findViewById(R.id.registerBtn).performClick();
+        assertEquals(reg2, reg);
     }
 
     @Test
