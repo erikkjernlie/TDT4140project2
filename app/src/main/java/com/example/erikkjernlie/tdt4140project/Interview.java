@@ -19,14 +19,19 @@ public class Interview {
 
     private boolean active;
     private ArrayList<String> prompts; // prompts
-    private ArrayList<String> interests = new ArrayList<>(); // interest from database
-    private ArrayList<String> usedInterests = new ArrayList<>();
-    private ArrayList<String> positiveResponse = new ArrayList<>(); // positive repsonses
+    private ArrayList<String> interests;
+    private ArrayList<String> usedInterests;
+    private ArrayList<String> positiveResponse;
+    private ArrayList<String> positiveInterests;
     private int questionCounter;
     private String lastInterest;
 
 
     public Interview() {
+        interests = new ArrayList<>();
+        usedInterests = new ArrayList<>();
+        positiveResponse = new ArrayList<>();
+        positiveInterests = new ArrayList<>();
         // adds prompts
         this.prompts = new ArrayList<>(Arrays.asList(new String[]{"Are you interested in ", "Do you like ", "Do you enjoy ", "Would you like to work with "})); // add more prompts here
         this.positiveResponse = new ArrayList<>(Arrays.asList(new String[]{"yes", "jepp", "a little bit", "yes, very much", "ja", "si", "definitely", "absolutely", "i think so",
@@ -57,13 +62,19 @@ public class Interview {
 
         usedInterests.add(lastInterest);
         if (positiveResponse.contains(message.toLowerCase())) {
+            positiveInterests.add(lastInterest);
             UserInfo.userInfo.getInterests().add(lastInterest);
             UserInfo.userInfo.updateFirebase(); // do only the last time? If you do it everytime, you make sure that if they leave the chat, the interests gets saved
         }
 
         if (isFinished(message)) {
             this.active = false;
-            return "We feel like we have enough information about you, and will now try find a study you might like";
+            String ut = "We feel like we have enough information about you, and will now try find a study you might like.\nThe interests that we added was: \n";
+
+            for (String interst : usedInterests) {
+                ut += interst + ", ";
+            }
+            return ut.substring(0, ut.length()-2) + ".";
         }
         questionCounter++;
         return getQuestion();
@@ -73,6 +84,7 @@ public class Interview {
         message = message.replace("\"", ""); // removes ""
         // checks if the user wants to stop the interview
         // if 'quit', or the user have said enough;
+
         if ((questionCounter > 5 && checkEnoughInfo()) || questionCounter > 15 || message.toLowerCase().equals("quit")) {
             return true;
         }
@@ -84,7 +96,8 @@ public class Interview {
 
         String prompt = prompts.get(random.nextInt(prompts.size()-1));
         String interest = interests.get(random.nextInt(interests.size()-1));
-        while (interest.equals(lastInterest)) {
+
+        while (interest.equals(lastInterest) || usedInterests.contains(interest)) {
             interest = interests.get(random.nextInt(interests.size()-1));
         }
         lastInterest = interest;

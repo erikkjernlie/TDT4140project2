@@ -316,7 +316,9 @@ public class ProcessAiResponse {
 
         // interests har alltid 'studies' så trenger ikke sjekke
         for (String interest : UserInfo.userInfo.getInterests()) {
-            ut += interest + ", ";
+            if (!interest.equals("Studies")){
+                ut += interest + ", ";
+            }
         }
 
         return ut.substring(0, ut.length() - 2) + ".";
