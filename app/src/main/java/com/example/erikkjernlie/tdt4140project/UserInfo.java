@@ -14,7 +14,6 @@ public class UserInfo {
 
     private int birthYear;
     private double calculatedGrade;
-    private double calculatedFirstTimeGrade;
     private int number1grade;
     private int number2grade;
     private int number3grade;
@@ -30,13 +29,6 @@ public class UserInfo {
     private FirebaseAuth firebaseAuth;
     public static UserInfo userInfo = new UserInfo();
     public static HashMap<String, StudyProgramInfo> studyPrograms = new HashMap<>();
-
-    public void setCalculatedFirstTimeGrade(double d) {
-        this.calculatedFirstTimeGrade = d;
-    }
-    public double getCalculatedFirstTimeGrade() {
-        return this.calculatedFirstTimeGrade;
-    }
 
     public UserInfo(int birthYear, double calculatedGrade, int number1grade,
                     int number2grade, int number3grade, int number4grade,

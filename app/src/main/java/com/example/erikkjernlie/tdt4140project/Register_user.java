@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -53,6 +54,7 @@ public class Register_user extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_user);
+        FirebaseApp.initializeApp(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -172,12 +174,10 @@ public class Register_user extends AppCompatActivity {
 
     }
 
-
     //creates initiated information to make sure the
     private void storeVariables() {
         UserInfo user = new UserInfo(0, 0.0, 0, 0, 0, 0, 0, 0, null,
                 null, '\u0000', 0, new ArrayList<>(Arrays.asList("Studies")));
-        UserInfo.userInfo = user;
         mRef.setValue(user);
     }
 
