@@ -171,6 +171,7 @@ public class Sign_in extends AppCompatActivity {
                         @Override
                         public void run() {
                             //sender deg videre til homescreen
+                            UserInfo.userInfo = user;
                             Intent homeIntent = new Intent(Sign_in.this, Menu.class);
                             startActivity(homeIntent);
                             Toast.makeText(Sign_in.this, "Successfully logged in!", Toast.LENGTH_SHORT).show();

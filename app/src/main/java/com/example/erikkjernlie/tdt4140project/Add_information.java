@@ -35,6 +35,7 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -117,7 +118,6 @@ public class Add_information extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println(UserInfo.userInfo.getNumber5grade() + "   asdfghjk");
         setContentView(R.layout.activity_add_information);
 
         Firebase.setAndroidContext(Add_information.this);
@@ -322,8 +322,6 @@ public class Add_information extends AppCompatActivity {
             }
         });
     }
-
-
     private void numberPicker() {
         np = (NumberPicker) findViewById(R.id.np);
         //Sets the minimum value of NumberPicker
@@ -347,11 +345,8 @@ public class Add_information extends AppCompatActivity {
 
             }
         });
-
         np.clearFocus();
-
     }
-
     //calculates age points
     protected int agePoints(int birthYear) {
         if (birthYear < minimum_born_year) {
@@ -366,7 +361,6 @@ public class Add_information extends AppCompatActivity {
         }
         return points;
     }
-
     //round the calculated grade to two decimals
     private static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
@@ -376,7 +370,6 @@ public class Add_information extends AppCompatActivity {
         long tmp = Math.round(value);
         return (double) tmp / factor;
     }
-
     public static class Add_informationTest{
         private Add_information add_information;
         @Before
@@ -398,7 +391,6 @@ public class Add_information extends AppCompatActivity {
             assertEquals(true, add_information.getExtraEducationArray().isEmpty());
             assertEquals(true, add_information.getCoursesArray().isEmpty());
         }
-
         @Test
         public void testCalculation() throws Exception{
 
@@ -412,7 +404,6 @@ public class Add_information extends AppCompatActivity {
             assertEquals(true, add_information.getCalculatedGrade() == 1.5);
 
         }
-
         @Test
         public void agePoints_test() throws Exception {
             assertEquals(true, add_information.agePoints(1985) == 8);
@@ -423,24 +414,18 @@ public class Add_information extends AppCompatActivity {
             assertEquals(true, add_information.agePoints(1998) == 0);
             assertEquals(true, add_information.agePoints(2016) == 0);
         }
-
         @Test
         public void testGetGender(){
             add_information.setGender('F');
             assertTrue(add_information.getGender() == 'F');
             assertFalse(add_information.getGender() == 'M');
         }
-
-
-
         @Test
         public void testGetCalculatedGrade(){
             add_information.setCalculatedGrade(5.0);
             assertTrue(add_information.getCalculatedGrade() == 5.0);
             assertFalse(add_information.getCalculatedGrade() == 4.9);
         }
-
-
         @Test
         public void testGetExtraPoints(){
             add_information.setExtraPoints(2);
@@ -448,7 +433,6 @@ public class Add_information extends AppCompatActivity {
             assertFalse(add_information.getExtraPoints() == 3);
 
         }
-
         @Test
         public void testGetExtraEducation(){
             ArrayList<String> c = new ArrayList<>();
@@ -456,14 +440,11 @@ public class Add_information extends AppCompatActivity {
             add_information.setExtra_education_array(c);
             assertTrue(add_information.getExtraEducationArray().equals(c));
         }
-
         @After
         public void tearDown(){
             add_information = null;
         }
-
-
-    }
+          }
 
     //calculates the enitre grade
     public double grade_calculation() {
@@ -475,27 +456,19 @@ public class Add_information extends AppCompatActivity {
         if (grade_calculated == 0){
             return 0;
         }
-
         if (extraEducationArray.size() > 0) {
             this.extraPoints = 2;
         }
-
         for (String course : coursesArray) {
             realFagPoints += fagbase.get(course);
         }
-
-
         if (realFagPoints > 4) {
             realFagPoints = 4;
         }
-
-
         calculatedGrade = (agePoints(year) + extraPoints + realFagPoints) + grade_calculated;
         UserInfo.userInfo.setCalculatedGrade(calculatedGrade);
-
+        UserInfo.userInfo.setCalculatedFirstTimeGrade(grade_calculated + realFagPoints);
         return calculatedGrade;
-
-
     }
 
     //alertDialog for selecting courses
