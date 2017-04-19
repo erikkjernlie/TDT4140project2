@@ -63,7 +63,7 @@ public class Interview {
 
         if (isFinished(message)) {
             this.active = false;
-            return "We feel like we have enough information about you. We will now try to recommend you a study";
+            return "We feel like we have enough information about you, and will now try find a study you might like";
         }
         questionCounter++;
         return getQuestion();

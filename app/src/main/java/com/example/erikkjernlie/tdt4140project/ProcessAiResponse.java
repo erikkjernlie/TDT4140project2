@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.junit.After;
@@ -117,7 +119,14 @@ public class ProcessAiResponse {
     private String getGrade(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
         double grade = StudyProgramInfo.studyPrograms.get(studyProgram).getGrade();
-        return "The grade to get into " + studyProgram + " is " + grade + ".";
+        String s1 = "Last year you needed a grade of " + grade + " to get into " + studyProgram + ".";
+        String s2 = "The grade to get into " + studyProgram + " last year was " + grade + ".";
+        String s3 = "To get into " + studyProgram + " last year you needed a grade of " + grade + ".";
+        String s4 = grade + " was the grade requirement for " + studyProgram + " last year.";
+        Random random = new Random();
+        List<String> arr = Arrays.asList(s1, s2, s3, s4);
+        int index = random.nextInt(arr.size());
+        return arr.get(index);
     }
 
     // Method for getting girlPoints
@@ -126,9 +135,9 @@ public class ProcessAiResponse {
         boolean girlPoints = StudyProgramInfo.studyPrograms.get(studyProgram).isGirlPoints();
 
         if (girlPoints) {
-            return studyProgram + " has girlspoints.";
+            return studyProgram + " does give girlpoints.";
         } else {
-            return studyProgram + " has not girlpoints";
+            return studyProgram + " does not give girlpoints";
         }
     }
 
@@ -143,12 +152,18 @@ public class ProcessAiResponse {
     private String getCommonWorkFields(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
         ArrayList<String> commonWorkFields = StudyProgramInfo.studyPrograms.get(studyProgram).getCommonWorkFields();
-        String ut = "At " + studyProgram + " you can work with: ";
+        String ut = new String();
         for (String workField : commonWorkFields) {
             ut += workField + ", ";
         }
         ut = ut.substring(0, ut.length() - 2);
-        return ut + ".";
+        String s1 = "At " + studyProgram + " you can work with: " + ut + ".";
+        String s2 = ut + " are some common work fields for " + studyProgram + ".";
+        String s3 = "Some of the common worlds fields for " + studyProgram + " are " + ut +".";
+        Random random = new Random();
+        List<String> arr = Arrays.asList(s1, s2, s3);
+        int index = random.nextInt(arr.size());
+        return arr.get(index);
     }
 
     // Method for getting studyenvironment
@@ -160,8 +175,13 @@ public class ProcessAiResponse {
     // Method for getting studentunion
     private String getStudentUnion(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
-        return "The student union at " + studyProgram + " is " + StudyProgramInfo.studyPrograms.get(studyProgram).getStudentUnion() + ".";
-
+        String s1 = "The student union at " + studyProgram + " is " + StudyProgramInfo.studyPrograms.get(studyProgram).getStudentUnion() + ".";
+        String s2 = StudyProgramInfo.studyPrograms.get(studyProgram).getStudentUnion() + " is the student union at " + studyProgram + ".";
+        String s3 = "At " + studyProgram + ", the student union is called " + StudyProgramInfo.studyPrograms.get(studyProgram).getStudentUnion() + ".";
+        Random random = new Random();
+        List<String> arr = Arrays.asList(s1, s2, s3);
+        int index = random.nextInt(arr.size());
+        return arr.get(index);
     }
 
     // Method for getting info about studentUnion
@@ -187,13 +207,19 @@ public class ProcessAiResponse {
     // Method for getting courses
     private String getCourses(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
-        String ut = "The courses at " + studyProgram + " is: ";
+        String ut = new String();
         ArrayList<String> courses = StudyProgramInfo.studyPrograms.get(studyProgram).getCourses();
         for (String course : courses) {
             ut += course + ", ";
         }
         ut = ut.substring(0, ut.length() - 2);
-        return ut + ".";
+        String s1 = "The courses at " + studyProgram + " are: " + ut + ".";
+        String s2 = ut + " are some of the courses at " + studyProgram + ".";
+        String s3 = "Some of the courses at " + studyProgram + " are " + ut + ".";
+        Random random = new Random();
+        List<String> arr = Arrays.asList(s1, s2, s3);
+        int index = random.nextInt(arr.size());
+        return arr.get(index);
     }
 
     // Method for getting union
@@ -230,19 +256,19 @@ public class ProcessAiResponse {
         if (similarKeyWords.size() == 0) {
             ut += "There are no similarities";
         } else {
-            ut += "The similar keywords are: ";
+            ut += "The following are some similarities between the studies: ";
             for (String keyWord : similarKeyWords) {
                 ut += keyWord + ", ";
             }
             ut = ut.substring(0, ut.length() - 2) + ".";
-            ut += "\n\nThe differences are: \n\n" + studyProgram + " have the keywords: ";
+            ut += "\n\nHowever, some differences are: \n\n" + studyProgram + " is associated with: ";
             for (String keyWord : keyWordsStudyProgram) {
                 ut += keyWord + ", ";
 
             }
             ut = ut.substring(0, ut.length() - 2) + ".";
 
-            ut += "\n\n" + studyProgram1 + " have the keywords: ";
+            ut += "\n\n" + studyProgram1 + " related to: ";
             for (String keyWord : keyWordsStudyProgram1) {
                 ut += keyWord + ", ";
             }
@@ -254,14 +280,20 @@ public class ProcessAiResponse {
 
     // Method for getting all studies
     private String getAllStudies() {
-        String ut = "The studies we support are: ";
+        String ut = "";
         Set<String> keys = StudyProgramInfo.studyPrograms.keySet();
         Iterator<String> iterator = keys.iterator();
         while (iterator.hasNext()) {
             ut += iterator.next() + ", ";
         }
-        ut = ut.substring(0, ut.length() - 2) + ".";
-        return ut;
+        ut = ut.substring(0, ut.length() - 2);
+        String s1 = "The studies we support are: " + ut + ".";
+        String s2 = "We support the following studies: " + ut + ".";
+        String s3 = ut + " are the studies we currently support.";
+        Random random = new Random();
+        List<String> arr = Arrays.asList(s1, s2, s3);
+        int index = random.nextInt(arr.size());
+        return arr.get(index);
     }
 
     // Method for telling the user about himself
