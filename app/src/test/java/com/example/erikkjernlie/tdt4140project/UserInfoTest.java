@@ -113,6 +113,49 @@ public class UserInfoTest  {
         u.updateFirebase();
     }
 
+    @Test
+    public void setNumber1Grade(){
+        u.setNumber1grade(1);
+        assertEquals(1, u.getNumber1grade());
+        assertNotEquals(0, u.getNumber1grade());
+    }
+
+    @Test
+    public void setNumber2Grade(){
+        u.setNumber2grade(1);
+        assertEquals(1, u.getNumber2grade());
+        assertNotEquals(0, u.getNumber2grade());
+    }
+
+    @Test
+    public void setNumber3Grade(){
+        u.setNumber3grade(1);
+        assertEquals(1, u.getNumber3grade());
+        assertNotEquals(0, u.getNumber3grade());
+    }
+
+    @Test
+    public void setNumber4Grade(){
+        u.setNumber4grade(1);
+        assertEquals(1, u.getNumber4grade());
+        assertNotEquals(0, u.getNumber4grade());
+    }
+
+    @Test
+    public void setNumber5Grade(){
+        u.setNumber5grade(1);
+        assertEquals(1, u.getNumber5grade());
+        assertNotEquals(0, u.getNumber5grade());
+    }
+
+    @Test
+    public void setNumber6Grade(){
+        u.setNumber6grade(1);
+        assertEquals(1, u.getNumber6grade());
+        assertNotEquals(0, u.getNumber6grade());
+    }
+
+
     @After
     public void tearDown() throws Exception {
         u = null;
