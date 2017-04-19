@@ -37,9 +37,7 @@ public class ProcessAiResponse {
     private ProcessAiResponse aiResponse;
 
     public ProcessAiResponse(HashMap<String, StudyProgramInfo> studyPrograms, UserInfo userInfo, HashMap<String, Union> unions) {
-        StudyProgramInfo.studyPrograms = studyPrograms;
-        UserInfo.userInfo = userInfo;
-        Union.unions = unions;
+
     }
 
     public String processAiRespons(AIResponse aiResponse) {
@@ -270,6 +268,8 @@ public class ProcessAiResponse {
     private String getUserInfo() {
         String ut = "";
 
+        System.out.println("laksdla");
+        System.out.println(UserInfo.userInfo == null);
         if (UserInfo.userInfo.getGender() != '\u0000' && UserInfo.userInfo.getGender() == 'M') {
             ut += "You are a Male";
         } else if (UserInfo.userInfo.getCalculatedGrade() != '\u0000') {

@@ -35,6 +35,10 @@ public class Interview {
         // resets the questioncounter.
         this.questionCounter = 0;
 
+        System.out.println("alsd");
+        System.out.println(UserInfo.userInfo);
+
+
         // adds the interest to interests
         for (String study : UserInfo.studyPrograms.keySet()) {
             for (String interest : UserInfo.studyPrograms.get(study).getKeywords()) {

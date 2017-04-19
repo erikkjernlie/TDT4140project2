@@ -57,31 +57,29 @@ public class ChatBot extends AppCompatActivity {
     private static final String TAG = "ChatActivity";
 
     private UserInfo user;
+
     private ChatArrayAdapter chatArrayAdapter;
     private ListView listView;
     private EditText chatText;
     private Button buttonSend;
     private boolean side = false;
-    private AIConfiguration config;
-    private AIDataService aiDataService;
+    private AIConfiguration config; // this could also have been removed, by making a class that handles all ai.api interaction
+    private AIDataService aiDataService; // this could also have been removed, by making a class that handles all ai.api interaction
     private TextView uniBot;
     private TextView back;
     private TextView help;
     final Context context = this;
-    private int randomNumber = -1;
-    private ArrayList<String> sentencesToUnibot;
-    private ArrayList<String> sentencesOutput;
-    private ArrayList<String> usedInterests = new ArrayList<>();
-    private int interviewNumber = 0;
-
-    // fields for the interview
-    private boolean interview = false; // if the user is doing the interview
-    private String interest;
+    private int randomNumber = -1; // should be removes by creating a class that handles this functionality
+    private ArrayList<String> sentencesToUnibot; // should be removes by creating a class that handles this functionality
+    private ArrayList<String> sentencesOutput;  // should be removes by creating a class that handles this functionality
 
 
-    // comment added to create mergeconflict
+    private Interview interview = new Interview();
 
-    //gets the required access from API.AI a
+        // comment added to create mergeconflict
+
+    //gets the required access from API.AI a <-- ?
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -220,31 +218,27 @@ public class ChatBot extends AppCompatActivity {
     private boolean sendChatMessage() {
         String messageFromUser = chatText.getText().toString();
 
-        ArrayList<String> positiveResponse = new ArrayList<>(Arrays.asList(new String[]{"yes", "mhm", "jepp", "yeh", "yes please", "please", "definitely", "absolutely"}));
-
         //For displayUserInformation:
         if (messageFromUser.isEmpty()) {
             return false;
         }
 
-        if (!messageFromUser.isEmpty()) { // sjekker at meldingen ikke er tom
+        if (!messageFromUser.isEmpty()) { // checks that the message is not empty
             chatArrayAdapter.add(new ChatMessage(side, messageFromUser));
         }
 
-        if (interview) {
 
-            if (messageFromUser.toLowerCase().equals("quit") || checkEnoughInterests() != null) {
-                interview = false;
-                chatText.setText("");
-                user.updateFirebase();
-                addMessageToChatArray("Thank you for the interview. We will now try to find you a suitable study.");
-                getAiResponse("Can you recommend me a study?");
-                return true;
-            } else if (positiveResponse.contains(messageFromUser.toLowerCase())) {
-                handleInterview();
+        if (interview.isActive()) {
+            String interviewResponse = interview.sendMessage(messageFromUser); // sends message to interview objekt
+            chatText.setText("");
+
+            if (!interview.isActive()) {
+                addMessageToChatArray(interviewResponse);
+                getAiResponse("Can you recommend me a study?"); // finish interview by finding a study
+                return true; // users turn to answer
             }
-            usedInterests.add(interest);
-
+                getAiResponse(interview.getQuestion());
+            return true; // avoid using getAiResponse
         }
 
         chatText.setText(""); //resets the chatbox
@@ -264,13 +258,6 @@ public class ChatBot extends AppCompatActivity {
         getAiResponse(messageFromUser);
 
         return true;
-    }
-
-    private void handleInterview() {
-        if (!user.getInterests().contains(interest)) {
-            user.addInterests(interest);
-            user.updateFirebase();
-        }
     }
 
     private void getAiResponse(String a) {
@@ -313,31 +300,12 @@ public class ChatBot extends AppCompatActivity {
         String ut = null;
 
 
-        ProcessAiResponse processAiResponse = new ProcessAiResponse(StudyProgramInfo.studyPrograms, UserInfo.userInfo, Union.unions);
+        ProcessAiResponse processAiResponse = new ProcessAiResponse(UserInfo.studyPrograms, user, Union.unions);
 
-        if (interview) {
-            ArrayList<String> prompts = new ArrayList<>(Arrays.asList(new String[]{"Are you interested in ", "Do you like ", "Do you enjoy ", "Would you like to work with "})); // Denne kan gjerne økes.
-            ArrayList<String> interests = new ArrayList<>();
+        if (interview.isActive()) {
 
-            for (String study : StudyProgramInfo.studyPrograms.keySet()) {
-                for (String interest : StudyProgramInfo.studyPrograms.get(study).getKeywords()) {
-                    if (!interests.contains(interest) && !usedInterests.contains(interest)) {
-                        interests.add(interest);
-                    }
-                    if (usedInterests.contains(interest)) {
-                        System.out.println(interest);
-                    }
-                }
-            }
-            System.out.println();
+            return interview.getQuestion();
 
-            interest = interests.get(new Random().nextInt(interests.size())); // skal være random interest
-            interviewNumber = (interviewNumber + 1) % 3;
-            if (interviewNumber == 0) {
-                return prompts.get(new Random().nextInt(prompts.size())) + interest + "? Remember, you can press 'quit' to stop the interview.";
-            }
-
-            return prompts.get(new Random().nextInt(prompts.size())) + interest + "?";
         } else {
             if (response.getResult().getFulfillment().getSpeech().equals("")) {
                 ut = processAiResponse.processAiRespons(response);
@@ -346,101 +314,18 @@ public class ChatBot extends AppCompatActivity {
             }
 
             if (ut.equals("startInterview")) {
-                interview = true;
-                addMessageToChatArray("We will now start an interview and try to find a study that matches your interests. Please write 'quit' to stop the interview. ");
-                ArrayList<String> prompts = new ArrayList<>(Arrays.asList(new String[]{"Are you interested in ", "Do you like ", "Do you enjoy ", "Would you like to work with "})); // Denne kan gjerne økes.
-                ArrayList<String> interests = new ArrayList<>();
+                interview = new Interview();
+                interview.setActive(true);
 
-                for (String study : StudyProgramInfo.studyPrograms.keySet()) {
-                    for (String interest : StudyProgramInfo.studyPrograms.get(study).getKeywords()) {
-                        if (!interests.contains(interest)) {
-                            interests.add(interest);
-                        }
-                    }
-                }
-                Random random = new Random();
+                addMessageToChatArray("We will now start an interview and try to find a study that matches your interests. Please write 'quit' to stop the interview.");
 
-                int randomInt = random.nextInt(interests.size());
-
-                // må legges til at man ikke velger en fra useInterests lista
-
-                usedInterests.add(interests.get(randomInt));
-
-                ut = prompts.get(new Random().nextInt(prompts.size())) + interests.get(randomInt) + "?"; // '0' må byttes ut med random tall
+                ut = interview.getQuestion();
             }
 
         }
 
 
         return ut;
-
-
-    }
-
-    private String checkEnoughInterests() {
-        // Method will check if there is a study that has a lead with 3 interests. In that case
-        // we will stop the interview. In the other case the method will return null object
-
-        HashMap<String, Integer> pointMap = new HashMap<>(); // hashmap som skal inneholder alle studienavnene, og koble det opp mot antall keywordstreff
-
-        ArrayList<String> interests = user.getInterests(); // interessene til brukeren
-
-        Iterator<String> iterator = StudyProgramInfo.studyPrograms.keySet().iterator(); // iterator som går gjennom alle studienavnene
-
-        HashMap<String, ArrayList<String>> keyWords = new HashMap<>(); // hashmap som skal holde alle interessene til hvert studie
-
-        HashMap<String, ArrayList<String>> matchedInterests = new HashMap<>(); // hashmap som skal holde på alle interessene
-
-        //
-        while (iterator.hasNext()) {
-            String study = iterator.next();
-            keyWords.put(study, StudyProgramInfo.studyPrograms.get(study).getKeywords());
-            pointMap.put(study, 0);
-            matchedInterests.put(study, new ArrayList<String>());
-        }
-
-        // går gjennom alle studiene, legger til poeng på pointsMap, om interessen er en av keywordsa
-        for (String study : StudyProgramInfo.studyPrograms.keySet()) {
-            System.out.println(study);
-            for (String interest : interests) {
-                if (interest != null) {
-                    interest = interest.toLowerCase();
-                }
-
-                if (keyWords.get(study).contains(interest)) {
-                    pointMap.put(study, pointMap.get(study) + 1); // legger til 1 verdi på det gitte studiet
-                    matchedInterests.get(study).add(interest);  // legger til interessen til studiet
-                }
-            }
-        }
-
-        // finds out what study is the best one
-        Iterator<String> iterator1 = StudyProgramInfo.studyPrograms.keySet().iterator();
-        if (iterator1.hasNext()) {
-            String bestStudy = iterator1.next();
-
-            while (iterator1.hasNext()) {
-                String nextStudy = iterator1.next();
-                if (pointMap.get(bestStudy) < pointMap.get(nextStudy)) {
-                    bestStudy = nextStudy;
-                }
-            }
-
-            iterator1 = StudyProgramInfo.studyPrograms.keySet().iterator(); // resets the iterator
-
-            // while to check if the best study has at least 3 more points than all of the others
-            while (iterator1.hasNext()) {
-                String nexStudy = iterator1.next();
-                if (pointMap.get(bestStudy) - 3 < pointMap.get(nexStudy) && bestStudy != nexStudy) { // if beststudy don't have at least 3 more points than all of the other, don't stop the interview
-                    return null;
-                }
-            }
-
-
-            return bestStudy; // return the study name.
-        }
-
-        return null; // to continue the interview
 
 
     }
@@ -473,4 +358,8 @@ public class ChatBot extends AppCompatActivity {
 
     }
 
+
+    public void setUser(UserInfo user) {
+        this.user = user;
+    }
 }
