@@ -382,7 +382,7 @@ public class Add_information extends AppCompatActivity {
     //calculates age points
     protected int agePoints(int birthYear) {
         if (birthYear < minimum_born_year) {
-            throw new IllegalArgumentException();
+            return 8;
         }
         int points = 0;
         points = 2 * ((today.getYear() - birthYear + 1900) - 19);
@@ -542,7 +542,8 @@ public class Add_information extends AppCompatActivity {
 
         calculatedGrade = (agePoints(year) + extraPoints + realFagPoints) + grade_calculated;
         UserInfo.userInfo.setCalculatedGrade(calculatedGrade);
-        UserInfo.userInfo.setCalculatedFirstTimeGrade(grade_calculated + realFagPoints);
+        double calculatedFirstTimeGrade = grade_calculated + realFagPoints;
+        UserInfo.userInfo.calculatedFirstTimeGrade = calculatedFirstTimeGrade;
         return calculatedGrade;
 
 
