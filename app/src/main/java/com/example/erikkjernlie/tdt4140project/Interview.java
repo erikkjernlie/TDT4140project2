@@ -53,6 +53,10 @@ public class Interview {
             }
         }
 
+        if(interests.size() == 0) {
+            lastInterest = "ict";
+            return;
+        }
         lastInterest = interests.get(new Random().nextInt(interests.size()-1));
     }
 
