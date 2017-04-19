@@ -46,7 +46,6 @@ public class Menu extends AppCompatActivity {
     private Button aboutUs;
     private ImageView cogwheel;
 
-
     public void initButtons() {
         recommendation = (Button) findViewById(R.id.recommendation);
         recommendation.setOnClickListener(new View.OnClickListener() {
@@ -105,17 +104,12 @@ public class Menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        Firebase.setAndroidContext(this);
-        //initButtons();
-
-        //hvordan henter man info
 
         initButtons();
 
         //uncomment this when we want the alert just to appear the first time the app is started
 
     }
-
 
     public void alertSettings() {
         final Dialog d = new Dialog(Menu.this);

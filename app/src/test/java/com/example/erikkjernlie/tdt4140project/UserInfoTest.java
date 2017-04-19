@@ -9,6 +9,8 @@
 package com.example.erikkjernlie.tdt4140project;
 
 
+import com.thoughtworks.xstream.mapper.Mapper;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class UserInfoTest  {
@@ -28,6 +31,11 @@ public class UserInfoTest  {
     @Before
     public void setUp() throws Exception {
         u = new UserInfo();
+    }
+
+    @Test
+    public void stateNotNullTest() throws Exception {
+        assertNotNull(u);
     }
 
     @Test
@@ -87,19 +95,65 @@ public class UserInfoTest  {
     }
 
     @Test
-    public void getR2Grade() throws Exception {
+    public void getR2GradeTest() throws Exception {
         u.setR2Grade(6);
         assertEquals(6, u.getR2Grade());
         assertNotEquals(5, u.getR2Grade());
     }
 
     @Test
-    public void getGender() throws Exception {
+    public void getGenderTest() throws Exception {
         u.setGender('F');
         assertEquals('F', u.getGender());
         assertNotEquals('M', u.getGender());
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void updateFirebaseFailTest() throws Exception {
+        u.updateFirebase();
+    }
+
+    @Test
+    public void setNumber1Grade(){
+        u.setNumber1grade(1);
+        assertEquals(1, u.getNumber1grade());
+        assertNotEquals(0, u.getNumber1grade());
+    }
+
+    @Test
+    public void setNumber2Grade(){
+        u.setNumber2grade(1);
+        assertEquals(1, u.getNumber2grade());
+        assertNotEquals(0, u.getNumber2grade());
+    }
+
+    @Test
+    public void setNumber3Grade(){
+        u.setNumber3grade(1);
+        assertEquals(1, u.getNumber3grade());
+        assertNotEquals(0, u.getNumber3grade());
+    }
+
+    @Test
+    public void setNumber4Grade(){
+        u.setNumber4grade(1);
+        assertEquals(1, u.getNumber4grade());
+        assertNotEquals(0, u.getNumber4grade());
+    }
+
+    @Test
+    public void setNumber5Grade(){
+        u.setNumber5grade(1);
+        assertEquals(1, u.getNumber5grade());
+        assertNotEquals(0, u.getNumber5grade());
+    }
+
+    @Test
+    public void setNumber6Grade(){
+        u.setNumber6grade(1);
+        assertEquals(1, u.getNumber6grade());
+        assertNotEquals(0, u.getNumber6grade());
+    }
     @Test
     public void setNumber1Grade(){
         u.setNumber1grade(1);

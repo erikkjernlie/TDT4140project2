@@ -30,6 +30,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -236,7 +237,7 @@ public class Sign_in extends AppCompatActivity {
         });
     }
 
-    private void getStudyInfoDatabase() {
+    public void getStudyInfoDatabase() {
         //Sends a StudyProgramInfo-object to the database (TEST)
         Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies/");
         infoRef.addValueEventListener(new ValueEventListener() {

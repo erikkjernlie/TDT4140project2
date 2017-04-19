@@ -1,6 +1,6 @@
 /** Add_informationTest
  *
- * JUNIT-test for add_information.
+ * JUNIT-test for inf.
  *
  * Created by Jørgen on 23.03.2017.
  * Copyright © uniBOT
@@ -9,63 +9,99 @@
 package com.example.erikkjernlie.tdt4140project;
 
 
+import junit.framework.Assert;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
-
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class Add_informationTest {
 
-    private Add_information add_information;
+    private Add_information inf;
 
     @Before
     public void setUp() throws Exception {
-        add_information = new Add_information();
+        inf = Robolectric.setupActivity(Add_information.class);
     }
 
     @Test
     public void constructor_test() throws Exception{
-        assertEquals(true, add_information.getCalculatedGrade() == 0);
-        assertEquals(true, add_information.getGender() ==  '\u0000');
-        assertEquals(true, add_information.getR2Grade() == 0);
-        assertEquals(true, add_information.getExtraPoints() == 0);
-        assertEquals(true, add_information.getExtraEducationArray().isEmpty());
-        assertEquals(true, add_information.getCoursesArray().isEmpty());
+        assertEquals(true, inf.getCalculatedGrade() == 0);
+        assertEquals(true, inf.getGender() ==  '\u0000');
+        assertEquals(true, inf.getR2Grade() == 0);
+        assertEquals(true, inf.getExtraPoints() == 0);
+        assertEquals(true, inf.getExtraEducationArray().isEmpty());
+        assertEquals(true, inf.getCoursesArray().isEmpty());
     }
 
     @Test
     public void testCalculation() throws Exception{
 
         ArrayList<String> c = new ArrayList<>(Arrays.asList("Kjemi 1"));
-        add_information.setYear(2002);
-        add_information.setCourses_array(c);
+        inf.setYear(2002);
+        inf.setCourses_array(c);
 
-        assertEquals(true, add_information.getCalculatedGrade() == 0.5);
+        assertEquals(true, inf.getCalculatedGrade() == 0.5);
         c.add("Matematikk R2");
-        add_information.setCourses_array(c);
-        assertEquals(true, add_information.getCalculatedGrade() == 1.5);
+        inf.setCourses_array(c);
+        assertEquals(true, inf.getCalculatedGrade() == 1.5);
 
     }
 
     @Test
     public void agePoints_test() throws Exception {
-        assertEquals(true, add_information.agePoints(1985) == 8);
-        assertEquals(true, add_information.agePoints(1994) == 8);
-        assertEquals(true, add_information.agePoints(1995) == 6);
-        assertEquals(true, add_information.agePoints(1996) == 4);
-        assertEquals(true, add_information.agePoints(1997) == 2);
-        assertEquals(true, add_information.agePoints(1998) == 0);
-        assertEquals(true, add_information.agePoints(2016) == 0);
+        assertEquals(true, inf.agePoints(1985) == 8);
+        assertEquals(true, inf.agePoints(1994) == 8);
+        assertEquals(true, inf.agePoints(1995) == 6);
+        assertEquals(true, inf.agePoints(1996) == 4);
+        assertEquals(true, inf.agePoints(1997) == 2);
+        assertEquals(true, inf.agePoints(1998) == 0);
+        assertEquals(true, inf.agePoints(2016) == 0);
     }
 
+    @Test
+    public void addAvgGradeAlertNotNullTest() throws Exception {
+        inf.findViewById(R.id.averageBtn).performClick();
+
+        assertNotNull(ShadowDialog.getLatestDialog());
+    }
+
+    @Test
+    public void addCoursesNotNullTest() throws Exception {
+        inf.findViewById(R.id.dropdownCourses).performClick();
+
+        assertNotNull(ShadowDialog.getLatestDialog());
+    }
+
+    @Test
+    public void addExtraPointsNotNullTest() throws Exception {
+        inf.findViewById(R.id.dropdownExtrapoints).performClick();
+
+        assertNotNull(ShadowDialog.getLatestDialog());
+    }
+
+    @Test
+    public void submitNoChangeTest () throws Exception {
+        Add_information inf2 = inf;
+        inf.findViewById(R.id.submit).performClick();
+        Assert.assertEquals(inf2, inf);
+    }
 
     @After
     public void tearDown() throws Exception {
-        add_information = null;
+        inf = null;
     }
 }

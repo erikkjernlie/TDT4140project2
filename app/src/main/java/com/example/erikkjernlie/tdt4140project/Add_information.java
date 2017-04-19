@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.After;
@@ -117,15 +118,10 @@ public class Add_information extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println(UserInfo.userInfo.getNumber5grade() + "   asdfghjk");
         setContentView(R.layout.activity_add_information);
+        FirebaseApp.initializeApp(this);
 
         Firebase.setAndroidContext(Add_information.this);
-
-        firebaseAuth = firebaseAuth.getInstance();
-
-        mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
-                firebaseAuth.getCurrentUser().getUid());
 
         LinearLayout l = (LinearLayout) findViewById(R.id.linear_add_information);
         l.requestFocus();
@@ -163,6 +159,9 @@ public class Add_information extends AppCompatActivity {
     }
 
     private void storeVariables() {
+        firebaseAuth = firebaseAuth.getInstance();
+        mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
+                firebaseAuth.getCurrentUser().getUid());
         UserInfo user = new UserInfo(this.year, this.calculatedGrade, this.number1grade,
                 this.number2grade, this.number3grade, this.number4grade,
                 this.number5grade, this.number6grade, this.coursesArray,
@@ -377,94 +376,6 @@ public class Add_information extends AppCompatActivity {
         return (double) tmp / factor;
     }
 
-    public static class Add_informationTest{
-        private Add_information add_information;
-        @Before
-        public void setUp(){
-            add_information = new Add_information();
-        }
-
-        @Test
-        public void testRound(){
-            assertTrue(143.46 == add_information.round(143.45912,2));
-
-        }
-        @Test
-        public void constructor_test() throws Exception{
-            assertEquals(true, add_information.getCalculatedGrade() == 0);
-            assertEquals(true, add_information.getGender() ==  '\u0000');
-            assertEquals(true, add_information.getR2Grade() == 0);
-            assertEquals(true, add_information.getExtraPoints() == 0);
-            assertEquals(true, add_information.getExtraEducationArray().isEmpty());
-            assertEquals(true, add_information.getCoursesArray().isEmpty());
-        }
-
-        @Test
-        public void testCalculation() throws Exception{
-
-            ArrayList<String> c = new ArrayList<>(Arrays.asList("Kjemi 1"));
-            add_information.setYear(2002);
-            add_information.setCourses_array(c);
-
-            assertEquals(true, add_information.getCalculatedGrade() == 0.5);
-            c.add("Matematikk R2");
-            add_information.setCourses_array(c);
-            assertEquals(true, add_information.getCalculatedGrade() == 1.5);
-
-        }
-
-        @Test
-        public void agePoints_test() throws Exception {
-            assertEquals(true, add_information.agePoints(1985) == 8);
-            assertEquals(true, add_information.agePoints(1994) == 8);
-            assertEquals(true, add_information.agePoints(1995) == 6);
-            assertEquals(true, add_information.agePoints(1996) == 4);
-            assertEquals(true, add_information.agePoints(1997) == 2);
-            assertEquals(true, add_information.agePoints(1998) == 0);
-            assertEquals(true, add_information.agePoints(2016) == 0);
-        }
-
-        @Test
-        public void testGetGender(){
-            add_information.setGender('F');
-            assertTrue(add_information.getGender() == 'F');
-            assertFalse(add_information.getGender() == 'M');
-        }
-
-
-
-        @Test
-        public void testGetCalculatedGrade(){
-            add_information.setCalculatedGrade(5.0);
-            assertTrue(add_information.getCalculatedGrade() == 5.0);
-            assertFalse(add_information.getCalculatedGrade() == 4.9);
-        }
-
-
-        @Test
-        public void testGetExtraPoints(){
-            add_information.setExtraPoints(2);
-            assertTrue(add_information.getExtraPoints() == 2);
-            assertFalse(add_information.getExtraPoints() == 3);
-
-        }
-
-        @Test
-        public void testGetExtraEducation(){
-            ArrayList<String> c = new ArrayList<>();
-            c.add("IKT");
-            add_information.setExtra_education_array(c);
-            assertTrue(add_information.getExtraEducationArray().equals(c));
-        }
-
-        @After
-        public void tearDown(){
-            add_information = null;
-        }
-
-
-    }
-
     //calculates the enitre grade
     public double grade_calculation() {
         initFagbase();
@@ -618,7 +529,6 @@ public class Add_information extends AppCompatActivity {
         alertdialog2.show();
     }
 
-
     //alertDialog for the R2-grade
     public void alertR2Grade() {
         final Dialog d = new Dialog(Add_information.this);
@@ -652,6 +562,7 @@ public class Add_information extends AppCompatActivity {
 
 
     }
+
 
     //alertDialog for setting grades
     public void alertGrades() {
@@ -868,7 +779,6 @@ public class Add_information extends AppCompatActivity {
 
     }
 
-
     //alertDialog for writing in already calculated grade
     public void alertAverageGrades() {
         final Dialog d = new Dialog(Add_information.this);
@@ -918,6 +828,7 @@ public class Add_information extends AppCompatActivity {
         d.show();
     }
 
+
     //here comes getters and setters
 
     public double getCalculatedGrade() {
@@ -952,11 +863,11 @@ public class Add_information extends AppCompatActivity {
         this.gender = gender;
     }
 
-
-
     public void setR2Grade(int r2Grade) {
         R2Grade = r2Grade;
     }
+
+
 
     public void setExtraPoints(int extraPoints) {
         this.extraPoints = extraPoints;
@@ -974,6 +885,99 @@ public class Add_information extends AppCompatActivity {
 
     public void setYear(int year){
         this.year = year;
+    }
+
+    public static class Add_informationTest{
+        private Add_information add_information;
+        @Before
+        public void setUp(){
+            add_information = new Add_information();
+        }
+
+        @Test
+        public void testRound(){
+            assertTrue(143.46 == add_information.round(143.45912,2));
+        }
+        @Test
+        public void constructor_test() throws Exception{
+            assertEquals(true, add_information.getCalculatedGrade() == 0);
+            assertEquals(true, add_information.getGender() ==  '\u0000');
+            assertEquals(true, add_information.getR2Grade() == 0);
+            assertEquals(true, add_information.getExtraPoints() == 0);
+            assertEquals(true, add_information.getExtraEducationArray().isEmpty());
+            assertEquals(true, add_information.getCoursesArray().isEmpty());
+        }
+
+        @Test
+        public void initFagbaseTest() throws Exception {
+            add_information.initFagbase();
+            assertFalse(add_information.fagbase.isEmpty());
+        }
+
+        @Test
+        public void testCalculation() throws Exception{
+
+            ArrayList<String> c = new ArrayList<>(Arrays.asList("Kjemi 1"));
+            add_information.setYear(2002);
+            add_information.setCourses_array(c);
+
+            assertEquals(true, add_information.getCalculatedGrade() == 0.5);
+            c.add("Matematikk R2");
+            add_information.setCourses_array(c);
+            assertEquals(true, add_information.getCalculatedGrade() == 1.5);
+
+        }
+
+        @Test
+        public void agePoints_test() throws Exception {
+            assertEquals(true, add_information.agePoints(1985) == 8);
+            assertEquals(true, add_information.agePoints(1994) == 8);
+            assertEquals(true, add_information.agePoints(1995) == 6);
+            assertEquals(true, add_information.agePoints(1996) == 4);
+            assertEquals(true, add_information.agePoints(1997) == 2);
+            assertEquals(true, add_information.agePoints(1998) == 0);
+            assertEquals(true, add_information.agePoints(2016) == 0);
+        }
+
+        @Test
+        public void testGetGender(){
+            add_information.setGender('F');
+            assertTrue(add_information.getGender() == 'F');
+            assertFalse(add_information.getGender() == 'M');
+        }
+
+
+
+        @Test
+        public void testGetCalculatedGrade(){
+            add_information.setCalculatedGrade(5.0);
+            assertTrue(add_information.getCalculatedGrade() == 5.0);
+            assertFalse(add_information.getCalculatedGrade() == 4.9);
+        }
+
+
+        @Test
+        public void testGetExtraPoints(){
+            add_information.setExtraPoints(2);
+            assertTrue(add_information.getExtraPoints() == 2);
+            assertFalse(add_information.getExtraPoints() == 3);
+
+        }
+
+        @Test
+        public void testGetExtraEducation(){
+            ArrayList<String> c = new ArrayList<>();
+            c.add("IKT");
+            add_information.setExtra_education_array(c);
+            assertTrue(add_information.getExtraEducationArray().equals(c));
+        }
+
+        @After
+        public void tearDown(){
+            add_information = null;
+        }
+
+
     }
 }
 
