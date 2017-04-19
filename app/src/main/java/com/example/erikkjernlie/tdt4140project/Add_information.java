@@ -134,14 +134,34 @@ public class Add_information extends AppCompatActivity {
         initFagbase();
         initButtons();
         numberPicker();
+        old_coursesArray = UserInfo.userInfo.getCourses();
+        old_extraEducationArray = UserInfo.userInfo.getExtraEducation();
+        old_birthyear = UserInfo.userInfo.getBirthYear();
         if (number1grade != 0 || number2grade != 0 || number3grade != 0 || number4grade != 0 || number5grade != 0 || number6grade != 0){
             old_grade = 0;
         } else {
             old_grade = UserInfo.userInfo.getCalculatedGrade();
+            try {
+                if (old_extraEducationArray.size() > 0) {
+                    old_grade -= 2;
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+            double maxReal = 0;
+            try {
+                for (String course : old_coursesArray) {
+                    maxReal += fagbase.get(course);
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+            if (maxReal > 4){
+                maxReal = 4;
+            }
+            old_grade -= maxReal;
+            old_grade -= agePoints(old_birthyear);
         }
-        old_coursesArray = UserInfo.userInfo.getCourses();
-        old_extraEducationArray = UserInfo.userInfo.getExtraEducation();
-        old_birthyear = UserInfo.userInfo.getBirthYear();
         if (UserInfo.userInfo.getGender() == 'F'){
             female.setImageResource(R.drawable.female_selected);
             isPressedFemale = true;
@@ -905,6 +925,7 @@ public class Add_information extends AppCompatActivity {
         d.setContentView(R.layout.alertdialog_averagegrade);
         d.setTitle("Set your averageGrade");
         add_grades_text = (EditText) d.findViewById(R.id.add_grades_text);
+        add_grades_text.setText(Double.toString(round(this.old_grade * 0.1, 2)));
         add_average_grade = (TextView) d.findViewById(R.id.add_average_grade);
         add_average_grade.setOnClickListener(new View.OnClickListener() {
             @Override
