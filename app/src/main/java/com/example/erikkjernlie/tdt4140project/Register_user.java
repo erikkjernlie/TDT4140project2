@@ -178,6 +178,7 @@ public class Register_user extends AppCompatActivity {
     private void storeVariables() {
         UserInfo user = new UserInfo(1995, 0.0, 0, 0, 0, 0, 0, 0, null,
                 null, '\u0000', 0, new ArrayList<>(Arrays.asList("Studies")));
+        UserInfo.userInfo = user;
         mRef.setValue(user);
     }
 

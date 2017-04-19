@@ -402,7 +402,7 @@ public class Add_information extends AppCompatActivity {
 
         calculatedGrade = (agePoints(year) + extraPoints + realFagPoints) + grade_calculated;
         UserInfo.userInfo.setCalculatedGrade(calculatedGrade);
-
+        UserInfo.userInfo.setCalculatedFirstTimeGrade(grade_calculated + realFagPoints);
         return calculatedGrade;
 
 
