@@ -14,7 +14,8 @@ import java.util.HashMap;
 
 public class StudyProgramInfo {
 
-    private double grade;
+    private double firstTimeGrade;
+    private double ordinaryGrade;
     private boolean girlPoints;
     private ArrayList<String> keywords;
     private ArrayList<String> commonWorkFields;
@@ -25,11 +26,12 @@ public class StudyProgramInfo {
     public static HashMap<String, StudyProgramInfo> studyPrograms = new HashMap<>();
 
 
-    public StudyProgramInfo(double grade, boolean girlPoints, ArrayList<String> keywords,
+    public StudyProgramInfo(double firstTimeGrade, double ordinaryGrade, boolean girlPoints, ArrayList<String> keywords,
                             ArrayList<String> commonWorkFields, String info,
                             String studyEnvironment, String studentUnion,
                             ArrayList<String> courses) {
-        this.grade = grade;
+        this.firstTimeGrade = firstTimeGrade;
+        this.ordinaryGrade = ordinaryGrade;
         this.girlPoints = girlPoints;
         this.keywords = keywords;
         this.commonWorkFields = commonWorkFields;
@@ -42,12 +44,20 @@ public class StudyProgramInfo {
     public StudyProgramInfo() {
     }
 
-    public double getGrade() {
-        return grade;
+    public double getFirstTimeGrade() {
+        return firstTimeGrade;
     }
 
-    public void setGrade(double grade) {
-        this.grade = grade;
+    public void setFirstTimeGrade(double firstTimeGrade) {
+        this.firstTimeGrade = firstTimeGrade;
+    }
+
+    public double getOrdinaryGrade() {
+        return ordinaryGrade;
+    }
+
+    public void setOrdinaryGrade(double ordinaryGrade) {
+        this.ordinaryGrade = ordinaryGrade;
     }
 
     public boolean isGirlPoints() {
@@ -110,7 +120,8 @@ public class StudyProgramInfo {
     @Override
     public String toString() {
         return "StudyProgramInfo{" +
-                "grade=" + grade +
+                "firstTimeGrade=" + firstTimeGrade +
+                ", ordinaryGrade=" + ordinaryGrade +
                 ", girlPoints=" + girlPoints +
                 ", keywords=" + keywords +
                 ", commonWorkFields=" + commonWorkFields +
