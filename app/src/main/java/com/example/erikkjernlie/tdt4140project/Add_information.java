@@ -137,9 +137,6 @@ public class Add_information extends AppCompatActivity {
         old_coursesArray = UserInfo.userInfo.getCourses();
         old_extraEducationArray = UserInfo.userInfo.getExtraEducation();
         old_birthyear = UserInfo.userInfo.getBirthYear();
-        if (number1grade != 0 || number2grade != 0 || number3grade != 0 || number4grade != 0 || number5grade != 0 || number6grade != 0){
-            old_grade = 0;
-        } else {
             old_grade = UserInfo.userInfo.getCalculatedGrade();
             try {
                 if (old_extraEducationArray.size() > 0) {
@@ -161,7 +158,10 @@ public class Add_information extends AppCompatActivity {
             }
             old_grade -= maxReal;
             old_grade -= agePoints(old_birthyear);
+        if (old_grade < 1) {
+            old_grade = 0;
         }
+        temporaryGrade = old_grade;
         if (UserInfo.userInfo.getGender() == 'F'){
             female.setImageResource(R.drawable.female_selected);
             isPressedFemale = true;
@@ -718,7 +718,7 @@ public class Add_information extends AppCompatActivity {
                 double totalGrades = number1grade + number2grade + number3grade + number4grade + number5grade + number6grade;
 
                 if ((totalGrades) == 0) {
-                    temporaryGrade = 0;
+                    temporaryGrade = old_grade;
 
                 } else {
                     double totalScore = (1 * number1grade + 2 * number2grade + 3 * number3grade + 4 * number4grade + 5 * number5grade + 6 * number6grade);
