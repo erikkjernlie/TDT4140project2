@@ -184,7 +184,7 @@ public class Menu extends AppCompatActivity {
         if (UserInfo.userInfo.getCalculatedGrade() != 0.0) {
             String tempString = "Grade score: ";
             int str_length = tempString.length();
-            tempString = tempString + UserInfo.userInfo.getCalculatedGrade();
+            tempString = tempString + UserInfo.userInfo.calculatedFirstTimeGrade + " / " + UserInfo.userInfo.getCalculatedGrade();
             SpannableString spanString = new SpannableString(tempString);
             spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, str_length, 0);
             t6.setText(spanString);
