@@ -73,7 +73,6 @@ public class ChatBot extends AppCompatActivity {
     private ArrayList<String> sentencesToUnibot; // should be removes by creating a class that handles this functionality
     private ArrayList<String> sentencesOutput;  // should be removes by creating a class that handles this functionality
 
-
     private Interview interview = new Interview();
 
         // comment added to create mergeconflict
@@ -357,7 +356,6 @@ public class ChatBot extends AppCompatActivity {
         }
 
     }
-
 
     public void setUser(UserInfo user) {
         this.user = user;
