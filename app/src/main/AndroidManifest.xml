@@ -14,20 +14,20 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashScreen">
+        <activity android:name=".SplashScreen" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChatBot" />
-        <activity android:name=".Recommendation"></activity>
-        <activity android:name=".Slideshow_about_unibot" />
-        <activity android:name=".Slideshow_about_us" />
+        <activity android:name=".ChatBot" android:screenOrientation="portrait"/>
+        <activity android:name=".Recommendation" android:screenOrientation="portrait"></activity>
+        <activity android:name=".Slideshow_about_unibot" android:screenOrientation="portrait"/>
+        <activity android:name=".Slideshow_about_us" android:screenOrientation="portrait"/>
         <activity android:name=".Sign_in" android:screenOrientation="portrait" />
         <activity android:name=".Register_user" android:screenOrientation="portrait"/>
         <activity android:name=".Menu" android:screenOrientation="portrait"></activity>
-        <activity android:name=".Add_information"></activity>
+        <activity android:name=".Add_information" android:screenOrientation="portrait"></activity>
 
     </application>
 
