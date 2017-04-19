@@ -118,11 +118,14 @@ public class ProcessAiResponse {
     // Method for getting study grade
     private String getGrade(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
-        double grade = StudyProgramInfo.studyPrograms.get(studyProgram).getGrade();
-        String s1 = "Last year you needed a grade of " + grade + " to get into " + studyProgram + ".";
-        String s2 = "The grade to get into " + studyProgram + " last year was " + grade + ".";
-        String s3 = "To get into " + studyProgram + " last year you needed a grade of " + grade + ".";
-        String s4 = grade + " was the grade requirement for " + studyProgram + " last year.";
+        System.out.println("alskd");
+        System.out.println(StudyProgramInfo.studyPrograms);
+        double ordinaryGrade = StudyProgramInfo.studyPrograms.get(studyProgram).getOrdinaryGrade();
+        double primaryGrade = StudyProgramInfo.studyPrograms.get(studyProgram).getFirstTimeGrade();
+        String s1 = "Last year you needed a grade of " + primaryGrade + " / " + ordinaryGrade + " to get into " + studyProgram + ".";
+        String s2 = "The grade to get into " + studyProgram + " last year was " + primaryGrade + " / " + ordinaryGrade + ".";
+        String s3 = "To get into " + studyProgram + " last year you needed a grade of " + primaryGrade + " / " + ordinaryGrade + ".";
+        String s4 = primaryGrade + " / " + ordinaryGrade + " was the grade requirement for " + studyProgram + " last year.";
         Random random = new Random();
         List<String> arr = Arrays.asList(s1, s2, s3, s4);
         int index = random.nextInt(arr.size());
@@ -388,7 +391,11 @@ public class ProcessAiResponse {
 
         studyProgram = studyProgram.replace("\"", ""); // removes ""
         String ut = "";
-        double grade = UserInfo.userInfo.getCalculatedGrade();
+        double userOrdinaryGrade = UserInfo.userInfo.getCalculatedGrade();
+        double userPrimaryGrade = UserInfo.userInfo.calculatedFirstTimeGrade;
+
+        double ordinaryGrade = StudyProgramInfo.studyPrograms.get(studyProgram).getOrdinaryGrade();
+        double primaryGrade = StudyProgramInfo.studyPrograms.get(studyProgram).getFirstTimeGrade();
 
         if (!UserInfo.userInfo.getCourses().contains("Fysikk 1") && !studyProgram.equals("Informatics")) {
             ut += "\nYou need to take the course Fysikk 1. Therefore you need to take the exam to get into " + studyProgram + ". \n";
@@ -400,28 +407,34 @@ public class ProcessAiResponse {
 
 
             if (StudyProgramInfo.studyPrograms.get(studyProgram).isGirlPoints() && UserInfo.userInfo.getGender() == 'F') {
-                grade += 2;
+                userOrdinaryGrade += 2;
+                userPrimaryGrade += 2;
             }
-            if (StudyProgramInfo.studyPrograms.get(studyProgram).getGrade() < grade) {
-                ut += "Your grade of " + grade + " is higher than last years grade of " + StudyProgramInfo.studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
+            if (ordinaryGrade < userOrdinaryGrade) {
+                ut += "Your grade of " + userOrdinaryGrade + " is higher than last years grade of " + ordinaryGrade + " at " + studyProgram + ".";
+            } else if (primaryGrade < userPrimaryGrade) {
+                ut += "Your grade of " + userPrimaryGrade+ " is higher than last years grade of " + primaryGrade + " at " + studyProgram + ".";
             } else {
-                ut += "Your grade of " + grade + " is lower than last year grade of " + StudyProgramInfo.studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
+                ut += "Your grade of " + userPrimaryGrade + " / " + userOrdinaryGrade + " is lower than last year grade of " + primaryGrade + " / " + ordinaryGrade + " at " + studyProgram + ".";
             }
             return ut;
 
         }
 
 
-        if (StudyProgramInfo.studyPrograms.get(studyProgram).isGirlPoints()) {
-            grade += 2;
+        if (StudyProgramInfo.studyPrograms.get(studyProgram).isGirlPoints() && UserInfo.userInfo.getGender() == 'F') {
+            userOrdinaryGrade += 2;
+            userPrimaryGrade += 2;
         }
-        if (StudyProgramInfo.studyPrograms.get(studyProgram).getGrade() < grade) {
-            ut = "Your grade of " + grade + " is higher than last years grade of " + StudyProgramInfo.studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
+        if (ordinaryGrade < userOrdinaryGrade) {
+            ut += "Your grade of " + userOrdinaryGrade + " is higher than last years grade of " + ordinaryGrade + " at " + studyProgram + ".";
+        } else if (primaryGrade < userPrimaryGrade) {
+            ut += "Your grade of " + userPrimaryGrade+ " is higher than last years grade of " + primaryGrade + " at " + studyProgram + ".";
         } else {
-            ut = "Your grade of " + grade + " is lower than last year grade of " + StudyProgramInfo.studyPrograms.get(studyProgram).getGrade() + " at " + studyProgram + ".";
+            ut += "Your grade of " + userPrimaryGrade + " / " + userOrdinaryGrade + " is lower than last year grade of " + primaryGrade + " / " + ordinaryGrade + " at " + studyProgram + ".";
         }
-
         return ut;
+
     }
 
     // Method for recommending the user a study
@@ -515,7 +528,7 @@ public class ProcessAiResponse {
         return ut;
     }
 
-    public static class ProcessAiResponseTest {
+  /*  public static class ProcessAiResponseTest {
         ProcessAiResponse aiResponse;
 
         @Before
@@ -656,5 +669,5 @@ public class ProcessAiResponse {
             aiResponse = null;
         }
 
-    }
+    }*/
 }
