@@ -71,7 +71,7 @@ public class Interview {
             this.active = false;
             String ut = "We feel like we have enough information about you, and will now try find a study you might like.\nThe interests that we added was: \n";
 
-            for (String interst : usedInterests) {
+            for (String interst : positiveInterests) {
                 ut += interst + ", ";
             }
             return ut.substring(0, ut.length()-2) + ".";
@@ -85,7 +85,7 @@ public class Interview {
         // checks if the user wants to stop the interview
         // if 'quit', or the user have said enough;
 
-        if ((questionCounter > 5 && checkEnoughInfo()) || questionCounter > 15 || message.toLowerCase().equals("quit")) {
+        if ((questionCounter > 10 && checkEnoughInfo()) || questionCounter > 40 || message.toLowerCase().equals("quit")) {
             return true;
         }
         return false;
@@ -141,7 +141,7 @@ public class Interview {
         }
 
         for (String study : pointMap.keySet()) {
-            if (pointMap.get(bestStudy) - 3 > pointMap.get(study) && !bestStudy.equals(study)) {
+            if (pointMap.get(bestStudy) - 3 < pointMap.get(study) && !bestStudy.equals(study)) {
                 return false; // if the best study don't have a great enough lead
             }
         }
