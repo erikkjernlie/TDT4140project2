@@ -330,7 +330,6 @@ public class Add_information extends AppCompatActivity {
         //Sets the maximum value of NumberPicker
         np.setMaxValue(2017);
         //Sets the start value of Numberpicker
-        np.setValue(1995);
         int b = UserInfo.userInfo.getBirthYear();
         if (b != 0){
             np.setValue(b);
@@ -343,7 +342,7 @@ public class Add_information extends AppCompatActivity {
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 //Display the newly selected number from picker
                 year = newVal;
-
+                UserInfo.userInfo.setBirthYear(year);
             }
         });
 
