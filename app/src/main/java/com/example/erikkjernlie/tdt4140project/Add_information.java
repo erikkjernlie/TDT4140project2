@@ -179,6 +179,7 @@ public class Add_information extends AppCompatActivity {
                 this.number5grade, this.number6grade, this.coursesArray,
                 this.extraEducationArray, this.gender, this.R2Grade,
                 new ArrayList<>(Arrays.asList("Studies")));
+        UserInfo.userInfo = user;
         mRef.setValue(user);
     }
 
