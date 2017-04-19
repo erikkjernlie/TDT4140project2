@@ -120,7 +120,6 @@ public class Add_information extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println(UserInfo.userInfo.getNumber5grade() + "   asdfghjk");
         setContentView(R.layout.activity_add_information);
 
         Firebase.setAndroidContext(Add_information.this);
@@ -480,14 +479,21 @@ public class Add_information extends AppCompatActivity {
         double realFagPoints = 0;
         this.extraPoints = 0;
         grade_calculated = round(temporaryGrade, 2);
-        if (old_grade != 0 && number1grade == 0 && number2grade == 0 && number3grade == 0 && number4grade == 0 && number5grade == 0 && number6grade == 0){
-
-            if (extraEducationArray.size()>0){
-                old_grade -= 2;
+        if (temporaryGrade == 0 && old_grade != 0 && number1grade == 0 && number2grade == 0 && number3grade == 0 && number4grade == 0 && number5grade == 0 && number6grade == 0){
+            try {
+                if (old_extraEducationArray.size() > 0) {
+                    old_grade -= 2;
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
             double maxReal = 0;
-            for (String course : old_coursesArray) {
-                maxReal += fagbase.get(course);
+            try {
+                for (String course : old_coursesArray) {
+                    maxReal += fagbase.get(course);
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
             if (maxReal > 4){
                 maxReal = 4;
@@ -514,7 +520,6 @@ public class Add_information extends AppCompatActivity {
             realFagPoints = 4;
         }
 
-        System.out.println("Calc grade: " + grade_calculated);
         calculatedGrade = (agePoints(year) + extraPoints + realFagPoints) + grade_calculated;
         UserInfo.userInfo.setCalculatedGrade(calculatedGrade);
         UserInfo.userInfo.setCalculatedFirstTimeGrade(grade_calculated + realFagPoints);
