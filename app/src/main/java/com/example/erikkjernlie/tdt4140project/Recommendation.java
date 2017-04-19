@@ -68,7 +68,9 @@ public class Recommendation extends AppCompatActivity {
         about_study = (TextView) findViewById(R.id.about_study_rec);
 
         if (beststudy != null && beststudy_interests != null) {
-            job_opportunities.setText(StudyProgramInfo.studyPrograms.get(beststudy).getCommonWorkFields().toString());
+            String studyworkfields = StudyProgramInfo.studyPrograms.get(beststudy).getCommonWorkFields().toString();
+            studyworkfields = studyworkfields.substring(1, studyworkfields.length() -1);
+            job_opportunities.setText(studyworkfields);
             social_environement.setText(StudyProgramInfo.studyPrograms.get(beststudy).getStudyEnvironment() + "\n");
             study.setText(beststudy);
             about_study.setText(StudyProgramInfo.studyPrograms.get(beststudy).getInfo());
