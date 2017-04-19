@@ -47,7 +47,7 @@ public class Interview {
         // adds the interest to interests
         for (String study : UserInfo.studyPrograms.keySet()) {
             for (String interest : UserInfo.studyPrograms.get(study).getKeywords()) {
-                if (!interests.contains(interest) && !UserInfo.userInfo.getInterests().contains(interest)) { // checks if its not already added, and if the user already have added interest
+                if (interest != null && !interests.contains(interest) && !UserInfo.userInfo.getInterests().contains(interest)) { // checks if its not already added, and if the user already have added interest
                     interests.add(interest);
                 }
             }
@@ -97,8 +97,11 @@ public class Interview {
         String prompt = prompts.get(random.nextInt(prompts.size()-1));
         String interest = interests.get(random.nextInt(interests.size()-1));
 
+        int rand;
         while (interest.equals(lastInterest) || usedInterests.contains(interest)) {
-            interest = interests.get(random.nextInt(interests.size()-1));
+            rand = random.nextInt(interests.size()-1);
+            interest = interests.get(rand);
+
         }
         lastInterest = interest;
         return prompt + interest + "?";
