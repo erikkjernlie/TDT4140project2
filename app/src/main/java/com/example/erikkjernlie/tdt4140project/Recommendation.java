@@ -2,7 +2,6 @@ package com.example.erikkjernlie.tdt4140project;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -113,6 +112,7 @@ public class Recommendation extends AppCompatActivity {
         if (interests == null || interests.size() == 1) {
             beststudy = null;
             interests = null;
+            return;
         }
 
         while (iterator.hasNext()) {
