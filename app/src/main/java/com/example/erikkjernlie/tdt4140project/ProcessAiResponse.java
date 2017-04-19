@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertFalse;
@@ -315,7 +316,7 @@ public class ProcessAiResponse {
         }
         ut += " born in " + UserInfo.userInfo.getBirthYear() + " and";
 
-        ut += " you have " + UserInfo.userInfo.getCalculatedGrade() + " points to apply with.\nYour interests are: ";
+        ut += " you have " + UserInfo.userInfo.getCalculatedGrade() + " / " + UserInfo.userInfo.calculatedFirstTimeGrade +  " points to apply with.\nYour interests are: ";
 
         // interests har alltid 'studies' så trenger ikke sjekke
         for (String interest : UserInfo.userInfo.getInterests()) {
