@@ -115,9 +115,6 @@ public class Add_information extends AppCompatActivity {
         setContentView(R.layout.activity_add_information);
 
         Firebase.setAndroidContext(Add_information.this);
-        firebaseAuth = firebaseAuth.getInstance();
-        mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
-                firebaseAuth.getCurrentUser().getUid());
         LinearLayout l = (LinearLayout) findViewById(R.id.linear_add_information);
 
         l.requestFocus();
@@ -184,6 +181,9 @@ public class Add_information extends AppCompatActivity {
     }
 
     private void storeVariables() {
+        firebaseAuth = firebaseAuth.getInstance();
+        mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
+                firebaseAuth.getCurrentUser().getUid());
         UserInfo user = new UserInfo(this.year, this.calculatedGrade, this.number1grade,
                 this.number2grade, this.number3grade, this.number4grade,
                 this.number5grade, this.number6grade, this.coursesArray,

@@ -22,6 +22,7 @@ import org.robolectric.shadows.ShadowDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
@@ -32,8 +33,13 @@ public class Add_informationTest {
 
     private Add_information inf;
 
+
     @Before
     public void setUp() throws Exception {
+        UserInfo.userInfo.setCourses(new ArrayList<String>(Arrays.asList("Matematikk R1")));
+        UserInfo.userInfo.setExtraEducation(new ArrayList<String>(Arrays.asList("Folkehøgskole")));
+        UserInfo.userInfo.setBirthYear(1995);
+        UserInfo.userInfo.setCalculatedGrade(4.5);
         inf = Robolectric.setupActivity(Add_information.class);
     }
 
@@ -53,11 +59,10 @@ public class Add_informationTest {
         ArrayList<String> c = new ArrayList<>(Arrays.asList("Kjemi 1"));
         inf.setYear(2002);
         inf.setCourses_array(c);
-
-        assertEquals(true, inf.getCalculatedGrade() == 0.5);
+        assertEquals(true, inf.getCalculatedGrade() == 0.0);
         c.add("Matematikk R2");
         inf.setCourses_array(c);
-        assertEquals(true, inf.getCalculatedGrade() == 1.5);
+        assertEquals(true, inf.getCalculatedGrade() == 0.0);
 
     }
 

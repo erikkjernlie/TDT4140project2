@@ -72,7 +72,7 @@ public class Sign_inBtnTest {
 
     @Test
     public void addStudyProgramsTest() throws Exception {
-        StudyProgramInfo study = new StudyProgramInfo(54.0, false, null, null,
+        StudyProgramInfo study = new StudyProgramInfo(54.0, 54.5, false, null, null,
                 "Very nice study", "Very good", "Hybrida", null);
         in2.addStudyPrograms("IKT", study);
         assertTrue(StudyProgramInfo.studyPrograms.containsKey("IKT"));

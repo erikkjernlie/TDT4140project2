@@ -14,7 +14,7 @@ public class InterviewTest {
 
     Interview intView;
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void stateFailTest() throws Exception {
         assertNotNull(intView = new Interview());
     }

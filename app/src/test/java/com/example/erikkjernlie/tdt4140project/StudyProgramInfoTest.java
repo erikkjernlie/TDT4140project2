@@ -36,14 +36,14 @@ public class StudyProgramInfoTest {
     @Test
     public void testStudyProgramInfo() throws Exception {
         ArrayList<String> spec = new ArrayList<>(Arrays.asList("programming", "data"));
-        spi = new StudyProgramInfo(5.0, true,spec, spec, "info","studyEnvironment", "studentUnion", spec);
+        spi = new StudyProgramInfo(5.0, 5.1, true,spec, spec, "info","studyEnvironment", "studentUnion", spec);
         assertEquals(true, spi.getStudentUnion().equals("studentUnion"));
         assertEquals(true, spi.getInfo().equals("info"));
         assertTrue(spi.getStudentUnion().equals("studentUnion"));
         assertTrue(spi.getStudyEnvironment().equals("studyEnvironment"));
         assertTrue(spi.getInfo().equals("info"));
         assertTrue(spi.getCommonWorkFields().equals(spec));
-        assertEquals(spi.toString(), "StudyProgramInfo{grade=5.0, girlPoints=true, keywords=[programming, data], commonWorkFields=[programming, data], info='info', studyEnvironment='studyEnvironment', studentUnion='studentUnion', courses=[programming, data]}");
+        assertEquals(spi.toString(), "StudyProgramInfo{firstTimeGrade=5.0, ordinaryGrade=5.1, girlPoints=true, keywords=[programming, data], commonWorkFields=[programming, data], info='info', studyEnvironment='studyEnvironment', studentUnion='studentUnion', courses=[programming, data]}");
         spi = new StudyProgramInfo();
 
     }
@@ -62,12 +62,12 @@ public class StudyProgramInfoTest {
 
     @Test
     public void testGetGrade() throws Exception {
-        spi.setGrade(5.0);
-        assertTrue(5.0 == spi.getGrade());
-        assertFalse(4.9 == spi.getGrade());
-        spi.setGrade(4.9);
-        assertFalse(5.0 == spi.getGrade());
-        assertTrue(4.9 == spi.getGrade());
+        spi.setFirstTimeGrade(5.0);
+        assertTrue(5.0 == spi.getFirstTimeGrade());
+        assertFalse(4.9 == spi.getFirstTimeGrade());
+        spi.setFirstTimeGrade(4.9);
+        assertFalse(5.0 == spi.getFirstTimeGrade());
+        assertTrue(4.9 == spi.getFirstTimeGrade());
     }
 
 
