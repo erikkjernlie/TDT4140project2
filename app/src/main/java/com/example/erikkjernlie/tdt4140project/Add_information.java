@@ -7,8 +7,6 @@
  *  Created by Jørgen Mortensen
  *  Copyright © uniBOT
  */
-
-
 package com.example.erikkjernlie.tdt4140project;
 
 import android.app.AlertDialog;
@@ -46,14 +44,8 @@ import static com.example.erikkjernlie.tdt4140project.R.id.dropdownExtrapoints;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-
-
-
-
 @RunWith(Enclosed.class)
 public class Add_information extends AppCompatActivity {
-
     private ImageButton female;
     private double calculatedGrade;
     boolean isPressedFemale = false;
@@ -123,17 +115,16 @@ public class Add_information extends AppCompatActivity {
         setContentView(R.layout.activity_add_information);
 
         Firebase.setAndroidContext(Add_information.this);
-
         firebaseAuth = firebaseAuth.getInstance();
-
         mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
                 firebaseAuth.getCurrentUser().getUid());
-
         LinearLayout l = (LinearLayout) findViewById(R.id.linear_add_information);
+
         l.requestFocus();
         initFagbase();
         initButtons();
         numberPicker();
+
         old_coursesArray = UserInfo.userInfo.getCourses();
         old_extraEducationArray = UserInfo.userInfo.getExtraEducation();
         old_birthyear = UserInfo.userInfo.getBirthYear();
@@ -202,7 +193,6 @@ public class Add_information extends AppCompatActivity {
         mRef.setValue(user);
     }
 
-
     public void initButtons() {
         submit = (Button) findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener() {
@@ -215,15 +205,12 @@ public class Add_information extends AppCompatActivity {
                     gender = 'F';
                     UserInfo.userInfo.setGender('F');
                 } else {
-                    Toast.makeText(Add_information.this, "You need to pick a gender!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Add_information.this, "You must pick a gender!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-
                 if (UserInfo.userInfo.getR2Grade() != 0){
                     R2Grade = UserInfo.userInfo.getR2Grade();
                 }
-
                 ArrayList<String> chosen_courses = new ArrayList<String>();
                 chosen_courses = UserInfo.userInfo.getCourses();
                 if ((chosen_courses != null)) {
@@ -235,12 +222,9 @@ public class Add_information extends AppCompatActivity {
                         }
                     }
                 }
-
                 ArrayList<String> chosen_education = new ArrayList<String>();
                 chosen_education = UserInfo.userInfo.getExtraEducation();
-
                 if ((chosen_education != null)) {
-
                     for (int i = 0; i < chosen_education.size(); i++) {
                         for (int k = 0; k < extraEducation.length; k++) {
                             if (chosen_education.get(i).equals(extraEducation[k])) {
@@ -248,28 +232,21 @@ public class Add_information extends AppCompatActivity {
                             }
                         }
                     }
-
                 }
-
                 for (int i = 0; i < (courses.length); i++) {
                     if (checkedStateCourses[i] == true && !coursesArray.contains(courses[i].toString())) {
                         coursesArray.add(courses[i].toString());
                     }
                 }
-
-
-
                 for (int i = 0; i < (extraEducation.length); i++) {
                     if (checkedStateEducation[i] == true && !extraEducationArray.contains(extraEducation[i].toString())) {
                         extraEducationArray.add(extraEducation[i].toString());
                     }
                 }
-
-
                 calculatedGrade = grade_calculation();
 
                 storeVariables();
-                Toast.makeText(Add_information.this, "Your average grade is: " + calculatedGrade, Toast.LENGTH_LONG).show();
+                Toast.makeText(Add_information.this, "Your average grade is: " + UserInfo.userInfo.getCalculatedFirstTimeGrade() + " / " + calculatedGrade, Toast.LENGTH_LONG).show();
                 Intent i = new Intent(Add_information.this, Menu.class);
                 startActivity(i);
             }
@@ -287,8 +264,6 @@ public class Add_information extends AppCompatActivity {
                         man.setImageResource(R.drawable.man_notselected);
                         isPressedMan = false;
                     }
-
-
                 }
                 isPressedFemale = !isPressedFemale;
             }
@@ -298,7 +273,6 @@ public class Add_information extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isPressedMan) {
-
                     man.setImageResource(R.drawable.man_notselected);
                     //this is because you can't select male and female
                 } else {
@@ -307,7 +281,6 @@ public class Add_information extends AppCompatActivity {
                         female.setImageResource(R.drawable.female_notselected);
                         isPressedFemale = false;
                     }
-
                 }
                 isPressedMan = !isPressedMan;
             }
@@ -317,7 +290,6 @@ public class Add_information extends AppCompatActivity {
         } else if (isPressedFemale) {
             this.gender = 'F';
         } //the user can select none of them, but then it will be an error at the end
-
         dropdownCourses = (Button) findViewById(R.id.dropdownCourses);
         dropdownCourses.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -326,7 +298,6 @@ public class Add_information extends AppCompatActivity {
                 alertCourses();
             }
         });
-
         dropdownExtraPoints = (Button) findViewById(dropdownExtrapoints);
         dropdownExtraPoints.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -351,7 +322,6 @@ public class Add_information extends AppCompatActivity {
         });
     }
 
-
     private void numberPicker() {
         np = (NumberPicker) findViewById(R.id.np);
         //Sets the minimum value of NumberPicker
@@ -374,7 +344,6 @@ public class Add_information extends AppCompatActivity {
                 UserInfo.userInfo.setBirthYear(year);
             }
         });
-
         np.clearFocus();
 
     }
@@ -397,7 +366,6 @@ public class Add_information extends AppCompatActivity {
     //round the calculated grade to two decimals
     private static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
-
         long factor = (long) Math.pow(10, places);
         value = value * factor;
         long tmp = Math.round(value);
@@ -410,11 +378,9 @@ public class Add_information extends AppCompatActivity {
         public void setUp(){
             add_information = new Add_information();
         }
-
         @Test
         public void testRound(){
             assertTrue(143.46 == add_information.round(143.45912,2));
-
         }
         @Test
         public void constructor_test() throws Exception{
@@ -425,21 +391,17 @@ public class Add_information extends AppCompatActivity {
             assertEquals(true, add_information.getExtraEducationArray().isEmpty());
             assertEquals(true, add_information.getCoursesArray().isEmpty());
         }
-
         @Test
         public void testCalculation() throws Exception{
-
             ArrayList<String> c = new ArrayList<>(Arrays.asList("Kjemi 1"));
             add_information.setYear(2002);
             add_information.setCourses_array(c);
-
             assertEquals(true, add_information.getCalculatedGrade() == 0.5);
             c.add("Matematikk R2");
             add_information.setCourses_array(c);
             assertEquals(true, add_information.getCalculatedGrade() == 1.5);
 
         }
-
         @Test
         public void agePoints_test() throws Exception {
             assertEquals(true, add_information.agePoints(1985) == 8);
@@ -450,32 +412,24 @@ public class Add_information extends AppCompatActivity {
             assertEquals(true, add_information.agePoints(1998) == 0);
             assertEquals(true, add_information.agePoints(2016) == 0);
         }
-
         @Test
         public void testGetGender(){
             add_information.setGender('F');
             assertTrue(add_information.getGender() == 'F');
             assertFalse(add_information.getGender() == 'M');
         }
-
-
-
         @Test
         public void testGetCalculatedGrade(){
             add_information.setCalculatedGrade(5.0);
             assertTrue(add_information.getCalculatedGrade() == 5.0);
             assertFalse(add_information.getCalculatedGrade() == 4.9);
         }
-
-
         @Test
         public void testGetExtraPoints(){
             add_information.setExtraPoints(2);
             assertTrue(add_information.getExtraPoints() == 2);
             assertFalse(add_information.getExtraPoints() == 3);
-
         }
-
         @Test
         public void testGetExtraEducation(){
             ArrayList<String> c = new ArrayList<>();
@@ -483,15 +437,11 @@ public class Add_information extends AppCompatActivity {
             add_information.setExtra_education_array(c);
             assertTrue(add_information.getExtraEducationArray().equals(c));
         }
-
         @After
         public void tearDown(){
             add_information = null;
         }
-
-
     }
-
     //calculates the enitre grade
     public double grade_calculation() {
         initFagbase();
@@ -526,27 +476,20 @@ public class Add_information extends AppCompatActivity {
         } else if (grade_calculated == 0){
             grade_calculated = 10*(number1grade*1 + number5grade*5 + number6grade*6 + number4grade*4 + number3grade*3 + number2grade*2)/(number2grade + number5grade + number3grade +number4grade + number6grade + number1grade);
         }
-
         if (extraEducationArray.size() > 0) {
             this.extraPoints = 2;
         }
-
         for (String course : coursesArray) {
             realFagPoints += fagbase.get(course);
         }
-
-
         if (realFagPoints > 4) {
             realFagPoints = 4;
         }
-
         calculatedGrade = (agePoints(year) + extraPoints + realFagPoints) + grade_calculated;
         UserInfo.userInfo.setCalculatedGrade(calculatedGrade);
         double calculatedFirstTimeGrade = grade_calculated + realFagPoints;
         UserInfo.userInfo.calculatedFirstTimeGrade = calculatedFirstTimeGrade;
         return calculatedGrade;
-
-
     }
 
     //alertDialog for selecting courses
@@ -568,8 +511,6 @@ public class Add_information extends AppCompatActivity {
                 }
             }
         }
-
-
         AlertDialog.Builder builder1 = new AlertDialog.Builder(Add_information.this)
                 .setTitle("Choose courses")
                 .setMultiChoiceItems(courses, checkedStateCourses, new DialogInterface.OnMultiChoiceClickListener() {
@@ -590,20 +531,15 @@ public class Add_information extends AppCompatActivity {
                                 coursesArray.remove(courses[i].toString());
                             }
                         }
-
                         UserInfo.userInfo.setCourses(coursesArray);
-
                         Toast.makeText(getApplicationContext(), "Selected courses: "
                                 + coursesArray.toString(), Toast.LENGTH_SHORT).show();
-
-
                         if (coursesArray.contains("Matematikk R2")) {
                             alertR2Grade();
                         } else {
                             R2Grade = 0;
                             UserInfo.userInfo.setR2Grade(0);
                         }
-
                         //alertdialog_r2grade.dismiss(); if we want it to be able to close the window if the user presses outside the alert
                     }
                 });
@@ -616,12 +552,10 @@ public class Add_information extends AppCompatActivity {
         ArrayList<String> chosen_education = new ArrayList<String>();
         extraEducationArray = new ArrayList<String>();
         chosen_education = UserInfo.userInfo.getExtraEducation();
-
         for (int j = 0; j < checkedStateEducation.length;j++){
             checkedStateEducation[j] = false;
         }
         if ((chosen_education != null)) {
-
             for (int i = 0; i < chosen_education.size(); i++) {
                 for (int k = 0; k < extraEducation.length; k++) {
                     if (chosen_education.get(i).equals(extraEducation[k]) || (checkedStateEducation[k] == true)) {
@@ -630,11 +564,8 @@ public class Add_information extends AppCompatActivity {
                         checkedStateEducation[k] = false;
                     }
                 }
-
             }
-
         }
-
         AlertDialog.Builder builder2 = new AlertDialog.Builder(Add_information.this)
                 .setTitle("Choose education")
                 .setMultiChoiceItems(extraEducation, checkedStateEducation, new DialogInterface.OnMultiChoiceClickListener() {
@@ -643,7 +574,6 @@ public class Add_information extends AppCompatActivity {
                         checkedStateEducation[which] = isChecked;
                     }
                 }).setPositiveButton("I have selected all my education", new DialogInterface.OnClickListener() {
-
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -655,20 +585,14 @@ public class Add_information extends AppCompatActivity {
                             }
                         }
                         UserInfo.userInfo.setExtraEducation(extraEducationArray);
-
-
-
                         Toast.makeText(getApplicationContext(), "Selected education: "
                                 + extraEducationArray.toString(), Toast.LENGTH_SHORT).show();
-
-
                         //alertdialog_r2grade.dismiss(); if we want it to be able to close the window if the user presses outside the alert
                     }
                 });
         AlertDialog alertdialog2 = builder2.create();
         alertdialog2.show();
     }
-
 
     //alertDialog for the R2-grade
     public void alertR2Grade() {
@@ -718,10 +642,7 @@ public class Add_information extends AppCompatActivity {
             public void onClick(View v) {
                 double totalGrades = number1grade + number2grade + number3grade + number4grade + number5grade + number6grade;
 
-                if ((totalGrades) == 0) {
-                    temporaryGrade = old_grade;
-
-                } else {
+                if ((totalGrades) != 0) {
                     double totalScore = (1 * number1grade + 2 * number2grade + 3 * number3grade + 4 * number4grade + 5 * number5grade + 6 * number6grade);
                     Toast.makeText(getApplicationContext(), "Grades saved.", Toast.LENGTH_SHORT).show();
                     temporaryGrade = (totalScore / (totalGrades))*10;
@@ -730,8 +651,6 @@ public class Add_information extends AppCompatActivity {
                 d.dismiss();
             }
         });
-
-
         minus1 = (Button) d.findViewById(R.id.minus1);
         plus1 = (Button) d.findViewById(R.id.plus1);
         number1grade_textview = (TextView) d.findViewById(R.id.number1grade);
@@ -778,7 +697,6 @@ public class Add_information extends AppCompatActivity {
                 number1grade_textview.setText(Integer.toString(number1grade));
             }
         });
-
         plus1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -787,7 +705,6 @@ public class Add_information extends AppCompatActivity {
                 UserInfo.userInfo.setNumber1grade(number1grade);
             }
         });
-
         minus2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -799,7 +716,6 @@ public class Add_information extends AppCompatActivity {
                 number2grade_textview.setText(Integer.toString(number2grade));
             }
         });
-
         plus2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -808,7 +724,6 @@ public class Add_information extends AppCompatActivity {
                 UserInfo.userInfo.setNumber2grade(number2grade);
             }
         });
-
         minus3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -820,7 +735,6 @@ public class Add_information extends AppCompatActivity {
                 number3grade_textview.setText(Integer.toString(number3grade));
             }
         });
-
         plus3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -829,7 +743,6 @@ public class Add_information extends AppCompatActivity {
                 number3grade_textview.setText(Integer.toString(number3grade));
             }
         });
-
         minus4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -841,7 +754,6 @@ public class Add_information extends AppCompatActivity {
                 number4grade_textview.setText(Integer.toString(number4grade));
             }
         });
-
         plus4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -850,7 +762,6 @@ public class Add_information extends AppCompatActivity {
                 number4grade_textview.setText(Integer.toString(number4grade));
             }
         });
-
         minus5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -862,7 +773,6 @@ public class Add_information extends AppCompatActivity {
                 number5grade_textview.setText(Integer.toString(number5grade));
             }
         });
-
         plus5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -871,7 +781,6 @@ public class Add_information extends AppCompatActivity {
                 number5grade_textview.setText(Integer.toString(number5grade));
             }
         });
-
         minus6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -883,7 +792,6 @@ public class Add_information extends AppCompatActivity {
                 number6grade_textview.setText(Integer.toString(number6grade));
             }
         });
-
         plus6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -892,8 +800,6 @@ public class Add_information extends AppCompatActivity {
                 number6grade_textview.setText(Integer.toString(number6grade));
             }
         });
-
-
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -912,19 +818,14 @@ public class Add_information extends AppCompatActivity {
 
             }
         });
-
-
         d.show();
-
-
     }
-
 
     //alertDialog for writing in already calculated grade
     public void alertAverageGrades() {
         final Dialog d = new Dialog(Add_information.this);
         d.setContentView(R.layout.alertdialog_averagegrade);
-        d.setTitle("Set your averageGrade");
+        d.setTitle("Set your average grade");
         add_grades_text = (EditText) d.findViewById(R.id.add_grades_text);
         add_grades_text.setText(Double.toString(round(this.old_grade * 0.1, 2)));
         add_average_grade = (TextView) d.findViewById(R.id.add_average_grade);
@@ -941,7 +842,7 @@ public class Add_information extends AppCompatActivity {
                     double num = Double.parseDouble(grade);
                     if (num > 0 && num <= 6.00) {
                         temporaryGrade = num*10;
-                        Toast.makeText(getApplicationContext(), "Grades saved.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Grade saved.", Toast.LENGTH_SHORT).show();
                         number1grade = 0;
                         number2grade = 0;
                         number3grade = 0;
@@ -956,77 +857,57 @@ public class Add_information extends AppCompatActivity {
                         UserInfo.userInfo.setNumber6grade(0);
                         d.dismiss();
                     } else {
-                        Toast.makeText(Add_information.this, "Type a number between 1 and 6", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Add_information.this, "Must be a number between 1 and 6", Toast.LENGTH_SHORT).show();
                     }
                     // is an integer!
                 } catch (NumberFormatException e) {
                     // not an integer!
-                    Toast.makeText(Add_information.this, "Type a number between 1 and 6", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Add_information.this, "Must be a number between 1 and 6", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
         });
         d.show();
     }
-
     //here comes getters and setters
-
     public double getCalculatedGrade() {
         return calculatedGrade;
     }
-
     public char getGender() {
         return gender;
     }
-
     public int getR2Grade() {
         return R2Grade;
     }
-
     public int getExtraPoints() {
         return extraPoints;
     }
-
     public List<String> getExtraEducationArray() {
         return extraEducationArray;
     }
-
     public List<String> getCoursesArray() {
         return coursesArray;
     }
-
     public void setCalculatedGrade(double calculatedGrade) {
         this.calculatedGrade = calculatedGrade;
     }
-
     public void setGender(char gender) {
         this.gender = gender;
     }
-
-
-
     public void setR2Grade(int r2Grade) {
         R2Grade = r2Grade;
     }
-
     public void setExtraPoints(int extraPoints) {
         this.extraPoints = extraPoints;
     }
-
     public void setCourses_array(ArrayList<String> courses_array) {
         this.coursesArray = courses_array;
         grade_calculation();
     }
-
     public void setExtra_education_array(ArrayList<String> extra_education_array) {
         this.extraEducationArray = extra_education_array;
         grade_calculation();
     }
-
     public void setYear(int year){
         this.year = year;
     }
 }
-
-

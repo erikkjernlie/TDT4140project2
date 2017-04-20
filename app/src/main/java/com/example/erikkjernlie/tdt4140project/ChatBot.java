@@ -74,20 +74,14 @@ public class ChatBot extends AppCompatActivity {
     private ArrayList<String> sentencesOutput;  // should be removes by creating a class that handles this functionality
 
     private Interview interview = new Interview();
-
-        // comment added to create mergeconflict
-
     //gets the required access from API.AI a <-- ?
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // requestPermissions(new String[]{"android.permission.RECORD_AUDIO"}, 2); // not in use
-
         setContentView(R.layout.chatbot);
-
         buttonSend = (Button) findViewById(R.id.send);
-
         listView = (ListView) findViewById(R.id.msgview);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -135,7 +129,7 @@ public class ChatBot extends AppCompatActivity {
 
         initTextButtons();
         addMessageToChatArray("Hey! My name is uniBOT, and I'm here to help you with study- and student opportunities at NTNU Trondheim. \nYou can ask me almost anything related to our data-orientated studies. Perhaps you'd like to compare a couple studies? Or submit some interests and let me make a study recommendation?\n" +
-                "\nIf you wish to see more examples, click the 'HELP'-button in the top right corner. You can also press 'UNIBOT' in the header to let me prompt you with some questions. I look forward to assisting you!");
+                "\nIf you wish to see more examples, click the 'HELP'-button in the top right corner, or ask for help in the chat. You can also press 'UNIBOT' in the header to let me prompt you with some questions. I look forward to assisting you!");
     }
 
     public void hideKeyboard(View view) {
@@ -168,20 +162,18 @@ public class ChatBot extends AppCompatActivity {
                         .setMessage("uniBOT can help you with\n- Information about a specific study" +
                                 "\n- Compare different studies\n- Give you information about a study's union\n- Print available studies\n- Study Recommendations\nand lots of other random things.\n"
                                 + "\nWe recommend that you communicate with the bot using simple language and short sentences."
-                                + "\n\nDo you need more help or information about how to ask questions? Type help in the chat."
-                                + "\n\nYou can also press the uniBOT button at the top for random questions.\n")
+                                + "\n\nDo you need more help or information about how to ask questions? Type 'help' in the chat."
+                                + "\n\nYou can also press the uniBOT button at the top to prompt questions.\n")
                         .setCancelable(false)
-                        .setPositiveButton("I don't need any more help", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Close", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // if this button is clicked, close
                                 // current activity
                                 dialog.cancel();
                             }
                         });
-
                 // create alert dialog
                 AlertDialog alertDialog = alertDialogBuilder.create();
-
                 // show it
                 alertDialog.show();
             }
@@ -190,7 +182,7 @@ public class ChatBot extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                sentencesOutput = new ArrayList<String>(Arrays.asList("Do you want to know about a study?", "Do you want to compare some studies?", "Do you want to see a list of studies that we support?", "Do you want me to interview you?", "Do you want to" +
+                sentencesOutput = new ArrayList<String>(Arrays.asList("Do you want to learn about a study?", "Do you want to compare some studies?", "Do you want to see a list of studies that we support?", "Do you want me to interview you?", "Do you want to " +
                         "learn about yourself?"));
 
                 Random rn = new Random();
@@ -202,7 +194,6 @@ public class ChatBot extends AppCompatActivity {
                 }
                 randomNumber = newRandom;
                 addMessageToChatArray(sentencesOutput.get(randomNumber));
-
             }
         });
     }
@@ -216,17 +207,13 @@ public class ChatBot extends AppCompatActivity {
     //this is where the messages are received and sent
     private boolean sendChatMessage() {
         String messageFromUser = chatText.getText().toString();
-
         //For displayUserInformation:
         if (messageFromUser.isEmpty()) {
             return false;
         }
-
         if (!messageFromUser.isEmpty()) { // checks that the message is not empty
             chatArrayAdapter.add(new ChatMessage(side, messageFromUser));
         }
-
-
         if (interview.isActive()) {
             String interviewResponse = interview.sendMessage(messageFromUser); // sends message to interview objekt
             chatText.setText("");
@@ -265,7 +252,6 @@ public class ChatBot extends AppCompatActivity {
         if (!a.isEmpty()) {
             aiRequest.setQuery(a);
         }
-
         // Siden aiDataService må kjøres på en backgroundtråd bruker vi AsyncTask til å hente svaret
         new AsyncTask<AIRequest, Void, AIResponse>() {
             @Override
@@ -292,19 +278,12 @@ public class ChatBot extends AppCompatActivity {
     }
 
     private String processAiResponse(AIResponse response) {
-
         // Denne metoden skal lage et objekt av ProcessAiResponse klassen, og kalle på en av dens metoder
         // klassen må ta inn infoen den trenger, dvs studyinfo listen
-
         String ut = null;
-
-
         ProcessAiResponse processAiResponse = new ProcessAiResponse(UserInfo.studyPrograms, user, Union.unions);
-
         if (interview.isActive()) {
-
             return interview.getQuestion();
-
         } else {
             if (response.getResult().getFulfillment().getSpeech().equals("")) {
                 ut = processAiResponse.processAiRespons(response);
@@ -315,18 +294,11 @@ public class ChatBot extends AppCompatActivity {
             if (ut.equals("startInterview")) {
                 interview = new Interview();
                 interview.setActive(true);
-
                 addMessageToChatArray("We will now start an interview and try to find a study that matches your interests. Please write 'quit' to stop the interview.");
-
                 ut = interview.getQuestion();
             }
-
         }
-
-
         return ut;
-
-
     }
 
     public void setStudyInformation(StudyProgramInfo info, String study) {
@@ -343,10 +315,8 @@ public class ChatBot extends AppCompatActivity {
     // Not in use, kept only for later use
     public void onResult(final AIResponse response) {
         if (response.isError()) {
-
         }
         Result result = response.getResult();
-
         // Get parameters
         String parameterString = "";
         if (result.getParameters() != null && !result.getParameters().isEmpty()) {
@@ -354,7 +324,6 @@ public class ChatBot extends AppCompatActivity {
                 parameterString += "(" + entry.getKey() + ", " + entry.getValue() + ") ";
             }
         }
-
     }
 
     public void setUser(UserInfo user) {

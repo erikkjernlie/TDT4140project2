@@ -43,7 +43,6 @@ public class Register_user extends AppCompatActivity {
     private Firebase mRef;
     private Button switchRegisterToLogin;
 
-
     //the user can press outside the keyboard, and the keyboard will hide automatically
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Register_user.INPUT_METHOD_SERVICE);
@@ -60,7 +59,6 @@ public class Register_user extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(Register_user.this);
         initButtons();
-
     }
 
     private void initButtons(){
@@ -129,13 +127,11 @@ public class Register_user extends AppCompatActivity {
             Toast.makeText(Register_user.this, "Please enter password", Toast.LENGTH_SHORT).show();
             return;
         }
-
         if (TextUtils.isEmpty(password2)) {
             //Write password again
             Toast.makeText(Register_user.this, "You have to confirm your password", Toast.LENGTH_SHORT).show();
             return;
         }
-
         if (!(password1.equals(password2))) {
             //Write password again
             Toast.makeText(Register_user.this, "The password fields do not match", Toast.LENGTH_SHORT).show();
@@ -156,12 +152,10 @@ public class Register_user extends AppCompatActivity {
                     Firebase.setAndroidContext(Register_user.this);
 
                     firebaseAuth = firebaseAuth.getInstance();
-
                     mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
                             firebaseAuth.getCurrentUser().getUid());
                     storeVariables();
                     startActivity(intent);
-
                 } else {
                     //Must try again
                     Toast.makeText(Register_user.this,"The user already exists or the password does not contain at "
@@ -170,8 +164,6 @@ public class Register_user extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     //creates initiated information to make sure the
@@ -181,6 +173,4 @@ public class Register_user extends AppCompatActivity {
         UserInfo.userInfo = user;
         mRef.setValue(user);
     }
-
-
 }

@@ -45,10 +45,8 @@ public class SplashScreen extends AppCompatActivity {
                     int duration = Toast.LENGTH_SHORT;
                     final Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
-
                     new CountDownTimer(9000, 1000)
                     {
-
                         public void onTick(long millisUntilFinished) {toast.show();}
                         public void onFinish() {toast.show();}
 
@@ -56,7 +54,6 @@ public class SplashScreen extends AppCompatActivity {
                 }
             }
         }, SPLASH_TIME_OUT);
-
     }
 
     private boolean isNetworkAvailable() {

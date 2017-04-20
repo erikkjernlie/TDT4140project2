@@ -11,8 +11,10 @@ package com.example.erikkjernlie.tdt4140project;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -56,9 +58,6 @@ public class Sign_in extends AppCompatActivity {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +66,17 @@ public class Sign_in extends AppCompatActivity {
         ProgressDialog progressDialog = new ProgressDialog(this);
         if (firebaseAuth.getCurrentUser() != null) {
             setContentView(R.layout.activity_splashscreen);
-            Toast.makeText(Sign_in.this, "Logging in...", Toast.LENGTH_LONG).show();
+            Context context = getApplicationContext();
+            CharSequence text = "Logging in...";
+            int duration = Toast.LENGTH_SHORT;
+            final Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+            new CountDownTimer(3000, 1000)
+            {
+                public void onTick(long millisUntilFinished) {toast.show();}
+                public void onFinish() {toast.show();}
+
+            }.start();
             getUserInfoDatabase();
             getStudyInfoDatabase();
             getUnionInfoDatabase();
@@ -81,7 +90,7 @@ public class Sign_in extends AppCompatActivity {
                     Toast.makeText(Sign_in.this, "Successfully logged in!", Toast.LENGTH_SHORT).show();
                     finish();
                 }
-            }, 3000);
+            }, 5000);
         } else {
             setContentView(R.layout.activity_sign_in);
             studyPrograms = new HashMap<>();
@@ -105,7 +114,6 @@ public class Sign_in extends AppCompatActivity {
                     }
                 }
             });
-
             initButtons();
             }
     }
@@ -138,7 +146,6 @@ public class Sign_in extends AppCompatActivity {
             }
         });
     }
-
 
     //logging in the user
     public void logInUser() {
@@ -179,15 +186,9 @@ public class Sign_in extends AppCompatActivity {
                             finish();
                         }
                     }, 5000);
-
-
-
-
-
                 }
             }
         });
-
     }
 
 
@@ -203,7 +204,6 @@ public class Sign_in extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 String email = email_retrieve_password.getText().toString();
                 if (!email.equals("")) {
                     String email2 = (String) email_retrieve_password.toString();
@@ -213,8 +213,6 @@ public class Sign_in extends AppCompatActivity {
                 } else {
                     Toast.makeText(Sign_in.this, "Type in your e-mail!", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
         });
         d.show();
@@ -264,7 +262,6 @@ public class Sign_in extends AppCompatActivity {
                     addUnions(snapshot.getValue(Union.class));
                 }
             }
-
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
@@ -275,18 +272,13 @@ public class Sign_in extends AppCompatActivity {
         StudyProgramInfo.studyPrograms.put(study, info);
         UserInfo.userInfo.studyPrograms.put(study, info);
     }
-
     public void setUser(UserInfo user) {
         UserInfo.userInfo = user;
     }
-
     public UserInfo getUser(){
         return UserInfo.userInfo;
     }
-
     public void addUnions(Union union) {
         Union.unions.put(union.getName(), union);
     }
-
-
 }

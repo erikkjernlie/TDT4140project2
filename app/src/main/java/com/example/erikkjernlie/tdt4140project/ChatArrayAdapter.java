@@ -57,9 +57,6 @@ class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
         }
         chatText = (TextView) row.findViewById(R.id.msgr);
         chatText.setText(chatMessageObj.message);
-
         return row;
     }
-
-
 }

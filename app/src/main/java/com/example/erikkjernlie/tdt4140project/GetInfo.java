@@ -16,8 +16,6 @@ import java.io.IOException;
 
 
 public class GetInfo {
-
-
     public String getBasicInformation(String study) {
         String url = "http://www.ntnu.edu/studies/"; // adress
         url += study; // e.g. study = mting
@@ -34,5 +32,4 @@ public class GetInfo {
 
         return doc.text();
     }
-
 }

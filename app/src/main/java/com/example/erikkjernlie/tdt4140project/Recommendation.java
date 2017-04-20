@@ -50,14 +50,11 @@ public class Recommendation extends AppCompatActivity {
 //
 //            }
 //        });
-
         recommendStudy();
-
         setContentView(R.layout.activity_recommendation);
         initialization();
-
-
     }
+
     private void initialization(){
         // study, job_opportunities osv. blir alltid null....
         picture = (ImageView) findViewById(R.id.linjeforening_rec);
@@ -160,9 +157,5 @@ public class Recommendation extends AppCompatActivity {
             beststudy = null;
             beststudy_interests = null;
         }
-
-
-
     }
-
 }

@@ -34,10 +34,14 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Date;
 import java.util.HashMap;
+
+import static com.example.erikkjernlie.tdt4140project.R.id.birthYear;
 
 public class Menu extends AppCompatActivity {
 
+    public Date today = new Date();
     private Button recommendation; //register button
     private Button explore; //explore button
     private Button aboutUnibot; //about button
@@ -104,11 +108,28 @@ public class Menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-
         initButtons();
-
+        initGrade();
         //uncomment this when we want the alert just to appear the first time the app is started
+    }
 
+    private void initGrade() {
+        double n = UserInfo.userInfo.getCalculatedGrade();
+        try {
+            if (UserInfo.userInfo.getExtraEducation().size() > 0) {
+               n -= 2;
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        double points = 2 * ((today.getYear() - UserInfo.userInfo.getBirthYear() + 1900) - 19);
+        if (points > 8) {
+            points = 8;
+        } else if (points < 0) {
+            points = 0;
+        }
+        n -= points;
+        UserInfo.userInfo.setCalculatedFirstTimeGrade(n);
     }
 
     public void alertSettings() {
@@ -230,12 +251,11 @@ public class Menu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 String email = email_retrieve_password.getText().toString();
                 if (!email.equals("")) {
                     String email2 = (String) email_retrieve_password.toString();
                     FirebaseAuth.getInstance().sendPasswordResetEmail(email2);
-                    Toast.makeText(Menu.this, "Instructions are sent to the requested e-mail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Menu.this, "Instructions was sent to the requested e-mail", Toast.LENGTH_SHORT).show();
                     e.dismiss();
                 } else {
                     Toast.makeText(Menu.this, "Type in your e-mail!", Toast.LENGTH_SHORT).show();

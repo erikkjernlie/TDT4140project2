@@ -46,10 +46,8 @@ public class ProcessAiResponse {
     public String processAiRespons(AIResponse aiResponse) {
         String action = aiResponse.getResult().getAction().toString();
         String method = action.substring(0, action.indexOf('('));
-
         String ut = "NoAnswer"; // Må legges til i ChatBot: Hvis "NoAnswer" så skal den bare legge til svaret den får fra APIAI
         // Evt kan den bare sjekke om svaret API.AI gir er tomt, og det er, skal den kalle på denne metoden. DETTE ER BEST
-
         switch (method) {
             case "getGrade":
                 ut = this.getGrade(aiResponse.getResult().getParameters().get("StudyProgram").toString());
@@ -89,7 +87,6 @@ public class ProcessAiResponse {
                 ut = this.getAllStudies();
                 break;
             case "getUserInfo":
-                System.out.println("heiheihei" + UserInfo.userInfo);
                 ut = this.getUserInfo();
                 break;
             case "addInterests":
@@ -112,15 +109,12 @@ public class ProcessAiResponse {
                 ut = this.help();
                 break;
         }
-
         return ut;
     }
 
     // Method for getting study grade
     private String getGrade(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
-        System.out.println("alskd");
-        System.out.println(StudyProgramInfo.studyPrograms);
         double ordinaryGrade = StudyProgramInfo.studyPrograms.get(studyProgram).getOrdinaryGrade();
         double primaryGrade = StudyProgramInfo.studyPrograms.get(studyProgram).getFirstTimeGrade();
         String s1 = "Last year you needed a grade of " + primaryGrade + " / " + ordinaryGrade + " to get into " + studyProgram + ".";
@@ -137,7 +131,6 @@ public class ProcessAiResponse {
     private String getGirlPoints(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
         boolean girlPoints = StudyProgramInfo.studyPrograms.get(studyProgram).isGirlPoints();
-
         if (girlPoints) {
             return studyProgram + " does give girlpoints.";
         } else {
@@ -163,7 +156,7 @@ public class ProcessAiResponse {
         ut = ut.substring(0, ut.length() - 2);
         String s1 = "At " + studyProgram + " you can work with: " + ut + ".";
         String s2 = ut + " are some common work fields for " + studyProgram + ".";
-        String s3 = "Some of the common worlds fields for " + studyProgram + " are " + ut +".";
+        String s3 = "Some of the common work fields for " + studyProgram + " are " + ut +".";
         Random random = new Random();
         List<String> arr = Arrays.asList(s1, s2, s3);
         int index = random.nextInt(arr.size());
@@ -191,20 +184,14 @@ public class ProcessAiResponse {
     // Method for getting info about studentUnion
     private String getInfoStudentUnion(String union) {
         union = union.replace("\"", ""); // removes ""
-
         Iterator<String> iterator = StudyProgramInfo.studyPrograms.keySet().iterator(); // itererer gjennom studienavnene
-
         while (iterator.hasNext()) {
             String study = iterator.next();
-            System.out.println(study);
-            System.out.println(StudyProgramInfo.studyPrograms.get(study).getStudentUnion());
             StudyProgramInfo.studyPrograms.get(study).getStudentUnion().toString().equals(union);
             if (StudyProgramInfo.studyPrograms.get(study).getStudentUnion().toString().equals(union)) {
                 return union + " is the student union at " + study + ".";
             }
         }
-
-
         return "Sorry, we could not find any informations about " + union + ".";
     }
 
@@ -249,14 +236,12 @@ public class ProcessAiResponse {
                 similarKeyWords.add(keyWord);
             }
         }
-
         for (String keyWord : similarKeyWords) {
             keyWordsStudyProgram.remove(keyWord);
             keyWordsStudyProgram1.remove(keyWord);
         }
 
         String ut = "";
-
         if (similarKeyWords.size() == 0) {
             ut += "There are no similarities";
         } else {
@@ -268,7 +253,6 @@ public class ProcessAiResponse {
             ut += "\n\nHowever, some differences are: \n\n" + studyProgram + " is associated with: ";
             for (String keyWord : keyWordsStudyProgram) {
                 ut += keyWord + ", ";
-
             }
             ut = ut.substring(0, ut.length() - 2) + ".";
 
@@ -278,7 +262,6 @@ public class ProcessAiResponse {
             }
             ut = ut.substring(0, ut.length() - 2) + ".";
         }
-
         return ut;
     }
 
@@ -303,19 +286,14 @@ public class ProcessAiResponse {
     // Method for telling the user about himself
     private String getUserInfo() {
         String ut = "";
-
-        System.out.println("laksdla");
-        System.out.println(UserInfo.userInfo == null);
         if (UserInfo.userInfo.getGender() != '\u0000' && UserInfo.userInfo.getGender() == 'M') {
-            ut += "You are a Male";
+            ut += "You are a male";
         } else if (UserInfo.userInfo.getCalculatedGrade() != '\u0000') {
-            ut += "You are a Female";
+            ut += "You are a female";
         }
         if (ut.equals("")) {
-
         }
         ut += " born in " + UserInfo.userInfo.getBirthYear() + " and";
-
         ut += " you have " + UserInfo.userInfo.calculatedFirstTimeGrade + " / " + UserInfo.userInfo.getCalculatedGrade() +  " points to apply with.";
 
         if (!(UserInfo.userInfo.getInterests().size() == 1)) {
@@ -344,58 +322,47 @@ public class ProcessAiResponse {
             //interests.set(interests.indexOf(i), i.replace("[", ""));
             // interests.set(interests.indexOf(i), i.replace("]", ""));
         }
-
         ArrayList<String> alreadyAddedList = new ArrayList<>();
-
         int size = interests.size();
         for (int i = 0; i < size; i++) {
             if (existingInterest.contains(interests.get(i))) {
                 alreadyAddedList.add(interests.get(i));
             }
         }
-
         for (String i : alreadyAddedList) {
             interests.remove(i);
         }
-
         String ut = "";
-
         if (interests.size() > 0) {
-            ut = "We've just added ";
+            ut = "I've just added ";
             for (String i : interests) {
                 UserInfo.userInfo.addInterests(i);
                 ut += i + ", ";
             }
-
             UserInfo.userInfo.updateFirebase();
-
             ut = ut.substring(0, ut.length() - 2) + " to your interests. ";
-
             if (alreadyAddedList.size() > 0) {
-                ut += "We did not add ";
+                ut += "I did not add ";
                 for (String interest : alreadyAddedList) {
                     ut += interest + ", ";
                 }
-                ut = ut.substring(0, ut.length() - 2) + ", because it was already added as your interests. ";
+                ut = ut.substring(0, ut.length() - 2) + ", because it was already added to your interests. ";
             }
             return ut;
         }
 
-
         if (alreadyAddedList.size() > 0) {
-            ut += "We have already added: ";
+            ut += "I have already added: ";
             for (String interest : alreadyAddedList) {
                 ut += interest + ", ";
             }
             ut = ut.substring(0, ut.length() - 2) + ".";
         }
-
         return ut;
     }
 
     // Method for checking if user gets into
     private String getInto(String studyProgram) {
-
         studyProgram = studyProgram.replace("\"", ""); // removes ""
         String ut = "";
         double userOrdinaryGrade = UserInfo.userInfo.getCalculatedGrade();
@@ -405,38 +372,34 @@ public class ProcessAiResponse {
         double primaryGrade = StudyProgramInfo.studyPrograms.get(studyProgram).getFirstTimeGrade();
 
         if (!UserInfo.userInfo.getCourses().contains("Fysikk 1") && !studyProgram.equals("Informatics")) {
-            ut += "\nYou need to take the course Fysikk 1. Therefore you need to take the exam to get into " + studyProgram + ". \n";
+            ut += "\nYou lack the required course Fysikk 1. You need to take this exam to get into " + studyProgram + ". \n";
         }
 
         if (!studyProgram.equals("Informatics") && UserInfo.userInfo.getR2Grade() < 4) {
 
-            ut += "You need at least 4 at the course R2, you have " + UserInfo.userInfo.getR2Grade() + ".\nTherefore you need to retake the exam. \n";
-
-
+            ut += "You need at least a grade of 4 in the Matematikk R2 course, while you have " + UserInfo.userInfo.getR2Grade() + ".\nTherefore you will need to retake the exam. \n";
             if (StudyProgramInfo.studyPrograms.get(studyProgram).isGirlPoints() && UserInfo.userInfo.getGender() == 'F') {
                 userOrdinaryGrade += 2;
                 userPrimaryGrade += 2;
             }
             if (ordinaryGrade < userOrdinaryGrade) {
-                ut += "Your grade of " + userOrdinaryGrade + " is higher than last years grade of " + ordinaryGrade + " at " + studyProgram + ".";
+                ut += "Your grade of " + userOrdinaryGrade + " is higher than last year's grade of " + ordinaryGrade + " at " + studyProgram + ".";
             } else if (primaryGrade < userPrimaryGrade) {
-                ut += "Your grade of " + userPrimaryGrade+ " is higher than last years grade of " + primaryGrade + " at " + studyProgram + ".";
+                ut += "Your grade of " + userPrimaryGrade+ " is higher than last year's grade of " + primaryGrade + " at " + studyProgram + ".";
             } else {
                 ut += "Your grade of " + userPrimaryGrade + " / " + userOrdinaryGrade + " is lower than last year grade of " + primaryGrade + " / " + ordinaryGrade + " at " + studyProgram + ".";
             }
             return ut;
 
         }
-
-
         if (StudyProgramInfo.studyPrograms.get(studyProgram).isGirlPoints() && UserInfo.userInfo.getGender() == 'F') {
             userOrdinaryGrade += 2;
             userPrimaryGrade += 2;
         }
         if (ordinaryGrade < userOrdinaryGrade) {
-            ut += "Your grade of " + userOrdinaryGrade + " is higher than last years grade of " + ordinaryGrade + " at " + studyProgram + ".";
+            ut += "Your grade of " + userOrdinaryGrade + " is higher than last year's grade of " + ordinaryGrade + " at " + studyProgram + ".";
         } else if (primaryGrade < userPrimaryGrade) {
-            ut += "Your grade of " + userPrimaryGrade+ " is higher than last years grade of " + primaryGrade + " at " + studyProgram + ".";
+            ut += "Your grade of " + userPrimaryGrade+ " is higher than last year's grade of " + primaryGrade + " at " + studyProgram + ".";
         } else {
             ut += "Your grade of " + userPrimaryGrade + " / " + userOrdinaryGrade + " is lower than last year grade of " + primaryGrade + " / " + ordinaryGrade + " at " + studyProgram + ".";
         }
@@ -459,18 +422,15 @@ public class ProcessAiResponse {
 
         HashMap<String, ArrayList<String>> matchedInterests = new HashMap<>(); // hashmap som skal holde på alle interessene
 
-        System.out.println(interests + "heiheihei");
         if (interests.size() == 1) {
             return "You have not told us any of your interests. If you tell us your interests, we could better help you find a suitable study";
         }
-
         while (iterator.hasNext()) {
             String study = iterator.next();
             keyWords.put(study, StudyProgramInfo.studyPrograms.get(study).getKeywords());
             pointMap.put(study, 0);
             matchedInterests.put(study, new ArrayList<String>());
         }
-
         // går gjennom alle studiene, legger til poeng på pointsMap, om interessen er en av keywordsa
         for (String study : StudyProgramInfo.studyPrograms.keySet()) {
             for (String interest : interests) {
@@ -484,7 +444,6 @@ public class ProcessAiResponse {
                 }
             }
         }
-        System.out.println(matchedInterests + " heiheihei");
         Iterator<String> iterator1 = StudyProgramInfo.studyPrograms.keySet().iterator();
         if (iterator1.hasNext()) {
             String bestStudy = iterator1.next();
@@ -495,23 +454,17 @@ public class ProcessAiResponse {
                     bestStudy = nextStudy;
                 }
             }
-
             if (matchedInterests.get(bestStudy).size() == 0) {
                 return "We could not find any suitable study. Please tell us more about your interests, so that we can help you find a study. ";
             }
-
             String ut = "We think you might like " + bestStudy + " because you have interests which the study might match. The " +
                     "interests that matched was: ";
-
-
             for (String interest : matchedInterests.get(bestStudy)) {
                 ut += interest + ", ";
             }
-
             return ut.substring(0, ut.length() - 2) + ".";
         }
         return "You have not told us any of your interests. If you tell us your interests, we could better help you find a suitable study"; // Hvis den kommer hit, er interesselisten tom
-
     }
 
     // Method for starting interview

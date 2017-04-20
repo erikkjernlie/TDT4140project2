@@ -40,10 +40,6 @@ public class Interview {
         // resets the questioncounter.
         this.questionCounter = 0;
 
-        System.out.println("alsd");
-        System.out.println(UserInfo.userInfo);
-
-
         // adds the interest to interests
         for (String study : UserInfo.studyPrograms.keySet()) {
             for (String interest : UserInfo.studyPrograms.get(study).getKeywords()) {
@@ -63,7 +59,6 @@ public class Interview {
     public String sendMessage(String message) {
         // Method to handle messages receives from user
         // Return either message to be printed to user, or null (?) if the interview is to be finished.
-
         usedInterests.add(lastInterest);
         if (positiveResponse.contains(message.toLowerCase())) {
             positiveInterests.add(lastInterest);
@@ -73,8 +68,7 @@ public class Interview {
 
         if (isFinished(message)) {
             this.active = false;
-            String ut = "We feel like we have enough information about you, and will now try find a study you might like.\nThe interests that we added was: \n";
-
+            String ut = "I now have enough information to try find a study you might like based on the following interests: \n";
             for (String interst : positiveInterests) {
                 ut += interst + ", ";
             }
@@ -88,7 +82,6 @@ public class Interview {
         message = message.replace("\"", ""); // removes ""
         // checks if the user wants to stop the interview
         // if 'quit', or the user have said enough;
-
         if ((questionCounter > 10 && checkEnoughInfo()) || questionCounter > 40 || message.toLowerCase().equals("quit")) {
             return true;
         }
@@ -114,8 +107,6 @@ public class Interview {
     private boolean checkEnoughInfo() {
         // Method to check if we have enough info to recommend a suitable study
         // Will check if a study has a lead with at least 4. In that case we will stop the interview
-
-
         HashMap<String, Integer> pointMap = new HashMap<>(); // Hashmap that links the studyname to how many keywords thats similar to the user interests
 
         // This happens everytime the user answer a new question. Could be more effective
@@ -129,13 +120,10 @@ public class Interview {
         }
 
         Iterator<String> iterator = pointMap.keySet().iterator(); // Iterates over the studies
-
         String bestStudy = "";
-
         if (iterator.hasNext()) {
             bestStudy = iterator.next();
         }
-
         // finds the best study
         while (iterator.hasNext()) {
             String nextStudy = iterator.next();
@@ -143,20 +131,17 @@ public class Interview {
                 bestStudy = nextStudy;
             }
         }
-
         for (String study : pointMap.keySet()) {
             if (pointMap.get(bestStudy) - 3 < pointMap.get(study) && !bestStudy.equals(study)) {
                 return false; // if the best study don't have a great enough lead
             }
         }
-
         return true;
     }
 
     public void setActive(boolean active) {
         this.active = active;
     }
-
     public boolean isActive() {
         return active;
     }

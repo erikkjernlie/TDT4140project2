@@ -13,40 +13,31 @@ public class Union {
     private int members;
     public static HashMap<String, Union> unions = new HashMap<>();
 
-
     public Union(String name, String info, int members) {
         this.name = name;
         this.info = info;
         this.members = members;
     }
-
     public Union(){}
 
     public String getInfo() {
         return info;
     }
-
     public void setInfo(String info) {
         this.info = info;
     }
-
     public int getMembers() {
         return members;
     }
-
     public void setMembers(int members) {
         this.members = members;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
-
 
     @Override
     public String toString() {

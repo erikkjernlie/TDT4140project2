@@ -183,9 +183,7 @@ public class UserInfo {
 
     public void updateFirebase() {
         firebaseAuth = firebaseAuth.getInstance();
-
         mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/");
-
         mRef.child(firebaseAuth.getCurrentUser().getUid().toString()).setValue(this);
     }
 }

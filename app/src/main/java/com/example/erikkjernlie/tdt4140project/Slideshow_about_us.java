@@ -37,11 +37,9 @@ public class Slideshow_about_us extends AppCompatActivity {
     private int[] layouts;
     private Button btnBack, btnNext;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initVariables();
     }
 
@@ -52,7 +50,6 @@ public class Slideshow_about_us extends AppCompatActivity {
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
         btnBack = (Button) findViewById(R.id.btn_back);
         btnNext = (Button) findViewById(R.id.btn_next);
-
 
         // layouts of all welcome sliders
         layouts = new int[]{
@@ -80,8 +77,6 @@ public class Slideshow_about_us extends AppCompatActivity {
                 }
             }
         });
-
-
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,7 +107,6 @@ public class Slideshow_about_us extends AppCompatActivity {
             dots[i].setTextColor(colorsInactive[currentPage]);
             dotsLayout.addView(dots[i]);
         }
-
         if (dots.length > 0)
             dots[currentPage].setTextColor(colorsActive[currentPage]);
     }
@@ -122,14 +116,12 @@ public class Slideshow_about_us extends AppCompatActivity {
     }
 
     private void launchHomeScreen() {
-
         startActivity(new Intent(Slideshow_about_us.this, Menu.class));
         finish();
     }
 
     //  viewpager change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
-
         @Override
         public void onPageSelected(int position) {
             addBottomDots(position);
@@ -137,8 +129,6 @@ public class Slideshow_about_us extends AppCompatActivity {
             // changing the next button text 'NEXT' to 'RETURN'
             if (position == layouts.length - 1) {
                 btnNext.setText("RETURN");
-
-
             } else if (position > 0) {
                 btnNext.setText(getString(R.string.next));
                 btnBack.setText(getString(R.string.prev));
@@ -149,15 +139,11 @@ public class Slideshow_about_us extends AppCompatActivity {
 
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
-
         }
-
         @Override
         public void onPageScrollStateChanged(int arg0) {
-
         }
     };
-
     /**
      * Making notification bar transparent
      */
@@ -168,37 +154,28 @@ public class Slideshow_about_us extends AppCompatActivity {
             window.setStatusBarColor(Color.TRANSPARENT);
         }
     }
-
     /**
      * View pager adapter
      */
     public class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
-
         public MyViewPagerAdapter() {
         }
-
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
             View view = layoutInflater.inflate(layouts[position], container, false);
             container.addView(view);
-
             return view;
         }
-
         @Override
         public int getCount() {
             return layouts.length;
         }
-
         @Override
         public boolean isViewFromObject(View view, Object obj) {
             return view == obj;
         }
-
-
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             View view = (View) object;

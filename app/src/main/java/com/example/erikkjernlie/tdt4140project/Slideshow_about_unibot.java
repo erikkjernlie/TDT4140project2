@@ -36,14 +36,12 @@ public class Slideshow_about_unibot extends AppCompatActivity {
     private int[] layouts;
     private Button btnBack, btnNext;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //setter layouten
         setContentView(R.layout.activity_slideshow);
-
         initVariables();
     }
 
@@ -52,7 +50,6 @@ public class Slideshow_about_unibot extends AppCompatActivity {
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
         btnBack = (Button) findViewById(R.id.btn_back);
         btnNext = (Button) findViewById(R.id.btn_next);
-
 
         // layouts of all welcome sliders
         layouts = new int[]{
@@ -79,8 +76,6 @@ public class Slideshow_about_unibot extends AppCompatActivity {
                 }
             }
         });
-
-
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +106,6 @@ public class Slideshow_about_unibot extends AppCompatActivity {
             dots[i].setTextColor(colorsInactive[currentPage]);
             dotsLayout.addView(dots[i]);
         }
-
         if (dots.length > 0)
             dots[currentPage].setTextColor(colorsActive[currentPage]);
     }
@@ -121,14 +115,12 @@ public class Slideshow_about_unibot extends AppCompatActivity {
     }
 
     private void launchHomeScreen() {
-
         startActivity(new Intent(Slideshow_about_unibot.this, Menu.class));
         finish();
     }
 
     //  viewpager change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
-
         @Override
         public void onPageSelected(int position) {
             addBottomDots(position);
@@ -147,12 +139,10 @@ public class Slideshow_about_unibot extends AppCompatActivity {
 
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
-
         }
 
         @Override
         public void onPageScrollStateChanged(int arg0) {
-
         }
     };
 
@@ -169,7 +159,6 @@ public class Slideshow_about_unibot extends AppCompatActivity {
     //View pager adapter
     public class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
-
         public MyViewPagerAdapter() {
         }
 
@@ -179,7 +168,6 @@ public class Slideshow_about_unibot extends AppCompatActivity {
 
             View view = layoutInflater.inflate(layouts[position], container, false);
             container.addView(view);
-
             return view;
         }
 
@@ -187,13 +175,10 @@ public class Slideshow_about_unibot extends AppCompatActivity {
         public int getCount() {
             return layouts.length;
         }
-
         @Override
         public boolean isViewFromObject(View view, Object obj) {
             return view == obj;
         }
-
-
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             View view = (View) object;
