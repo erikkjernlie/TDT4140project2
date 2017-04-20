@@ -316,16 +316,22 @@ public class ProcessAiResponse {
         }
         ut += " born in " + UserInfo.userInfo.getBirthYear() + " and";
 
-        ut += " you have " + UserInfo.userInfo.getCalculatedGrade() + " / " + UserInfo.userInfo.calculatedFirstTimeGrade +  " points to apply with.\nYour interests are: ";
+        ut += " you have " + UserInfo.userInfo.calculatedFirstTimeGrade + " / " + UserInfo.userInfo.getCalculatedGrade() +  " points to apply with.";
 
+        if (!(UserInfo.userInfo.getInterests().size() == 1)) {
+            ut += "\nYour interests are: ";
+        }
         // interests har alltid 'studies' så trenger ikke sjekke
         for (String interest : UserInfo.userInfo.getInterests()) {
             if (!interest.equals("Studies")){
                 ut += interest + ", ";
             }
         }
-
-        return ut.substring(0, ut.length() - 2) + ".";
+        if (!(UserInfo.userInfo.getInterests().size() == 1)) {
+            return ut.substring(0, ut.length() - 2) + ".";
+        } else {
+            return ut;
+        }
     }
 
     // Method for adding an interest to the user
