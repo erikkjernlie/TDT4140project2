@@ -439,6 +439,7 @@ public class ProcessAiResponse {
 
         HashMap<String, ArrayList<String>> matchedInterests = new HashMap<>(); // hashmap som skal holde på alle interessene
 
+        System.out.println(interests + "heiheihei");
         if (interests.size() == 1) {
             return "You have not told us any of your interests. If you tell us your interests, we could better help you find a suitable study";
         }
@@ -463,7 +464,7 @@ public class ProcessAiResponse {
                 }
             }
         }
-
+        System.out.println(matchedInterests + " heiheihei");
         Iterator<String> iterator1 = StudyProgramInfo.studyPrograms.keySet().iterator();
         if (iterator1.hasNext()) {
             String bestStudy = iterator1.next();
@@ -489,7 +490,6 @@ public class ProcessAiResponse {
 
             return ut.substring(0, ut.length() - 2) + ".";
         }
-
         return "You have not told us any of your interests. If you tell us your interests, we could better help you find a suitable study"; // Hvis den kommer hit, er interesselisten tom
 
     }
