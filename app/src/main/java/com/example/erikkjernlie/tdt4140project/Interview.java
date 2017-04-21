@@ -49,11 +49,11 @@ public class Interview {
             }
         }
 
-        if(interests.size() == 0) {
+        if (interests.size() == 0) {
             lastInterest = "ict";
             return;
         }
-        lastInterest = interests.get(new Random().nextInt(interests.size()-1));
+        lastInterest = interests.get(new Random().nextInt(interests.size() - 1));
     }
 
     public String sendMessage(String message) {
@@ -68,11 +68,13 @@ public class Interview {
 
         if (isFinished(message)) {
             this.active = false;
-            String ut = "I now have enough information to try find a study you might like based on the following interests: \n";
-            for (String interst : positiveInterests) {
-                ut += interst + ", ";
+            String ut = "I now have enough information to try find a study you might like based on the following interests: ";
+            for (String interst : UserInfo.userInfo.getInterests()) {
+                if (!interst.equals("Studies")) {
+                    ut += interst + ", ";
+                }
             }
-            return ut.substring(0, ut.length()-2) + ".";
+            return ut.substring(0, ut.length() - 2) + ".";
         }
         questionCounter++;
         return getQuestion();
@@ -91,12 +93,12 @@ public class Interview {
     public String getQuestion() {
         Random random = new Random();
 
-        String prompt = prompts.get(random.nextInt(prompts.size()-1));
-        String interest = interests.get(random.nextInt(interests.size()-1));
+        String prompt = prompts.get(random.nextInt(prompts.size() - 1));
+        String interest = interests.get(random.nextInt(interests.size() - 1));
 
         int rand;
         while (interest.equals(lastInterest) || usedInterests.contains(interest)) {
-            rand = random.nextInt(interests.size()-1);
+            rand = random.nextInt(interests.size() - 1);
             interest = interests.get(rand);
 
         }
@@ -142,6 +144,7 @@ public class Interview {
     public void setActive(boolean active) {
         this.active = active;
     }
+
     public boolean isActive() {
         return active;
     }

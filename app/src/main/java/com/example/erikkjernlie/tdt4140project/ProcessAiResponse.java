@@ -423,7 +423,7 @@ public class ProcessAiResponse {
         HashMap<String, ArrayList<String>> matchedInterests = new HashMap<>(); // hashmap som skal holde på alle interessene
 
         if (interests.size() == 1) {
-            return "You have not told us any of your interests. If you tell us your interests, we could better help you find a suitable study";
+            return "You have not told us any of your interests. If you tell us your interests, I could better help you find a suitable study";
         }
         while (iterator.hasNext()) {
             String study = iterator.next();
@@ -455,16 +455,16 @@ public class ProcessAiResponse {
                 }
             }
             if (matchedInterests.get(bestStudy).size() == 0) {
-                return "We could not find any suitable study. Please tell us more about your interests, so that we can help you find a study. ";
+                return "I could not find any suitable study. Please tell us more about your interests, so that I can help you find a study. ";
             }
-            String ut = "We think you might like " + bestStudy + " because you have interests which the study might match. The " +
+            String ut = "I think you might like " + bestStudy + " because you have interests which the study might match. The " +
                     "interests that matched was: ";
             for (String interest : matchedInterests.get(bestStudy)) {
                 ut += interest + ", ";
             }
             return ut.substring(0, ut.length() - 2) + ".";
         }
-        return "You have not told us any of your interests. If you tell us your interests, we could better help you find a suitable study"; // Hvis den kommer hit, er interesselisten tom
+        return "You have not told us any of your interests. If you tell us your interests, I could better help you find a suitable study"; // Hvis den kommer hit, er interesselisten tom
     }
 
     // Method for starting interview
