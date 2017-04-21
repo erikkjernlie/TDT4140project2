@@ -192,7 +192,7 @@ public class ProcessAiResponse {
                 return union + " is the student union at " + study + ".";
             }
         }
-        return "Sorry, we could not find any informations about " + union + ".";
+        return "Sorry, I could not find any informations about " + union + ".";
     }
 
     // Method for getting courses
@@ -274,9 +274,9 @@ public class ProcessAiResponse {
             ut += iterator.next() + ", ";
         }
         ut = ut.substring(0, ut.length() - 2);
-        String s1 = "The studies we support are: " + ut + ".";
-        String s2 = "We support the following studies: " + ut + ".";
-        String s3 = ut + " are the studies we currently support.";
+        String s1 = "The studies I support are: " + ut + ".";
+        String s2 = "I support the following studies: " + ut + ".";
+        String s3 = ut + " are the studies I currently support.";
         Random random = new Random();
         List<String> arr = Arrays.asList(s1, s2, s3);
         int index = random.nextInt(arr.size());
@@ -423,7 +423,7 @@ public class ProcessAiResponse {
         HashMap<String, ArrayList<String>> matchedInterests = new HashMap<>(); // hashmap som skal holde på alle interessene
 
         if (interests.size() == 1) {
-            return "You have not told us any of your interests. If you tell us your interests, I could better help you find a suitable study";
+            return "You have not told me any interests. If you tell me your interests, I could better help you find a suitable study";
         }
         while (iterator.hasNext()) {
             String study = iterator.next();
@@ -455,16 +455,16 @@ public class ProcessAiResponse {
                 }
             }
             if (matchedInterests.get(bestStudy).size() == 0) {
-                return "I could not find any suitable study. Please tell us more about your interests, so that I can help you find a study. ";
+                return "I could not find any suitable study. Please tell me more about your interests, so that I can help you find a study. ";
             }
-            String ut = "I think you might like " + bestStudy + " because you have interests which the study might match. The " +
-                    "interests that matched was: ";
+            String ut = "I think you might like " + bestStudy + " because you have interests that match. The " +
+                    "interests that match are: ";
             for (String interest : matchedInterests.get(bestStudy)) {
                 ut += interest + ", ";
             }
             return ut.substring(0, ut.length() - 2) + ".";
         }
-        return "You have not told us any of your interests. If you tell us your interests, I could better help you find a suitable study"; // Hvis den kommer hit, er interesselisten tom
+        return "You have not told me any of your interests. If you tell me your interests, I could better help you find a suitable study"; // Hvis den kommer hit, er interesselisten tom
     }
 
     // Method for starting interview

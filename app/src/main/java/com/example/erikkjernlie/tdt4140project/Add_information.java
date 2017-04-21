@@ -205,7 +205,7 @@ public class Add_information extends AppCompatActivity {
                     gender = 'F';
                     UserInfo.userInfo.setGender('F');
                 } else {
-                    Toast.makeText(Add_information.this, "You must pick a gender!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Add_information.this, "You must pick a gender", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (UserInfo.userInfo.getR2Grade() != 0){
@@ -644,7 +644,7 @@ public class Add_information extends AppCompatActivity {
 
                 if ((totalGrades) != 0) {
                     double totalScore = (1 * number1grade + 2 * number2grade + 3 * number3grade + 4 * number4grade + 5 * number5grade + 6 * number6grade);
-                    Toast.makeText(getApplicationContext(), "Grades saved.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Grades saved", Toast.LENGTH_SHORT).show();
                     temporaryGrade = (totalScore / (totalGrades))*10;
 
                 }
@@ -842,7 +842,7 @@ public class Add_information extends AppCompatActivity {
                     double num = Double.parseDouble(grade);
                     if (num > 0 && num <= 6.00) {
                         temporaryGrade = num*10;
-                        Toast.makeText(getApplicationContext(), "Grade saved.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Grade saved", Toast.LENGTH_SHORT).show();
                         number1grade = 0;
                         number2grade = 0;
                         number3grade = 0;
