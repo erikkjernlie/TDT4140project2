@@ -182,6 +182,7 @@ public class ChatBot extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                if (!interview.isActive()) {
                 sentencesOutput = new ArrayList<String>(Arrays.asList("Do you want to learn about a study?", "Do you want to compare some studies?", "Do you want to see a list of studies that we support?", "Do you want me to interview you?", "Do you want to " +
                         "learn about yourself?"));
 
@@ -194,6 +195,10 @@ public class ChatBot extends AppCompatActivity {
                 }
                 randomNumber = newRandom;
                 addMessageToChatArray(sentencesOutput.get(randomNumber));
+
+                } else {
+                    addMessageToChatArray("Please press quit to stop the interview");
+                }
             }
         });
     }
