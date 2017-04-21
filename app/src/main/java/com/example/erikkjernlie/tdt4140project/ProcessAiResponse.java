@@ -24,6 +24,7 @@ import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import static com.example.erikkjernlie.tdt4140project.StudyProgramInfo.studyPrograms;
 import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -115,8 +116,8 @@ public class ProcessAiResponse {
     // Method for getting study grade
     private String getGrade(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
-        double ordinaryGrade = StudyProgramInfo.studyPrograms.get(studyProgram).getOrdinaryGrade();
-        double primaryGrade = StudyProgramInfo.studyPrograms.get(studyProgram).getFirstTimeGrade();
+        double ordinaryGrade = studyPrograms.get(studyProgram).getOrdinaryGrade();
+        double primaryGrade = studyPrograms.get(studyProgram).getFirstTimeGrade();
         String s1 = "Last year you needed a grade of " + primaryGrade + " / " + ordinaryGrade + " to get into " + studyProgram + ".";
         String s2 = "The grade to get into " + studyProgram + " last year was " + primaryGrade + " / " + ordinaryGrade + ".";
         String s3 = "To get into " + studyProgram + " last year you needed a grade of " + primaryGrade + " / " + ordinaryGrade + ".";
@@ -130,7 +131,7 @@ public class ProcessAiResponse {
     // Method for getting girlPoints
     private String getGirlPoints(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
-        boolean girlPoints = StudyProgramInfo.studyPrograms.get(studyProgram).isGirlPoints();
+        boolean girlPoints = studyPrograms.get(studyProgram).isGirlPoints();
         if (girlPoints) {
             return studyProgram + " does give girlpoints.";
         } else {
@@ -141,14 +142,14 @@ public class ProcessAiResponse {
     // Method for getting info
     private String getInfo(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
-        String info = StudyProgramInfo.studyPrograms.get(studyProgram).getInfo();
+        String info = studyPrograms.get(studyProgram).getInfo();
         return info;
     }
 
     // Method for getting commonworkfields
     private String getCommonWorkFields(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
-        ArrayList<String> commonWorkFields = StudyProgramInfo.studyPrograms.get(studyProgram).getCommonWorkFields();
+        ArrayList<String> commonWorkFields = studyPrograms.get(studyProgram).getCommonWorkFields();
         String ut = new String();
         for (String workField : commonWorkFields) {
             ut += workField + ", ";
@@ -166,15 +167,15 @@ public class ProcessAiResponse {
     // Method for getting studyenvironment
     private String getStudyEnvironment(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
-        return StudyProgramInfo.studyPrograms.get(studyProgram).getStudyEnvironment();
+        return studyPrograms.get(studyProgram).getStudyEnvironment();
     }
 
     // Method for getting studentunion
     private String getStudentUnion(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
-        String s1 = "The student union at " + studyProgram + " is " + StudyProgramInfo.studyPrograms.get(studyProgram).getStudentUnion() + ".";
-        String s2 = StudyProgramInfo.studyPrograms.get(studyProgram).getStudentUnion() + " is the student union at " + studyProgram + ".";
-        String s3 = "At " + studyProgram + ", the student union is called " + StudyProgramInfo.studyPrograms.get(studyProgram).getStudentUnion() + ".";
+        String s1 = "The student union at " + studyProgram + " is " + studyPrograms.get(studyProgram).getStudentUnion() + ".";
+        String s2 = studyPrograms.get(studyProgram).getStudentUnion() + " is the student union at " + studyProgram + ".";
+        String s3 = "At " + studyProgram + ", the student union is called " + studyPrograms.get(studyProgram).getStudentUnion() + ".";
         Random random = new Random();
         List<String> arr = Arrays.asList(s1, s2, s3);
         int index = random.nextInt(arr.size());
@@ -184,11 +185,11 @@ public class ProcessAiResponse {
     // Method for getting info about studentUnion
     private String getInfoStudentUnion(String union) {
         union = union.replace("\"", ""); // removes ""
-        Iterator<String> iterator = StudyProgramInfo.studyPrograms.keySet().iterator(); // itererer gjennom studienavnene
+        Iterator<String> iterator = studyPrograms.keySet().iterator(); // itererer gjennom studienavnene
         while (iterator.hasNext()) {
             String study = iterator.next();
-            StudyProgramInfo.studyPrograms.get(study).getStudentUnion().toString().equals(union);
-            if (StudyProgramInfo.studyPrograms.get(study).getStudentUnion().toString().equals(union)) {
+            studyPrograms.get(study).getStudentUnion().toString().equals(union);
+            if (studyPrograms.get(study).getStudentUnion().toString().equals(union)) {
                 return union + " is the student union at " + study + ".";
             }
         }
@@ -199,7 +200,7 @@ public class ProcessAiResponse {
     private String getCourses(String studyProgram) {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
         String ut = new String();
-        ArrayList<String> courses = StudyProgramInfo.studyPrograms.get(studyProgram).getCourses();
+        ArrayList<String> courses = studyPrograms.get(studyProgram).getCourses();
         for (String course : courses) {
             ut += course + ", ";
         }
@@ -226,8 +227,8 @@ public class ProcessAiResponse {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
         studyProgram1 = studyProgram1.replace("\"", ""); // removes ""
 
-        ArrayList<String> keyWordsStudyProgram = StudyProgramInfo.studyPrograms.get(studyProgram).getKeywords();
-        ArrayList<String> keyWordsStudyProgram1 = StudyProgramInfo.studyPrograms.get(studyProgram1).getKeywords();
+        ArrayList<String> keyWordsStudyProgram = studyPrograms.get(studyProgram).getKeywords();
+        ArrayList<String> keyWordsStudyProgram1 = studyPrograms.get(studyProgram1).getKeywords();
 
         ArrayList<String> similarKeyWords = new ArrayList<>();
 
@@ -268,7 +269,7 @@ public class ProcessAiResponse {
     // Method for getting all studies
     private String getAllStudies() {
         String ut = "";
-        Set<String> keys = StudyProgramInfo.studyPrograms.keySet();
+        Set<String> keys = studyPrograms.keySet();
         Iterator<String> iterator = keys.iterator();
         while (iterator.hasNext()) {
             ut += iterator.next() + ", ";
@@ -368,8 +369,8 @@ public class ProcessAiResponse {
         double userOrdinaryGrade = UserInfo.userInfo.getCalculatedGrade();
         double userPrimaryGrade = UserInfo.userInfo.calculatedFirstTimeGrade;
 
-        double ordinaryGrade = StudyProgramInfo.studyPrograms.get(studyProgram).getOrdinaryGrade();
-        double primaryGrade = StudyProgramInfo.studyPrograms.get(studyProgram).getFirstTimeGrade();
+        double ordinaryGrade = studyPrograms.get(studyProgram).getOrdinaryGrade();
+        double primaryGrade = studyPrograms.get(studyProgram).getFirstTimeGrade();
 
         if (!UserInfo.userInfo.getCourses().contains("Fysikk 1") && !studyProgram.equals("Informatics")) {
             ut += "\nYou lack the required course Fysikk 1. You need to take this exam to get into " + studyProgram + ". \n";
@@ -378,7 +379,7 @@ public class ProcessAiResponse {
         if (!studyProgram.equals("Informatics") && UserInfo.userInfo.getR2Grade() < 4) {
 
             ut += "You need at least a grade of 4 in the Matematikk R2 course, while you have " + UserInfo.userInfo.getR2Grade() + ".\nTherefore you will need to retake the exam. \n";
-            if (StudyProgramInfo.studyPrograms.get(studyProgram).isGirlPoints() && UserInfo.userInfo.getGender() == 'F') {
+            if (studyPrograms.get(studyProgram).isGirlPoints() && UserInfo.userInfo.getGender() == 'F') {
                 userOrdinaryGrade += 2;
                 userPrimaryGrade += 2;
             }
@@ -392,7 +393,7 @@ public class ProcessAiResponse {
             return ut;
 
         }
-        if (StudyProgramInfo.studyPrograms.get(studyProgram).isGirlPoints() && UserInfo.userInfo.getGender() == 'F') {
+        if (studyPrograms.get(studyProgram).isGirlPoints() && UserInfo.userInfo.getGender() == 'F') {
             userOrdinaryGrade += 2;
             userPrimaryGrade += 2;
         }
@@ -416,7 +417,7 @@ public class ProcessAiResponse {
 
         ArrayList<String> interests = UserInfo.userInfo.getInterests(); // interessene til brukeren
 
-        Iterator<String> iterator = StudyProgramInfo.studyPrograms.keySet().iterator(); // iterator som går gjennom alle studienavnene
+        Iterator<String> iterator = studyPrograms.keySet().iterator(); // iterator som går gjennom alle studienavnene
 
         HashMap<String, ArrayList<String>> keyWords = new HashMap<>(); // hashmap som skal holde alle interessene til hvert studie
 
@@ -427,12 +428,12 @@ public class ProcessAiResponse {
         }
         while (iterator.hasNext()) {
             String study = iterator.next();
-            keyWords.put(study, StudyProgramInfo.studyPrograms.get(study).getKeywords());
+            keyWords.put(study, studyPrograms.get(study).getKeywords());
             pointMap.put(study, 0);
             matchedInterests.put(study, new ArrayList<String>());
         }
         // går gjennom alle studiene, legger til poeng på pointsMap, om interessen er en av keywordsa
-        for (String study : StudyProgramInfo.studyPrograms.keySet()) {
+        for (String study : studyPrograms.keySet()) {
             for (String interest : interests) {
                 if (interest != null) {
                     interest = interest.toLowerCase();
@@ -444,7 +445,7 @@ public class ProcessAiResponse {
                 }
             }
         }
-        Iterator<String> iterator1 = StudyProgramInfo.studyPrograms.keySet().iterator();
+        Iterator<String> iterator1 = studyPrograms.keySet().iterator();
         if (iterator1.hasNext()) {
             String bestStudy = iterator1.next();
 
@@ -488,55 +489,52 @@ public class ProcessAiResponse {
         return ut;
     }
 
-  /*  public static class ProcessAiResponseTest {
+    public static class ProcessAiResponseTest {
         ProcessAiResponse aiResponse;
 
         @Before
         public void setUp() throws Exception {
-            HashMap<String, StudyProgramInfo> studyProgramInfoMap = new HashMap<>();
-            studyProgramInfoMap.put("Informatics", new StudyProgramInfo(51.2, false,
+            StudyProgramInfo.studyPrograms.put("Informatics", new StudyProgramInfo(51.2, 52.4, false,
                     new ArrayList<String>(Arrays.asList("Data", "IKT", "IT", "HTML")),
                     new ArrayList<String>(Arrays.asList("Data", "Consultant", "Web design")), "Informatics is a 3-year bachelor program that deals with the planning, development, improvement, evaluation and use of programs and computer systems. After 3 years, the students may embark on their working life or apply for a 2 year Masters program.",
                     "The study evironment is focused around the student union Online. They arrange a lot of different activities, both related and unrealted to computers and data technology. Many students are engaged in unions such as Hackerspace, where you can get familiar with interesting subjects such as use of VR and building computers.",
                     "Online", new ArrayList<String>(Arrays.asList("EXPH0004", "TDT4110", "MA0001"))));
 
-            studyProgramInfoMap.put("Computer Science", new StudyProgramInfo(57.0, true,
+            StudyProgramInfo.studyPrograms.put("Computer Science", new StudyProgramInfo(57.0, 57.5, true,
                     new ArrayList<String>(Arrays.asList("Data", "IKT", "IT", "Programming")),
                     new ArrayList<String>(Arrays.asList("Data", "Consultant", "Programmer")), "The Computer Science programme of study is a 5 years Master of Science (sivilingeniør) programme. Computer Science is not only about excellent computer skills - it also deals with contributing to the social development. How can we improve existing systems? What could be useful in the future? With computer engineering skills you can create computer systems which people need, want, or not yet know that they need.",
                     "The student union Abakus is very popular among students and arrange many different activities for all students at Computer Science.",
                     "Abakus", new ArrayList<String>(Arrays.asList("EXPH0004", "TDT4110", "TMA4100"))));
-            UserInfo user = new UserInfo(1996, 53.6, 0, 0, 0, 0, 0, 0, new ArrayList<>(Arrays.asList("Matematikk R1",
+            UserInfo.userInfo = new UserInfo(1996, 53.6, 0, 0, 0, 0, 0, 0, new ArrayList<>(Arrays.asList("Matematikk R1",
                     "Matematikk R2")), new ArrayList<>(Arrays.asList("Folkehøgskole")), 'M', 5,
                     new ArrayList<>(Arrays.asList("Studies", "web development")));
-            aiResponse = new ProcessAiResponse(studyProgramInfoMap, user, null);
+            aiResponse = new ProcessAiResponse(StudyProgramInfo.studyPrograms, UserInfo.userInfo, null);
         }
 
         @Test
         public void testConstructor() throws Exception {
             ProcessAiResponse res = new ProcessAiResponse(
-                    StudyProgramInfo.studyPrograms, UserInfo.userInfo, null);
-            assertEquals(StudyProgramInfo.studyPrograms, StudyProgramInfo.studyPrograms);
-            assertEquals(StudyProgramInfo.studyPrograms, StudyProgramInfo.studyPrograms);
+                    studyPrograms, UserInfo.userInfo, null);
+            assertEquals(studyPrograms, studyPrograms);
+            assertEquals(studyPrograms, studyPrograms);
             assertTrue(UserInfo.userInfo.getInterests().contains("Studies"));
         }
 
         @Test
         public void testGetGrade() throws Exception {
-            assertEquals(aiResponse.getGrade("Informatics"),
-                    "The grade to get into " + "Informatics" + " is " + "51.2" + ".");
-            assertFalse(aiResponse.getGrade("Informatics")
-                    .equals("The grade to get into " + "Informatics" + " is " + "51.0" + "."));
+            assertTrue(aiResponse.getGrade("Informatics").contains("51.2"));
+            assertFalse(aiResponse.getGrade("Informatics").contains("51.0"));
         }
 
         @Test
         public void testGetGirlPoints() throws Exception {
             assertEquals(aiResponse.getGirlPoints("Computer Science"),
-                    "Computer Science" + " has girlspoints.");
+                    "Computer Science" + " does give girlpoints.");
             assertFalse(aiResponse.getGirlPoints("Computer Science").
-                    equals("Computer Science" + " has not girlspoints."));
+                    equals("Computer Science" + " does not give girlpoints."));
 
             assertFalse(aiResponse.getGirlPoints("Informatics").
-                    equals("Informatics" + " has girlspoints"));
+                    equals("Informatics" + " does give girlpoints"));
         }
 
         @Test
@@ -548,8 +546,7 @@ public class ProcessAiResponse {
 
         @Test
         public void testGetCommonWorkFields() throws Exception {
-            assertEquals(aiResponse.getCommonWorkFields("Computer Science"),
-                    "At Computer Science you can work with: Data, Consultant, Programmer.");
+            assertTrue(aiResponse.getCommonWorkFields("Computer Science").contains("Data, Consultant, Programmer"));
         }
 
         @Test
@@ -560,15 +557,12 @@ public class ProcessAiResponse {
 
         @Test
         public void testGetStudentUnion() throws Exception {
-            assertEquals(aiResponse.getStudentUnion("Computer Science"),
-                    "The student union at " + "Computer Science" + " is " + "Abakus" + ".");
+            assertTrue(aiResponse.getStudentUnion("Computer Science").contains("Abakus"));
         }
 
         @Test
         public void testGetCourses() throws Exception {
-            assertEquals(aiResponse.getCourses("Informatics"),
-                    "The courses at " + "Informatics" + " is: " +
-                            "EXPH0004, TDT4110, MA0001.");
+            assertTrue(aiResponse.getCourses("Informatics").contains("EXPH0004, TDT4110, MA0001"));
         }
 
         @Test
@@ -629,5 +623,5 @@ public class ProcessAiResponse {
             aiResponse = null;
         }
 
-    }*/
+    }
 }

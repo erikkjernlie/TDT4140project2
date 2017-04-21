@@ -1,5 +1,7 @@
 package com.example.erikkjernlie.tdt4140project;
 
+import com.google.firebase.FirebaseApp;
+
 import org.junit.Before;
 
 import java.util.ArrayList;
@@ -41,8 +43,8 @@ public class Interview {
         this.questionCounter = 0;
 
         // adds the interest to interests
-        for (String study : UserInfo.studyPrograms.keySet()) {
-            for (String interest : UserInfo.studyPrograms.get(study).getKeywords()) {
+        for (String study : StudyProgramInfo.studyPrograms.keySet()) {
+            for (String interest : StudyProgramInfo.studyPrograms.get(study).getKeywords()) {
                 if (interest != null && !interests.contains(interest) && !UserInfo.userInfo.getInterests().contains(interest)) { // checks if its not already added, and if the user already have added interest
                     interests.add(interest);
                 }

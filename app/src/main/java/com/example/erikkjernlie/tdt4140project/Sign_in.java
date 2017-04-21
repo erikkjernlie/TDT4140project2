@@ -62,6 +62,7 @@ public class Sign_in extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
+        FirebaseApp.initializeApp(this);
         firebaseAuth = firebaseAuth.getInstance();
         ProgressDialog progressDialog = new ProgressDialog(this);
         if (firebaseAuth.getCurrentUser() != null) {

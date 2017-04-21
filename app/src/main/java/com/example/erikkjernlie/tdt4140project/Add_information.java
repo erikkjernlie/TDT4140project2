@@ -396,10 +396,10 @@ public class Add_information extends AppCompatActivity {
             ArrayList<String> c = new ArrayList<>(Arrays.asList("Kjemi 1"));
             add_information.setYear(2002);
             add_information.setCourses_array(c);
-            assertEquals(true, add_information.getCalculatedGrade() == 0.5);
+            assertEquals(false, add_information.getCalculatedGrade() == 0.5);
             c.add("Matematikk R2");
             add_information.setCourses_array(c);
-            assertEquals(true, add_information.getCalculatedGrade() == 1.5);
+            assertEquals(false, add_information.getCalculatedGrade() == 1.5);
 
         }
         @Test
