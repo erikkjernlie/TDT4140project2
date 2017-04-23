@@ -227,8 +227,8 @@ public class ProcessAiResponse {
         studyProgram = studyProgram.replace("\"", ""); // removes ""
         studyProgram1 = studyProgram1.replace("\"", ""); // removes ""
 
-        ArrayList<String> keyWordsStudyProgram = studyPrograms.get(studyProgram).getKeywords();
-        ArrayList<String> keyWordsStudyProgram1 = studyPrograms.get(studyProgram1).getKeywords();
+        ArrayList<String> keyWordsStudyProgram = StudyProgramInfo.studyPrograms.get(studyProgram).getKeywords();
+        ArrayList<String> keyWordsStudyProgram1 = StudyProgramInfo.studyPrograms.get(studyProgram1).getKeywords();
 
         ArrayList<String> similarKeyWords = new ArrayList<>();
 

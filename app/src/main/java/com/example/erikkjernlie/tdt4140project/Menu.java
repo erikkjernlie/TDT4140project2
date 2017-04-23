@@ -102,8 +102,6 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         initButtons();
-        initGrade();
-        //uncomment this when we want the alert just to appear the first time the app is started
     }
 
     private void initGrade() {
@@ -130,6 +128,7 @@ public class Menu extends AppCompatActivity {
     }
 
     public void alertSettings() {
+        initGrade();
         final Dialog d = new Dialog(Menu.this);
         d.setContentView(R.layout.alertdialog_settings);
         d.setTitle("Settings");
