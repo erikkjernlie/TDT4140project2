@@ -28,16 +28,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Date;
-import java.util.HashMap;
-
-import static com.example.erikkjernlie.tdt4140project.R.id.birthYear;
 
 public class Menu extends AppCompatActivity {
 
@@ -129,7 +122,11 @@ public class Menu extends AppCompatActivity {
             points = 0;
         }
         n -= points;
+        if (n<0){
+            n = 0;
+        }
         UserInfo.userInfo.setCalculatedFirstTimeGrade(n);
+
     }
 
     public void alertSettings() {
