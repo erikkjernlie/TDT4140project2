@@ -40,7 +40,7 @@ public class ProcessAiResponse {
     public String processAiRespons(AIResponse aiResponse) {
         String action = aiResponse.getResult().getAction().toString();
         String method = action.substring(0, action.indexOf('('));
-        String ut = "NoAnswer"; // Må legges til i ChatBot: Hvis "NoAnswer" så skal den bare legge til svaret den får fra APIAI
+        String ut = "Sorry, you have just found a bug. Please don't tell Pekka. "; // Må legges til i ChatBot: Hvis "NoAnswer" så skal den bare legge til svaret den får fra APIAI
         // Evt kan den bare sjekke om svaret API.AI gir er tomt, og det er, skal den kalle på denne metoden. DETTE ER BEST
         switch (method) {
             case "getGrade":
@@ -102,15 +102,25 @@ public class ProcessAiResponse {
             case "help":
                 ut = this.help();
                 break;
-            case "getInfoTrondheim":
-                ut = this.getInfoTrondheim();
+            case "getStudiesFromInterest":
+                ut = this.getStudiesFromInterest(aiResponse.getResult().getParameters().get("Interests").toString());
+                break;
+            case "getStudyHasInterest":
+                ut = this.getStudyHasInterest(aiResponse.getResult().getParameters().get("StudyProgram").toString(), aiResponse.getResult().getParameters().get("Interests").toString());
                 break;
             case "getInfoNTNU":
                 ut = this.getInfoNtnu();
                 break;
+            case "getInfoTrondheim":
+                ut = this.getInfoTrondheim();
+                break;
             case "getInfoUnibot":
                 ut = this.getInfoUnibot();
                 break;
+            case "getSalary":
+                ut = this.getSalary();
+                break;
+
         }
         return ut;
     }
@@ -365,6 +375,9 @@ public class ProcessAiResponse {
                 }
                 ut = ut.substring(0, ut.length() - 2) + ", because it was already added to your interests. ";
             }
+            for (String interest : interests) {
+                ut += this.getStudiesFromInterest(interests.get(0));
+            }
             return ut;
         }
 
@@ -374,6 +387,10 @@ public class ProcessAiResponse {
                 ut += interest + ", ";
             }
             ut = ut.substring(0, ut.length() - 2) + ".";
+        }
+
+        for (String interest : interests) {
+            ut += this.getStudiesFromInterest(interests.get(0));
         }
         return ut;
     }
@@ -519,7 +536,7 @@ public class ProcessAiResponse {
         if (studiesWhichHasInterest.size() == 1) {
             return studiesWhichHasInterest.get(0) + " have the keyword " + interest + ".";
         } else if (studiesWhichHasInterest.size() == 0) {
-            return "There is no study which has " + interest + " as a keyword.";
+            return "";
         } else {
             String ut = "The studies ";
             for (String study : studiesWhichHasInterest) {
@@ -567,8 +584,6 @@ public class ProcessAiResponse {
     private String getSalary() {
         return "Newly educated sivil engineers earn approximately 500 000 NOK.";
     }
-
-
 
     public static class ProcessAiResponseTest {
         ProcessAiResponse aiResponse;

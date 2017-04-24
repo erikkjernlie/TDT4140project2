@@ -57,6 +57,7 @@ public class Menu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent c = new Intent(Menu.this, ChatBot.class);
+                initGrade();
                 startActivity(c);
             }
         });
