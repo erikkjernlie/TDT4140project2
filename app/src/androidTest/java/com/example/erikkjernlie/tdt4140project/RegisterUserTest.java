@@ -64,12 +64,6 @@ public class RegisterUserTest {
             ---- END OF README ---
          */
 
-        try {
-            FirebaseAuth.getInstance().signInWithEmailAndPassword("testregister@user.com", "test1234");
-            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            user.delete();
-        } catch (Exception e) {
-        }
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
@@ -77,6 +71,35 @@ public class RegisterUserTest {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            ViewInteraction button10 = onView(
+                    allOf(withId(R.id.signOut),
+                            isDisplayed()));
+            button10.check(matches(isDisplayed()));
+
+            ViewInteraction appCompatButton20 = onView(
+                    allOf(withId(R.id.signOut), withText("Sign out"), isDisplayed()));
+            appCompatButton20.perform(click());
+        }
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            FirebaseAuth.getInstance().signInWithEmailAndPassword("testregister@user.com", "test1234");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            user.delete();
+        } catch (Exception e) {
         }
 
         ViewInteraction appCompatButton = onView(
@@ -277,6 +300,19 @@ public class RegisterUserTest {
         ViewInteraction appCompatButton20 = onView(
                 allOf(withId(R.id.signOut), withText("Sign out"), isDisplayed()));
         appCompatButton20.perform(click());
+
+        try {
+            FirebaseAuth.getInstance().signOut();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            FirebaseAuth.getInstance().signInWithEmailAndPassword("testregister@user.com", "test1234");
+            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            user.delete();
+        } catch (Exception e) {
+        }
     }
 
     private static Matcher<View> childAtPosition(

@@ -173,9 +173,7 @@ public class MenuChatWithUnibotTest {
         textView5.check(matches(withText("Help with uniBOT")));
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(android.R.id.button1), withText("I don't need any more help"),
-                        withParent(allOf(withClassName(is("com.android.internal.widget.ButtonBarLayout")),
-                                withParent(withClassName(is("android.widget.LinearLayout"))))),
+                allOf(withId(android.R.id.button1),
                         isDisplayed()));
         appCompatButton3.perform(click());
         // Added a sleep statement to match the app's execution delay.

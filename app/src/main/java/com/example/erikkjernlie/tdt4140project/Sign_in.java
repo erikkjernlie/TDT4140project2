@@ -72,7 +72,7 @@ public class Sign_in extends AppCompatActivity {
             int duration = Toast.LENGTH_SHORT;
             final Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-            new CountDownTimer(3000, 1000)
+            new CountDownTimer(2000, 1000)
             {
                 public void onTick(long millisUntilFinished) {toast.show();}
                 public void onFinish() {toast.show();}

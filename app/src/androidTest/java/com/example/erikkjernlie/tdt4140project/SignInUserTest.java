@@ -97,11 +97,6 @@ public class SignInUserTest {
 
         ViewInteraction button = onView(
                 allOf(withId(R.id.signOut),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        1),
-                                9),
                         isDisplayed()));
         button.check(matches(isDisplayed()));
 
