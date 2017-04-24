@@ -1,14 +1,14 @@
 package com.example.erikkjernlie.tdt4140project;
 
 
-import android.test.suitebuilder.annotation.Suppress;
-
 import com.google.gson.JsonElement;
 
-import junit.framework.Assert;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.runners.Enclosed;
+import org.junit.runner.RunWith;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,20 +17,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.runners.Enclosed;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import ai.api.model.AIResponse;
 
 import static com.example.erikkjernlie.tdt4140project.StudyProgramInfo.studyPrograms;
 import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-
-import ai.api.model.AIResponse;
 
 /**
  * Created by jonas on 01.04.2017.
@@ -369,8 +362,8 @@ public class ProcessAiResponse {
         double userOrdinaryGrade = UserInfo.userInfo.getCalculatedGrade();
         double userPrimaryGrade = UserInfo.userInfo.calculatedFirstTimeGrade;
 
-        double ordinaryGrade = studyPrograms.get(studyProgram).getOrdinaryGrade();
-        double primaryGrade = studyPrograms.get(studyProgram).getFirstTimeGrade();
+        double ordinaryGrade = StudyProgramInfo.studyPrograms.get(studyProgram).getOrdinaryGrade();
+        double primaryGrade = StudyProgramInfo.studyPrograms.get(studyProgram).getFirstTimeGrade();
 
         if (!UserInfo.userInfo.getCourses().contains("Fysikk 1") && !studyProgram.equals("Informatics")) {
             ut += "\nYou lack the required course Fysikk 1. You need to take this exam to get into " + studyProgram + ". \n";
