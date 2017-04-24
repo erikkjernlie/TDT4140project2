@@ -102,6 +102,15 @@ public class ProcessAiResponse {
             case "help":
                 ut = this.help();
                 break;
+            case "getInfoTrondheim":
+                ut = this.getInfoTrondheim();
+                break;
+            case "getInfoNTNU":
+                ut = this.getInfoNTNU();
+                break;
+            case "getInfoUnibot":
+                ut = this.getInfoUnibot();
+                break;
         }
         return ut;
     }
@@ -222,7 +231,7 @@ public class ProcessAiResponse {
 
         ArrayList<String> keyWordsStudyProgram = StudyProgramInfo.studyPrograms.get(studyProgram).getKeywords();
         ArrayList<String> keyWordsStudyProgram1 = StudyProgramInfo.studyPrograms.get(studyProgram1).getKeywords();
-        
+
         ArrayList<String> similarKeyWords = new ArrayList<>();
 
         for (String keyWord : keyWordsStudyProgram) {
@@ -494,6 +503,21 @@ public class ProcessAiResponse {
                 "- Get familiar with common work fields\n" +
                 "- Explore unions and student unions";
         return ut;
+    }
+
+    // Method for telling the user about Trondheim
+    private String getInfoTrondheim() {
+        return "With about 170.000 inhabitants, of which over 40.000 are students, Trondheim is the third largest city in Norway. The city is dominated by its large institutions such as the Norwegian University of Science and Technology, SINTEF Research Center and the St. Olavs University Hospital. Trondheim has several times been voted Norway’s best city for students, with good reason. Social happenings such as ISFiT, UKA and many others make sure there’s always something new to explore, in addition to other cultural meeting points like Trøndelag Teater and cinemas.";
+    }
+
+    // Method for telling the user about NTNU
+    private String getInfoNTNU() {
+        return "The Norwegian University of Science and Technology is a public research university with campuses in the cities of Trondheim, Gjøvik and Ålesund. NTNU has the main national responsibility for higher education in engineering and technology, and gather more than 30.000 students in Trondheim alone, about half of which are connected to the technical subjects. Since its formation in 1996, the university has grown to become nationally and internationally recognized, both within education and research. You can read more about NTNU at www.ntnu.no";
+    }
+
+    // Method for telling the user about uniBOT
+    private String getInfoUnibot() {
+        return "I can help you with almost everything that has to do with studies at NTNU Gløshaugen, as well as various other student activities like different unions and life in Trondheim. Try ask me anything, or check out the “HELP”-menu for tips. Perhaps you’d even want to sit back and let me interview you and recommend a study? If so, just let me know! The application was made by four students at the Engineering and ICT program, with the goal of assisting possible applicants choose the right study based on their individual preferences. You can read about them at the “About us”-page.";
     }
 
     public static class ProcessAiResponseTest {
