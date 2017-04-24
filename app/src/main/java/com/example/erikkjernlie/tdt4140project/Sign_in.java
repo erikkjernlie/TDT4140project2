@@ -91,7 +91,7 @@ public class Sign_in extends AppCompatActivity {
                     Toast.makeText(Sign_in.this, "Successfully logged in!", Toast.LENGTH_SHORT).show();
                     finish();
                 }
-            }, 5000);
+            }, 3000);
         } else {
             setContentView(R.layout.activity_sign_in);
             studyPrograms = new HashMap<>();
@@ -180,13 +180,12 @@ public class Sign_in extends AppCompatActivity {
                         @Override
                         public void run() {
                             //sender deg videre til homescreen
-                            UserInfo.userInfo = user;
                             Intent homeIntent = new Intent(Sign_in.this, Menu.class);
                             startActivity(homeIntent);
                             Toast.makeText(Sign_in.this, "Successfully logged in!", Toast.LENGTH_SHORT).show();
                             finish();
                         }
-                    }, 5000);
+                    }, 3000);
                 }
             }
         });
