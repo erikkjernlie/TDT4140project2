@@ -106,7 +106,7 @@ public class ProcessAiResponse {
                 ut = this.getInfoTrondheim();
                 break;
             case "getInfoNTNU":
-                ut = this.getInfoNTNU();
+                ut = this.getInfoNtnu();
                 break;
             case "getInfoUnibot":
                 ut = this.getInfoUnibot();
@@ -505,20 +505,70 @@ public class ProcessAiResponse {
         return ut;
     }
 
-    // Method for telling the user about Trondheim
+    private String getStudiesFromInterest(String interest) {
+        interest = interest.replace("\"", ""); // removes ""
+        ArrayList<String> studiesWhichHasInterest = new ArrayList<>();
+
+        for (String study : studyPrograms.keySet()) {
+            if (studyPrograms.get(study).getKeywords().contains(interest)) {
+                studiesWhichHasInterest.add(study);
+            }
+        }
+
+        // Different answer for different amount of studies
+        if (studiesWhichHasInterest.size() == 1) {
+            return studiesWhichHasInterest.get(0) + " have the keyword " + interest + ".";
+        } else if (studiesWhichHasInterest.size() == 0) {
+            return "There is no study which has " + interest + " as a keyword.";
+        } else {
+            String ut = "The studies ";
+            for (String study : studiesWhichHasInterest) {
+                ut += study + ", ";
+            }
+            return ut.substring(0, ut.length() - 2) + " has " + interest + " as keyword.";
+        }
+
+
+    }
+
+    private String getStudyHasInterest(String studyProgram, String interest) {
+        studyProgram = studyProgram.replace("\"", ""); // removes ""
+        interest = interest.replace("\"", ""); // removes ""
+        System.out.println(studyPrograms);
+        if (studyPrograms.get(studyProgram).getKeywords().contains(interest)) {
+            return studyProgram + " has the interest " + interest + ".";
+        }
+        return studyProgram + " don't have the interest " + interest + ".";
+    }
+
+    private String getInfoNtnu() {
+        return "The Norwegian University of Science and Technology is a public research university with campuses in the cities of Trondheim, Gjøvik and Ålesund. " +
+                "\nNTNU has the main national responsibility for higher education in engineering and technology, and gather more than 30.000 students in Trondheim " +
+                "alone, about half of which are connected to the technical subjects. \nSince its formation in 1996, the university has grown to become nationally and " +
+                "internationally recognized, both within education and research. \nYou can read more about NTNU at www.ntnu.no";
+    }
+
     private String getInfoTrondheim() {
-        return "With about 170.000 inhabitants, of which over 40.000 are students, Trondheim is the third largest city in Norway. The city is dominated by its large institutions such as the Norwegian University of Science and Technology, SINTEF Research Center and the St. Olavs University Hospital. Trondheim has several times been voted Norway’s best city for students, with good reason. Social happenings such as ISFiT, UKA and many others make sure there’s always something new to explore, in addition to other cultural meeting points like Trøndelag Teater and cinemas.";
+        return "With about 170.000 inhabitants, of which over 40.000 are students, Trondheim is the third largest city in Norway. " +
+                "\nThe city is dominated by its large institutions such as the Norwegian University of Science and Technology, SINTEF " +
+                "Research Center and the St. Olavs University Hospital. \nTrondheim has several times been voted Norway’s best city for " +
+                "students, with good reason. Social happenings such as ISFiT, UKA and many others make sure there’s always something new " +
+                "to explore, in addition to other cultural meeting points like Trøndelag Teater and cinemas.";
     }
 
-    // Method for telling the user about NTNU
-    private String getInfoNTNU() {
-        return "The Norwegian University of Science and Technology is a public research university with campuses in the cities of Trondheim, Gjøvik and Ålesund. NTNU has the main national responsibility for higher education in engineering and technology, and gather more than 30.000 students in Trondheim alone, about half of which are connected to the technical subjects. Since its formation in 1996, the university has grown to become nationally and internationally recognized, both within education and research. You can read more about NTNU at www.ntnu.no";
-    }
-
-    // Method for telling the user about uniBOT
     private String getInfoUnibot() {
-        return "I can help you with almost everything that has to do with studies at NTNU Gløshaugen, as well as various other student activities like different unions and life in Trondheim. Try ask me anything, or check out the “HELP”-menu for tips. Perhaps you’d even want to sit back and let me interview you and recommend a study? If so, just let me know! The application was made by four students at the Engineering and ICT program, with the goal of assisting possible applicants choose the right study based on their individual preferences. You can read about them at the “About us”-page.";
+        return "I can help you with almost everything that has to do with studies at NTNU Gløshaugen, as well as various other student activities " +
+                "like different unions and life in Trondheim. \n\nTry ask me anything, or check out the “HELP”-menu for tips. Perhaps you’d even want " +
+                "to sit back and let me interview you and recommend a study? If so, just let me know! \n\nThe application was made by four students at " +
+                "the Engineering and ICT program, with the goal of assisting possible applicants choose the right study based on their individual " +
+                "preferences. You can read about them at the “About us”-page.";
     }
+
+    private String getSalary() {
+        return "Newly educated sivil engineers earn approximately 500 000 NOK.";
+    }
+
+
 
     public static class ProcessAiResponseTest {
         ProcessAiResponse aiResponse;
@@ -653,6 +703,6 @@ public class ProcessAiResponse {
         public void tearDown() throws Exception {
             aiResponse = null;
         }
-
     }
+
 }
