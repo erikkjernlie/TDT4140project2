@@ -150,7 +150,7 @@ public class ProcessAiResponse {
         ut = ut.substring(0, ut.length() - 2);
         String s1 = "At " + studyProgram + " you can work with: " + ut + ".";
         String s2 = ut + " are some common work fields for " + studyProgram + ".";
-        String s3 = "Some of the common work fields for " + studyProgram + " are " + ut +".";
+        String s3 = "Some of the common work fields for " + studyProgram + " are " + ut + ".";
         Random random = new Random();
         List<String> arr = Arrays.asList(s1, s2, s3);
         int index = random.nextInt(arr.size());
@@ -241,18 +241,24 @@ public class ProcessAiResponse {
         } else {
             ut += "The following are some similarities between the studies: ";
             for (String keyWord : similarKeyWords) {
-                ut += keyWord + ", ";
+                if (!keyWord.equals("null")) {
+                    ut += keyWord + ", ";
+                }
             }
             ut = ut.substring(0, ut.length() - 2) + ".";
             ut += "\n\nHowever, some differences are: \n\n" + studyProgram + " is associated with: ";
             for (String keyWord : keyWordsStudyProgram) {
-                ut += keyWord + ", ";
+                if (!keyWord.equals("null")) {
+                    ut += keyWord + ", ";
+                }
             }
             ut = ut.substring(0, ut.length() - 2) + ".";
 
             ut += "\n\n" + studyProgram1 + " related to: ";
             for (String keyWord : keyWordsStudyProgram1) {
-                ut += keyWord + ", ";
+                if (!keyWord.equals("null")) {
+                    ut += keyWord + ", ";
+                }
             }
             ut = ut.substring(0, ut.length() - 2) + ".";
         }
@@ -288,14 +294,14 @@ public class ProcessAiResponse {
         if (ut.equals("")) {
         }
         ut += " born in " + UserInfo.userInfo.getBirthYear() + " and";
-        ut += " you have " + UserInfo.userInfo.calculatedFirstTimeGrade + " / " + UserInfo.userInfo.getCalculatedGrade() +  " points to apply with.";
+        ut += " you have " + UserInfo.userInfo.calculatedFirstTimeGrade + " / " + UserInfo.userInfo.getCalculatedGrade() + " points to apply with.";
 
         if (!(UserInfo.userInfo.getInterests().size() == 1)) {
             ut += "\nYour interests are: ";
         }
         // interests har alltid 'studies' så trenger ikke sjekke
         for (String interest : UserInfo.userInfo.getInterests()) {
-            if (!interest.equals("Studies")){
+            if (!interest.equals("Studies")) {
                 ut += interest + ", ";
             }
         }
@@ -379,7 +385,7 @@ public class ProcessAiResponse {
             if (ordinaryGrade < userOrdinaryGrade) {
                 ut += "Your grade of " + userOrdinaryGrade + " is higher than last year's grade of " + ordinaryGrade + " at " + studyProgram + ".";
             } else if (primaryGrade < userPrimaryGrade) {
-                ut += "Your grade of " + userPrimaryGrade+ " is higher than last year's grade of " + primaryGrade + " at " + studyProgram + ".";
+                ut += "Your grade of " + userPrimaryGrade + " is higher than last year's grade of " + primaryGrade + " at " + studyProgram + ".";
             } else {
                 ut += "Your grade of " + userPrimaryGrade + " / " + userOrdinaryGrade + " is lower than last year grade of " + primaryGrade + " / " + ordinaryGrade + " at " + studyProgram + ".";
             }
@@ -393,7 +399,7 @@ public class ProcessAiResponse {
         if (ordinaryGrade < userOrdinaryGrade) {
             ut += "Your grade of " + userOrdinaryGrade + " is higher than last year's grade of " + ordinaryGrade + " at " + studyProgram + ".";
         } else if (primaryGrade < userPrimaryGrade) {
-            ut += "Your grade of " + userPrimaryGrade+ " is higher than last year's grade of " + primaryGrade + " at " + studyProgram + ".";
+            ut += "Your grade of " + userPrimaryGrade + " is higher than last year's grade of " + primaryGrade + " at " + studyProgram + ".";
         } else {
             ut += "Your grade of " + userPrimaryGrade + " / " + userOrdinaryGrade + " is lower than last year grade of " + primaryGrade + " / " + ordinaryGrade + " at " + studyProgram + ".";
         }
