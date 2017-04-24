@@ -222,12 +222,7 @@ public class ProcessAiResponse {
 
         ArrayList<String> keyWordsStudyProgram = StudyProgramInfo.studyPrograms.get(studyProgram).getKeywords();
         ArrayList<String> keyWordsStudyProgram1 = StudyProgramInfo.studyPrograms.get(studyProgram1).getKeywords();
-
-        System.out.println("asdls");
-        System.out.println(keyWordsStudyProgram);
-        System.out.println(keyWordsStudyProgram1);
-        System.out.println(StudyProgramInfo.studyPrograms.get(studyProgram).getKeywords());
-        System.out.println(StudyProgramInfo.studyPrograms.get(studyProgram1).getKeywords());
+        
         ArrayList<String> similarKeyWords = new ArrayList<>();
 
         for (String keyWord : keyWordsStudyProgram) {
