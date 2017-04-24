@@ -241,14 +241,14 @@ public class ProcessAiResponse {
         } else {
             ut += "The following are some similarities between the studies: ";
             for (String keyWord : similarKeyWords) {
-                if (!keyWord.equals("null")) {
+                if (keyWord != null) {
                     ut += keyWord + ", ";
                 }
             }
             ut = ut.substring(0, ut.length() - 2) + ".";
             ut += "\n\nHowever, some differences are: \n\n" + studyProgram + " is associated with: ";
             for (String keyWord : keyWordsStudyProgram) {
-                if (!keyWord.equals("null")) {
+                if (keyWord != null) {
                     ut += keyWord + ", ";
                 }
             }
@@ -256,7 +256,7 @@ public class ProcessAiResponse {
 
             ut += "\n\n" + studyProgram1 + " related to: ";
             for (String keyWord : keyWordsStudyProgram1) {
-                if (!keyWord.equals("null")) {
+                if (keyWord != null) {
                     ut += keyWord + ", ";
                 }
             }
