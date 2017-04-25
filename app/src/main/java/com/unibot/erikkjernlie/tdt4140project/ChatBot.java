@@ -301,7 +301,8 @@ public class ChatBot extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return "Sorry, we've had a problem loading your data. Please log out and in, and try again.";
+            return "Sorry, we've had a problem loading your data. Please log out and in, and try again.\n\nIf this" +
+                    " does not fix the problem, please try uninstall and install app again.";
         }
         return ut;
     }

@@ -106,11 +106,7 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         initButtons();
-
-        // adds nullpointer to fix
-        UserInfo.userInfo = null;
-        StudyProgramInfo.studyPrograms = null;
-        UserInfo.studyPrograms = null;
+        
     }
 
     private void initGrade() {
@@ -156,97 +152,103 @@ public class Menu extends AppCompatActivity {
         TextView t7 = (TextView) d.findViewById(R.id.courses_havehad);
         TextView t8 = (TextView) d.findViewById(R.id.extra_havehad);
 
-        if (UserInfo.userInfo.getGender() == 'M') {
-            img.setImageResource(R.drawable.man_selected);
+        try {
 
-        } else if (UserInfo.userInfo.getGender() == 'F') {
-            img.setImageResource(R.drawable.female_selected);
+            if (UserInfo.userInfo.getGender() == 'M') {
+                img.setImageResource(R.drawable.man_selected);
 
-        } else {
-            img.setVisibility(View.GONE);
-        }
+            } else if (UserInfo.userInfo.getGender() == 'F') {
+                img.setImageResource(R.drawable.female_selected);
 
-        if (UserInfo.userInfo.getBirthYear() != 0) {
-            String tempString = "Birthyear: ";
-            int str_length = tempString.length();
-            tempString = tempString + UserInfo.userInfo.getBirthYear();
-            SpannableString spanString = new SpannableString(tempString);
-            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, str_length, 0);
-            t2.setText(spanString);
-        } else {
-            t2.setVisibility(View.GONE);
-        }
-
-        if (UserInfo.userInfo.getCourses() != null) {
-            String tempString = "Courses that award extra points:";
-            SpannableString spanString = new SpannableString(tempString);
-            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, tempString.length(), 0);
-            t7.setText(spanString);
-            String array = UserInfo.userInfo.getCourses().toString();
-            array = array.substring(1, array.length() - 1);
-            t3.setText(array);
-        } else {
-            t3.setVisibility(View.GONE);
-            t7.setVisibility(View.GONE);
-        }
-        if (UserInfo.userInfo.getR2Grade() != 0) {
-            String tempString = "Matematikk R2 grade: ";
-            int str_length = tempString.length();
-            tempString = tempString + UserInfo.userInfo.getR2Grade() + "\n";
-            SpannableString spanString = new SpannableString(tempString);
-            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, str_length, 0);
-            t4.setText(spanString);
-        } else {
-            t4.setText("\n");
-        }
-        if (UserInfo.userInfo.getExtraEducation() != null) {
-            String tempString = "Experience that awads extra points:";
-            SpannableString spanString = new SpannableString(tempString);
-            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, tempString.length(), 0);
-            t8.setText(spanString);
-            String array = UserInfo.userInfo.getExtraEducation().toString();
-            array = array.substring(1, array.length() - 1);
-            t5.setText(array);
-        } else {
-            t8.setVisibility(View.GONE);
-            t5.setVisibility(View.GONE);
-        }
-
-        if (UserInfo.userInfo.getCalculatedGrade() != 0.0) {
-            String tempString = "Grade score: ";
-            int str_length = tempString.length();
-            tempString = tempString + UserInfo.userInfo.calculatedFirstTimeGrade + " / " + UserInfo.userInfo.getCalculatedGrade();
-            SpannableString spanString = new SpannableString(tempString);
-            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, str_length, 0);
-            t6.setText(spanString);
-        } else {
-            t6.setVisibility(View.GONE);
-        }
-
-
-        TextView info = (TextView) d.findViewById(R.id.info);
-        info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Menu.this, Add_information.class);
-                startActivity(i);
+            } else {
+                img.setVisibility(View.GONE);
             }
-        });
-        d.show();
-        TextView change_password = (TextView) d.findViewById(R.id.change_password);
-        change_password.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertRetrievePassword();
+
+            if (UserInfo.userInfo.getBirthYear() != 0) {
+                String tempString = "Birthyear: ";
+                int str_length = tempString.length();
+                tempString = tempString + UserInfo.userInfo.getBirthYear();
+                SpannableString spanString = new SpannableString(tempString);
+                spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, str_length, 0);
+                t2.setText(spanString);
+            } else {
+                t2.setVisibility(View.GONE);
             }
-        });
-        TextView return_to_settings = (TextView) d.findViewById(R.id.return_to_settings);
-        return_to_settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                d.dismiss();
+
+            if (UserInfo.userInfo.getCourses() != null) {
+                String tempString = "Courses that award extra points:";
+                SpannableString spanString = new SpannableString(tempString);
+                spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, tempString.length(), 0);
+                t7.setText(spanString);
+                String array = UserInfo.userInfo.getCourses().toString();
+                array = array.substring(1, array.length() - 1);
+                t3.setText(array);
+            } else {
+                t3.setVisibility(View.GONE);
+                t7.setVisibility(View.GONE);
             }
-        });
+            if (UserInfo.userInfo.getR2Grade() != 0) {
+                String tempString = "Matematikk R2 grade: ";
+                int str_length = tempString.length();
+                tempString = tempString + UserInfo.userInfo.getR2Grade() + "\n";
+                SpannableString spanString = new SpannableString(tempString);
+                spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, str_length, 0);
+                t4.setText(spanString);
+            } else {
+                t4.setText("\n");
+            }
+            if (UserInfo.userInfo.getExtraEducation() != null) {
+                String tempString = "Experience that awads extra points:";
+                SpannableString spanString = new SpannableString(tempString);
+                spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, tempString.length(), 0);
+                t8.setText(spanString);
+                String array = UserInfo.userInfo.getExtraEducation().toString();
+                array = array.substring(1, array.length() - 1);
+                t5.setText(array);
+            } else {
+                t8.setVisibility(View.GONE);
+                t5.setVisibility(View.GONE);
+            }
+
+            if (UserInfo.userInfo.getCalculatedGrade() != 0.0) {
+                String tempString = "Grade score: ";
+                int str_length = tempString.length();
+                tempString = tempString + UserInfo.userInfo.calculatedFirstTimeGrade + " / " + UserInfo.userInfo.getCalculatedGrade();
+                SpannableString spanString = new SpannableString(tempString);
+                spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, str_length, 0);
+                t6.setText(spanString);
+            } else {
+                t6.setVisibility(View.GONE);
+            }
+
+
+            TextView info = (TextView) d.findViewById(R.id.info);
+            info.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(Menu.this, Add_information.class);
+                    startActivity(i);
+                }
+            });
+            d.show();
+            TextView change_password = (TextView) d.findViewById(R.id.change_password);
+            change_password.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertRetrievePassword();
+                }
+            });
+            TextView return_to_settings = (TextView) d.findViewById(R.id.return_to_settings);
+            return_to_settings.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    d.dismiss();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(Menu.this, "Sorry, we're having trouble loading your data", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
 
 
     }
