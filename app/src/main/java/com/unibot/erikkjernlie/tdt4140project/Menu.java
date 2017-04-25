@@ -103,28 +103,38 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         initButtons();
+
+        // adds nullpointer to fix
+        UserInfo.userInfo = null;
+        StudyProgramInfo.studyPrograms = null;
+        UserInfo.studyPrograms = null;
     }
 
     private void initGrade() {
-        double n = UserInfo.userInfo.getCalculatedGrade();
+        double n = 0;
         try {
+            n = UserInfo.userInfo.getCalculatedGrade();
             if (UserInfo.userInfo.getExtraEducation().size() > 0) {
-               n -= 2;
+                n -= 2;
             }
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        double points = 2 * ((today.getYear() - UserInfo.userInfo.getBirthYear() + 1900) - 19);
-        if (points > 8) {
-            points = 8;
-        } else if (points < 0) {
-            points = 0;
+        try {
+            double points = 2 * ((today.getYear() - UserInfo.userInfo.getBirthYear() + 1900) - 19);
+            if (points > 8) {
+                points = 8;
+            } else if (points < 0) {
+                points = 0;
+            }
+            n -= points;
+            if (n < 0) {
+                n = 0;
+            }
+            UserInfo.userInfo.setCalculatedFirstTimeGrade(n);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        n -= points;
-        if (n<0){
-            n = 0;
-        }
-        UserInfo.userInfo.setCalculatedFirstTimeGrade(n);
 
     }
 

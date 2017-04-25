@@ -39,12 +39,16 @@ public class Interview {
         this.questionCounter = 0;
 
         // adds the interest to interests
-        for (String study : StudyProgramInfo.studyPrograms.keySet()) {
-            for (String interest : StudyProgramInfo.studyPrograms.get(study).getKeywords()) {
-                if (interest != null && !interests.contains(interest) && !UserInfo.userInfo.getInterests().contains(interest)) { // checks if its not already added, and if the user already have added interest
-                    interests.add(interest);
+        try {
+            for (String study : StudyProgramInfo.studyPrograms.keySet()) {
+                for (String interest : StudyProgramInfo.studyPrograms.get(study).getKeywords()) {
+                    if (interest != null && !interests.contains(interest) && !UserInfo.userInfo.getInterests().contains(interest)) { // checks if its not already added, and if the user already have added interest
+                        interests.add(interest);
+                    }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         if (interests.size() == 0) {

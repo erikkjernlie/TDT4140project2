@@ -300,8 +300,8 @@ public class ChatBot extends AppCompatActivity {
             }
 
         } catch (Exception e) {
-            addMessageToChatArray("Sorry, we've had a problem loading your data. Please try again later.");
             e.printStackTrace();
+            return "Sorry, we've had a problem loading your data. Please log out and in, and try again.";
         }
         return ut;
     }
