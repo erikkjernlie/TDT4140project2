@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.erikkjernlie.tdt4140project">
+    package="com.unibot.erikkjernlie.tdt4140project">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -14,20 +14,20 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashScreen" android:screenOrientation="portrait">
+        <activity android:name="com.unibot.erikkjernlie.tdt4140project.SplashScreen" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChatBot" android:screenOrientation="portrait"/>
-        <activity android:name=".Recommendation" android:screenOrientation="portrait"></activity>
-        <activity android:name=".Slideshow_about_unibot" android:screenOrientation="portrait"/>
-        <activity android:name=".Slideshow_about_us" android:screenOrientation="portrait"/>
-        <activity android:name=".Sign_in" android:screenOrientation="portrait" />
-        <activity android:name=".Register_user" android:screenOrientation="portrait"/>
-        <activity android:name=".Menu" android:screenOrientation="portrait"></activity>
-        <activity android:name=".Add_information" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.unibot.erikkjernlie.tdt4140project.ChatBot" android:screenOrientation="portrait"/>
+        <activity android:name="com.unibot.erikkjernlie.tdt4140project.Recommendation" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.unibot.erikkjernlie.tdt4140project.Slideshow_about_unibot" android:screenOrientation="portrait"/>
+        <activity android:name="com.unibot.erikkjernlie.tdt4140project.Slideshow_about_us" android:screenOrientation="portrait"/>
+        <activity android:name="com.unibot.erikkjernlie.tdt4140project.Sign_in" android:screenOrientation="portrait" />
+        <activity android:name="com.unibot.erikkjernlie.tdt4140project.Register_user" android:screenOrientation="portrait"/>
+        <activity android:name="com.unibot.erikkjernlie.tdt4140project.Menu" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.unibot.erikkjernlie.tdt4140project.Add_information" android:screenOrientation="portrait"></activity>
 
     </application>
 

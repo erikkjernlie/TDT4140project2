@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    tools:context="com.example.erikkjernlie.tdt4140project.Register"
+    tools:context="com.unibot.erikkjernlie.tdt4140project.Register"
     android:weightSum="1">
 
     <TextView

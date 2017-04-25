@@ -6,7 +6,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "com.example.erikkjernlie.tdt4140project"
+        applicationId "com.unibot.erikkjernlie.tdt4140project"
         minSdkVersion 23
         targetSdkVersion 25
         versionCode 1
