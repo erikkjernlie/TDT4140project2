@@ -1,5 +1,6 @@
 package com.unibot.erikkjernlie.tdt4140project;
 
+import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -93,19 +94,28 @@ public class Interview {
     }
 
     public String getQuestion() {
-        Random random = new Random();
 
-        String prompt = prompts.get(random.nextInt(prompts.size() - 1));
-        String interest = interests.get(random.nextInt(interests.size() - 1));
+        try {
+            Random random = new Random();
 
-        int rand;
-        while (interest.equals(lastInterest) || usedInterests.contains(interest)) {
-            rand = random.nextInt(interests.size() - 1);
-            interest = interests.get(rand);
+            String prompt = prompts.get(random.nextInt(prompts.size() - 1));
+            String interest = interests.get(random.nextInt(interests.size() - 1));
 
+            int rand;
+            while (interest.equals(lastInterest) || usedInterests.contains(interest)) {
+                rand = random.nextInt(interests.size() - 1);
+                interest = interests.get(rand);
+
+            }
+            lastInterest = interest;
+            return prompt + interest + "?";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.active = false;
+            return "Sorry, we've had a problem loading your data. Please log out and in, and try again.\n\nIf this" +
+                    " does not fix the problem, please try uninstall and install app again.";
         }
-        lastInterest = interest;
-        return prompt + interest + "?";
     }
 
     private boolean checkEnoughInfo() {
