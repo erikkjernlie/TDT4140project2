@@ -13,7 +13,7 @@
     <string name="slide_2_desc">Get access whenever and wherever you want! All you need is an Android phone with regular 3G or 4G connection</string>
 
     <string name="slide_3_title">Smart Technology</string>
-    <string name="slide_3_desc">With artifical intelligence and other smart APIs, uniBOT is able to personalize your experience without any configuations!</string>
+    <string name="slide_3_desc">With the use of smart APIs and artificial intelligence, uniBOT is able to personalize your experience without any configuations!</string>
 
     <string name="slide_4_title">Enjoy uniBOT!</string>
     <string name="slide_4_desc">We hope our app can help you decide what to do with your future</string>
@@ -46,6 +46,7 @@
     <string name="ratings">Submit your grades</string>
     <string name="cancel">DELETE</string>
     <string name="confirm">CONFIRM</string>
+    <string name="confirm_email">CONFIRM E-MAIL</string>
     <string name="or"><b>OR</b></string>
 
 

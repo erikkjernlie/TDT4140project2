@@ -8,7 +8,7 @@
     android:paddingLeft="64dp"
     android:paddingRight="64dp"
     android:paddingTop="16dp"
-    tools:context="com.example.erikkjernlie.tdt4140project.Register"
+    tools:context="com.unibot.erikkjernlie.tdt4140project.Register"
     android:weightSum="1">
 
 
@@ -19,14 +19,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:orientation="vertical">
-
-
-    <!--<TextView
-        android:text="Since you haven't calculated your grades, well, you are fucked"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView4" />-->
-
 
 
     <EditText
