@@ -18,6 +18,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
@@ -28,6 +29,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Date;
@@ -249,11 +252,23 @@ public class Menu extends AppCompatActivity {
             public void onClick(View v) {
 
                 String email = email_retrieve_password.getText().toString();
+                System.out.println("YOLO: " + email);
                 if (!email.equals("")) {
-                    String email2 = (String) email_retrieve_password.toString();
-                    FirebaseAuth.getInstance().sendPasswordResetEmail(email2);
-                    Toast.makeText(Menu.this, "Instructions was sent to the requested e-mail", Toast.LENGTH_SHORT).show();
-                    e.dismiss();
+                    System.out.println("YOLO2: " + email);
+                    firebaseAuth.getInstance().sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(Menu.this, "Instructions are sent to the requested e-mail (NB: this can take some time)", Toast.LENGTH_SHORT).show();
+                            e.dismiss();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(Menu.this, "Sorry, something went wrong :(", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
                 } else {
                     Toast.makeText(Menu.this, "Type in your e-mail!", Toast.LENGTH_SHORT).show();
                 }
