@@ -40,6 +40,8 @@ import ai.api.model.AIResponse;
 @RunWith(Enclosed.class)
 public class ProcessAiResponse {
 
+    // comment to create mergeconflict
+
     private HashMap<String, StudyProgramInfo> studyPrograms;
     private UserInfo userInfo;
     private HashMap<String, Union> unions;
