@@ -8,9 +8,9 @@ In the initial release of the app, we have restricted the number of supported st
 - Informatics
 - Industrial Economics and Technology Management with specialization in Computer- and Communication Technology
 
-Implementing the software for a limited number of studies whom have many simularities allow us to develop the app functionality further without having to spend a large amount of time gathering information.
+Implementing the software for a limited number of studies whom have many similarities allowed us to develop the app functionality further without having to spend a large amount of time gathering information.
 
-In order to run the program on a computer during the development phase, one would need to install a program called Android Studio and open the project from there. The project is stored here on GITHUB. The "Master"-branch consists of up-to-date functional code, while development is done in separate branches with appropriate branch names. At some point before the 27th of April, the app will be made available for download on Google Play.
+In order to run the program on a computer, one would need to install a program called Android Studio and open the project from there. The project is stored here on GITHUB. The "Master"-branch consists of up-to-date functional code, while development is done in separate branches with appropriate branch names. The app has been made available for download on Google Play under the name "UniBOT - your university bot"
 
 Unit- and GUI tests are found in the following folders:
 - TDT4140project2\app\src\test
@@ -24,7 +24,7 @@ The native app for Android with its functions are made using:
 - Firebase for database storage
 - API.AI with google voice api for AI-behaviour
 
-and is as of yet only published as UNIBOT version 1.0.0.
+and is published as UniBOT version 1.1.
 
 The app is made by the following students of the Engineering and ICT study at NTNU Gløshaugen:
 - Herman Wika Horn
