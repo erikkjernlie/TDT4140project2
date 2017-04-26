@@ -10,7 +10,7 @@ In the initial release of the app, we have restricted the number of supported st
 
 Implementing the software for a limited number of studies whom have many similarities allowed us to develop the app functionality further without having to spend a large amount of time gathering information.
 
-In order to run the program on a computer, one would need to install a program called Android Studio and open the project from there. The project is stored here on GITHUB. The "Master"-branch consists of up-to-date functional code, while development is done in separate branches with appropriate branch names. The app has been made available for download on Google Play under the name "UniBOT - your university bot"
+The app has been made available for download on Google Play under the name "UniBOT - your university bot". We recommend that you download it from there. In order to run the program on a computer, either use the app-release.apk file located at TDT4140project2\app, or install a program called Android Studio and open the project from there. The project is stored on GITHUB in this repository. The "Master"-branch consists of up-to-date functional code, while development is done in separate branches with appropriate branch names.
 
 Unit- and GUI tests are found in the following folders:
 - TDT4140project2\app\src\test
