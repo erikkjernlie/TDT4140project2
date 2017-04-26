@@ -22,7 +22,7 @@ The native app for Android with its functions are made using:
 - Java for programming
 - XML for sharing
 - Firebase for database storage
-- API.AI with google voice api for AI-behaviour
+- API.AI
 
 and is published as UniBOT version 1.1.
 
