@@ -24,7 +24,7 @@ The native app for Android with its functions are made using:
 - Firebase for database storage
 - API.AI
 
-and is published as UniBOT version 1.1.
+and is published as UniBOT version 1.2.
 
 The app is made by the following students of the Engineering and ICT study at NTNU Gløshaugen:
 - Herman Wika Horn
