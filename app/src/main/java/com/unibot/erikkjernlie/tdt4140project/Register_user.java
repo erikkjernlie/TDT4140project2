@@ -21,7 +21,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -154,6 +157,8 @@ public class Register_user extends AppCompatActivity {
                     firebaseAuth = firebaseAuth.getInstance();
                     mRef = new Firebase("https://tdt4140project2.firebaseio.com/Users/" +
                             firebaseAuth.getCurrentUser().getUid());
+                    getStudyInfoDatabase();
+                    getUnionInfoDatabase();
                     storeVariables();
                     startActivity(intent);
                 } else {
@@ -172,5 +177,46 @@ public class Register_user extends AppCompatActivity {
                 null, '\u0000', 0, new ArrayList<>(Arrays.asList("Studies")));
         UserInfo.userInfo = user;
         mRef.setValue(user);
+    }
+
+    public void getStudyInfoDatabase() {
+        //Sends a StudyProgramInfo-object to the database (TEST)
+        Firebase infoRef = new Firebase("https://tdt4140project2.firebaseio.com/Studies/");
+        infoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    addStudyPrograms(snapshot.getKey(), snapshot.getValue(StudyProgramInfo.class));
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+    }
+
+    //Retrieving information about the unions at NTNU
+    public void getUnionInfoDatabase() {
+        Firebase unionRef = new Firebase("https://tdt4140project2.firebaseio.com/Unions/");
+        unionRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    addUnions(snapshot.getValue(Union.class));
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+    }
+
+    public void addUnions(Union union) {
+        Union.unions.put(union.getName(), union);
+    }
+
+    public void addStudyPrograms(String study, StudyProgramInfo info) {
+        StudyProgramInfo.studyPrograms.put(study, info);
+        UserInfo.userInfo.studyPrograms.put(study, info);
     }
 }
