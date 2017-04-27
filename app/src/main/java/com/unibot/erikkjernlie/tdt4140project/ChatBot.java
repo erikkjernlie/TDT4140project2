@@ -204,40 +204,46 @@ public class ChatBot extends AppCompatActivity {
     private boolean sendChatMessage() {
         String messageFromUser = chatText.getText().toString();
         //For displayUserInformation:
-        if (messageFromUser.isEmpty()) {
-            return false;
-        }
-        if (!messageFromUser.isEmpty()) { // checks that the message is not empty
-            chatArrayAdapter.add(new ChatMessage(side, messageFromUser));
-        }
-        if (interview.isActive()) {
-            String interviewResponse = interview.sendMessage(messageFromUser); // sends message to interview objekt
-            chatText.setText("");
-
-            if (!interview.isActive()) {
-                addMessageToChatArray(interviewResponse);
-                getAiResponse("Can you recommend me a study?"); // finish interview by finding a study
-                return true; // users turn to answer
+        try {
+            if (messageFromUser.isEmpty()) {
+                return false;
             }
-            getAiResponse(interview.getQuestion());
-            return true; // avoid using getAiResponse
+            if (!messageFromUser.isEmpty()) { // checks that the message is not empty
+                chatArrayAdapter.add(new ChatMessage(side, messageFromUser));
+            }
+            if (interview.isActive()) {
+                String interviewResponse = interview.sendMessage(messageFromUser); // sends message to interview objekt
+                chatText.setText("");
+
+                if (!interview.isActive()) {
+                    addMessageToChatArray(interviewResponse);
+                    getAiResponse("Can you recommend me a study?"); // finish interview by finding a study
+                    return true; // users turn to answer
+                }
+                getAiResponse(interview.getQuestion());
+                return true; // avoid using getAiResponse
+            }
+
+            chatText.setText(""); //resets the chatbox
+            //here comes the response
+
+            //checks if the user wants to answer the random question.
+            // Also checks if the last question uniBOT printed equals the question that was printed because the user pressed the uniBOT-button
+            //This needs to be checked, or else the user can type "yes" whenever (s)he wants, and the answer to the last question will be printed
+            if (messageFromUser.toLowerCase().equals("yes") && randomNumber > -1 && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber))) {
+                translationFromUserToAI();
+                return true;
+            } else if (chatArrayAdapter != null && sentencesOutput != null && messageFromUser.toLowerCase().equals("no") && (chatArrayAdapter.getCount() > 2) && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber))) {
+                addMessageToChatArray("You can always press the uniBOT-button to get more random questions. ");
+                return true;
+            }
+
+            getAiResponse(messageFromUser);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            addMessageToChatArray("We've just encountered a problem. Please restart app.");
         }
-
-        chatText.setText(""); //resets the chatbox
-        //here comes the response
-
-        //checks if the user wants to answer the random question.
-        // Also checks if the last question uniBOT printed equals the question that was printed because the user pressed the uniBOT-button
-        //This needs to be checked, or else the user can type "yes" whenever (s)he wants, and the answer to the last question will be printed
-        if (messageFromUser.toLowerCase().equals("yes") && randomNumber > -1 && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber))) {
-            translationFromUserToAI();
-            return true;
-        } else if (chatArrayAdapter != null && sentencesOutput != null && messageFromUser.toLowerCase().equals("no") && (chatArrayAdapter.getCount() > 2) && chatArrayAdapter.getItem(chatArrayAdapter.getCount() - 2).toString().equals(sentencesOutput.get(randomNumber))) {
-            addMessageToChatArray("You can always press the uniBOT-button to get more random questions. ");
-            return true;
-        }
-
-        getAiResponse(messageFromUser);
 
         return true;
     }
